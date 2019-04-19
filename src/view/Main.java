@@ -4,8 +4,8 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 
-import controller.Files;
-import controller.Files;
+import controller.Controller;
+import controller.Controller;
 
 public class Main {
 
@@ -21,7 +21,7 @@ public class Main {
 					Main window = new Main();
 					window.frame.setVisible(true);
 					
-					Files f = new Files();
+					Controller f = new Controller();
 					f.ReadFile();
 					
 				} catch (Exception e) {
