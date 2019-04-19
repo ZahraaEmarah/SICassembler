@@ -14,6 +14,11 @@ public class Controller {
 	int operandsindex =0;
 	String wordsArr[] = {"","",""};
 	String lineArr[] = {"","","",""};
+	
+	String directivesList[] = {"start","end","byte","word","resw","resb","equ","org","base"};
+	
+	String opcodeList[] = {"RMO","LDR","STR","LDCH","STCH","ADD","SUB","ADDR","SUBR","COMP"
+			              ,"COMR","J","JEQ","JLT","JGT","TIX","TIXR"};
 	int i=0;
 	int count = 0;
 	int error = 0;
@@ -125,11 +130,11 @@ public class Controller {
 		{
 			wordsArr[0] = arr[0]; //label
 			wordsArr[1] = arr[1]; //opcode
-			wordsArr[2] = arr[2]; //opernads
+			wordsArr[2] = arr[2]; //operands
 			
 			InstructionHandler(count, wordsArr);
 		}
-			
+					
 	}
 	
 	public void InstructionHandler(int n, String wordarray[]) // Populates the Instructions ArrayList
@@ -154,6 +159,49 @@ public class Controller {
 				operandsindex++;
 			}
 		}
+		
+		ValidateOpcode(opCode);
+	}
+		
+	public void ValidateLabel(String label[])
+	{
+		
+	}
+	
+	public void ValidateOpcode(String opcode[])
+	{
+		int j=0;
+		int found=0;
+		while(opCode[j] != null)
+		{		
+			found=0;
+			for(int i=0; i<17; i++)
+			{
+				if(opCode[j].compareToIgnoreCase(opcodeList[i]) == 0)
+				{
+					found = 1;
+				}
+			}
+			
+			for(int i=0; i<9; i++)
+			{
+				if(opCode[j].compareToIgnoreCase(directivesList[i]) == 0)
+				{
+					found = 1;
+				}
+			}
+			
+			if(found == 0)
+			{
+				System.out.println("error [08] : 'unrecognized operation code '");
+			}
+			
+			j++;
+		}
+	}
+	
+	public void ValidateOperands(String operands[])
+	{
 		
 	}
 	    

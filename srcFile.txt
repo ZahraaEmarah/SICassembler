@@ -1,4 +1,4 @@
 .23456789012345678
 PROG     START   0
-         ADD     #5
+         ADDi     #5
          END
