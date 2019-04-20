@@ -68,7 +68,7 @@ public class Controller {
 		     	}
 		     	else
 		     	{
-				    PopulateWordArray(lineArr);
+				    PopulateWordArray(lineArr);  ///*** Populates the 3 Main Arrays ***///
 		     	}
 		     	
 		     	//System.out.println("Word count: " + count);
@@ -102,13 +102,8 @@ public class Controller {
 				wordsArr[1] = arr[0]; //opcode
 				wordsArr[2] = "^";
 				
-				InstructionHandler(count, wordsArr);
-					
-			}else
-			{
-				System.out.println("error [02] : 'missing or misplaced operation mnemonic '");
-				error = 1;
-			}	
+				InstructionHandler(count, wordsArr);		
+			}
 			
 			for(int i=0; i<index; i++)
 			{
@@ -171,7 +166,7 @@ public class Controller {
 				//error missing label
 			}
 			
-			ValidateLabel(labelarr[i]);
+			ValidateLabel(labelarr,index);
 			ValidateOpcode(opcodeArr[i]);
 			operandsArr[i]=ValidateOperands(operandsArr[i]);
 			
@@ -180,10 +175,34 @@ public class Controller {
 	}
 		
 	
-	public void ValidateLabel(String label)
-	{
-		int duplicate = 0;
-		
+	public void ValidateLabel(String label[], int size)
+	{		
+	        int i, j; 
+	
+	       	for (i = 0; i < size; i++)  	       
+			{ 	   
+	       	    if(Label[i].compareTo("^") == 0)
+				{
+					Label[i] = "    ";  //replace all ^
+				}
+	       	    else
+				{
+	       	    	for (j = i + 1; j < size; j++)  	           				
+	       	    	{ 
+	       	    			if (label[i] == label[j])        	 	        
+	       	    			{
+	       	    			   System.out.println("Repeated Elements are :");        	    			
+	       	    			   System.out.print(label[i] + " "); 
+	       	    			   ErrorArr[errorindex] = "error [04] : 'duplicate label definition '";
+	       					   errorindex++;
+	       	    			} 
+	       	    		
+	       	    	} 	       	    	
+				}
+			} 
+			
+	        
+		/**
 		for(int i=0; i< index;i++)
 		{
 			if(Label[i].compareTo("^") == 0)
@@ -198,7 +217,7 @@ public class Controller {
 			}
 			
 			//System.out.println("new label "+ Label[i]);
-		}
+		}**/
 	}
 	
 	

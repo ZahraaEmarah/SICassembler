@@ -1,5 +1,5 @@
 .23456789012345678
-PROG     START   0
-         ADD     #5
-         MUL     3
-         END
+PROG         START   0
+          add #5
+PROG        LDR     6
+                     END
