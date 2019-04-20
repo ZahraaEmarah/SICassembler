@@ -1,4 +1,5 @@
 .23456789012345678
 PROG     START   0
-         ADDi     #5
+         ADD     #5
+         MUL     3
          END
