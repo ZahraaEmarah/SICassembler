@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 public class Controller {
 	
+	int NEWBRANCHTRIAL =0;
 	String Label[]    = new String[1000];
 	String opCode[]   = new String[1000];
 	String operands[] = new String[1000];
