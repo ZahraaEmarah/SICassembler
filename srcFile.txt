@@ -1,5 +1,12 @@
 .23456789012345678
-PROG         START   0
-  mul #5
-PROG        LDR     6,4
-                     END
+PROG         START    0
+        LDA      55
+prog             mul      #5
+               LDX      
+     lDA  5
+prog mul 8
+             div 19
+             ldx
+ plus 5
+             SUBR 6
+            
