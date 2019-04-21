@@ -79,9 +79,9 @@ public class Controller {
 	    	}
 			
 			reader.close();
+			
 			ValidateInstruction(Label, opCode, operands);
-			
-			
+					
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -144,13 +144,11 @@ public class Controller {
 			if(i==1) // we have an opcode
 			{
 				opCode[index] = wordarray[1];
-			} 
-			
+			} 			
 			if(i==2) // we have operands
 			{
 				operands[index] = wordarray[2];
-			} 
-			
+			} 			
 		}
 		
 		index++;
@@ -170,15 +168,17 @@ public class Controller {
 			ValidateOpcode(opcodeArr[i]);
 			operandsArr[i]=ValidateOperands(operandsArr[i]);
 			
-			writeToFile(labelarr[i],opcodeArr[i],operandsArr[i], ErrorArr[i], i);
+			writeToFile(labelarr[i],opcodeArr[i],operandsArr[i], ErrorArr, i);
+			ErrorArr = new String[5];
+			
 		}
 	}
 		
 	
 	public void ValidateLabel(String label[], int size)
 	{		
-	        int i, j; 
-	
+		 int i, j; 
+			
 	       	for (i = 0; i < size; i++)  	       
 			{ 	   
 	       	    if(Label[i].compareTo("^") == 0)
@@ -191,33 +191,15 @@ public class Controller {
 	       	    	{ 
 	       	    			if (label[i] == label[j])        	 	        
 	       	    			{
-	       	    			   System.out.println("Repeated Elements are :");        	    			
+	       	    			   //System.out.println("Repeated Elements are :");        	    			
 	       	    			   System.out.print(label[i] + " "); 
-	       	    			   ErrorArr[errorindex] = "error [04] : 'duplicate label definition '";
-	       					   errorindex++;
+	       	    			   //ErrorArr[errorindex] = "error [04] : 'duplicate label definition '";
+	       					   //errorindex++;
 	       	    			} 
 	       	    		
 	       	    	} 	       	    	
 				}
-			} 
-			
-	        
-		/**
-		for(int i=0; i< index;i++)
-		{
-			if(Label[i].compareTo("^") == 0)
-			{
-				Label[i] = "    ";  //replace all ^
-			}
-			else if(Label[i].compareTo(label) != 0)
-			{
-				duplicate = 1;
-				ErrorArr[errorindex] = "error [04] : 'duplicate label definition '";
-				errorindex++;
-			}
-			
-			//System.out.println("new label "+ Label[i]);
-		}**/
+} 
 	}
 	
 	
@@ -261,17 +243,20 @@ public class Controller {
 	
 	
 	
-	public void writeToFile(String label, String opcode, String operands, String Error, int indx)
+	public void writeToFile(String label, String opcode, String operands, String Error[], int indx)
 	{
 		
-		String Inst;
-		if(Error != null)
-		{
-			  Inst = label +"      "+ opcode +"\t\t" + operands + "\t" + Error ;
-		} else 
-		{			
+		String Inst;		
 			  Inst = label +"      "+ opcode +"\t\t" + operands + "\t"  ;
-		}
+			  
+			  for(int i=0; i<Error.length; i++)
+			  {
+				  if(Error[i] != null)
+				  {
+					  Inst = Inst + Error[i] + "\n";
+				  }
+			  }
+		
 	
 		 try
 		 { 

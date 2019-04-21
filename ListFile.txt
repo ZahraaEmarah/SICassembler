@@ -1,8 +1,9 @@
   **** SIC Assembler ****
 
 PROG      START		0	
-          add		#5	
-PROG      LDR		6	
+          mul		#5	error [08] : 'unrecognized operation code '
+
+PROG      LDR		6,4	
           END			
 
   **** END OF PASS 1 ****
