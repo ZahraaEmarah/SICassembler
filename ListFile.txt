@@ -1,0 +1,12 @@
+  **** SIC Assembler ****
+
+20PROG      START		20	
+error [04] : 'duplicate label definition '
+
+23         addr		s,0	
+error [12] : 'illegal address for a register '
+
+26PROG      LDR		6	
+29         END			
+
+  **** END OF PASS 1 ****

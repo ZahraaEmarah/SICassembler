@@ -1,0 +1,5 @@
+.23456789012345678
+PROG         START   20
+             addr s,0
+PROG           LDR     6
+                     END
