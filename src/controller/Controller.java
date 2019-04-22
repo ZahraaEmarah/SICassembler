@@ -486,7 +486,7 @@ public class Controller {
 	        	  if(flagError == 0) {
 	        	  bw.write( "****   SYMBOL TABLE   ****");
 	        	  bw.newLine();
-	        	  Inst = "Address" + "\t" + "Name" ;
+	        	  Inst = "Address" + "\t\t" + "Name" ;
 	        	  bw.write(Inst);
 	        	  bw.newLine();
 	        	  for(int i=0 ; i<symbol ; i++)
