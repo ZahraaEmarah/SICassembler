@@ -24,7 +24,7 @@ public class Main {
 					
 					Controller f = new Controller();
 					f.ReadFile();
-					
+
 					FixedController fix = new FixedController();
 					fix.ReadFixedFile();
 					

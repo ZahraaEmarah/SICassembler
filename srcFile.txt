@@ -1,22 +1,11 @@
 .23456789012345678
-PROG         START    0
-        LDA      55
-prog             mul      #5
-               LDX      
-     lDA  5
-prog mul 8
-             div 19
-             ldx
- plus 5
-             SUBR 6
-            
-=======
-PROG         START   20
-label          ORG  6
-prog          LDR     6
-              mul   5
-PROG          LDA   6   
-soso          ldr   5
 soso          ldx   100
-soso          addr  a,a           
+           addr  a,a           
+         ldx   100
+         addr  a,a     
+MM            RESW  1
+M             RESB  1  
+MA            RESB 2
+SO      RESW 3
+ES     BYTE C'x'    
                      END

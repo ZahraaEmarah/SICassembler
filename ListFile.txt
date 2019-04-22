@@ -1,53 +1,22 @@
   **** SIC Assembler ****
 
-0	PROG      START		0	
-3	         LDA		55	
-6	prog      mul		#5	
-	error [04] : 'duplicate label definition '
-
-	error [08] : 'unrecognized operation code '
-
-9	         lDA		5	
-C	prog      mul		8	
-	error [04] : 'duplicate label definition '
-
-	error [08] : 'unrecognized operation code '
-
-F	         div		19	
-	error [08] : 'unrecognized operation code '
-
-12	         plus		5	
-	error [08] : 'unrecognized operation code '
-
-15	         SUBR		6	
-	error [03] : 'missing or misplaced operand field '
-
-18	PROG      START		20	
-	error [04] : 'duplicate label definition '
-
-1B	label      ORG		6	
-	error [05] : 'this statement can’t have a label '
-
-1E	prog      LDR		6	
-	error [04] : 'duplicate label definition '
-
-	error [08] : 'unrecognized operation code '
-
-21	         mul		5	
-	error [08] : 'unrecognized operation code '
-
-24	PROG      LDA		6	
-	error [04] : 'duplicate label definition '
-
-27	soso      ldr		5	
-	error [08] : 'unrecognized operation code '
-
-2A	soso      ldx		100	
-	error [04] : 'duplicate label definition '
-
-2D	soso      addr		a,a	
-	error [04] : 'duplicate label definition '
-
-30	         END			
+64	soso      ldx		100	
+67	         addr		a,a	
+6A	         ldx		100	
+6D	         addr		a,a	
+70	MM      RESW		1	
+73	M      RESB		1	
+74	MA      RESB		2	
+76	SO      RESW		3	
+7F	ES      BYTE		C'x'	
+80	         END			
 
   **** END OF PASS 1 ****
+****   SYMBOL TABLE   ****
+Address		Name
+64		soso
+70		MM
+73		M
+74		MA
+76		SO
+7F		ES
