@@ -1,10 +1,12 @@
 .23456789012345678
 PROG     START   0
-         LDb     5
-PROG     ADD     9
-         ADDR    S,T
+         MUL     4
          
-         SUB     9
-         DIV     6
-         end
+         LDA     0
+         ADDR    L,X
+MAR      RESW    1
+SOSO     RESB    2
+ZEE      BYTE    C'mr'
+MARIAM   WORD    12
+TEST     BYTE    X'FX'
          

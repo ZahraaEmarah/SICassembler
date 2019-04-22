@@ -1,22 +1,28 @@
   **** SIC Assembler ****
 
 64	soso      ldx		100	
-67	         addr		a,a	
-6A	         ldx		100	
-6D	         addr		a,a	
-70	MM      RESW		1	
-73	M      RESB		1	
-74	MA      RESB		2	
-76	SO      RESW		3	
-7F	ES      BYTE		C'x'	
-80	         END			
+64	         addr		a,a	
+67	         ldx		100	
+6A	         addr		a,a	
+6D	MM      RESW		1	
+70	M      RESB		1	
+71	MA      RESB		2	
+73	SO      RESW		3	
+7C	ES      BYTE		C'x'	
+7D	Test      BYTE		X'FF'	
+7E	test2      BYTE		X'FX'	
+	error [10] : 'not a hexadecimal string''
+
+7F	         END			
 
   **** END OF PASS 1 ****
 ****   SYMBOL TABLE   ****
 Address		Name
 64		soso
-70		MM
-73		M
-74		MA
-76		SO
-7F		ES
+6D		MM
+70		M
+71		MA
+73		SO
+7C		ES
+7D		Test
+7E		test2
