@@ -33,7 +33,7 @@ public class Controller {
 	{
 		symbol =0;
 		flagError =0;
-		PCadd =3;
+		PCadd =0;
 		errorindex=0;
 		PC=0;
 	    Scanner input;
@@ -422,17 +422,43 @@ public class Controller {
 		}
 		if(opcode.equalsIgnoreCase("BYTE"))
 		{
-			
+			String[] temp = operands[index].split("'");
+			if(temp[0].equalsIgnoreCase("C"))
 			PCadd =operands[index].length()-3;
-		}
+			else {
+				PCadd = 0;
+				int length = temp[1].length();
+				while(length>=1) {
+					if(length %2 ==0)
+					PCadd ++ ;
+				
+					length -- ;
+				}
+				
+				char start = '0';
+				char end = 'F';
+				int errorI =0;
+				for(int k=0;k<temp[1].length();k++) {
+				char test = temp[1].charAt(k);
+				if(test < start || test > end )
+				{
+					errorI =1;
+				}	
+				}
+				if(errorI == 1)
+				{
+					ErrorArr[errorindex] = "\t"+"error [10] : 'not a hexadecimal string''";
+					errorindex++;
+				}
+				}
+			}
+		
 		if(opcode.equalsIgnoreCase("WORD"))
 		{
 			PCadd = 3;
 		}
 		return operand;
 }
-	
-	
 	public void writeToFile(String label, String opcode, String operands, String Error[], int indx)
 	{
 		

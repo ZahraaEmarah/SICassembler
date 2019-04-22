@@ -1,38 +1,44 @@
   **** SIC Assembler ****
 
 14	PROG      START		20	
-17	label      ORG		6	
+14	label      ORG		6	
 	error [05] : 'this statement can’t have a label '
 
-1A	prog1      LDR		6	
+17	prog1      LDR		6	
 	error [08] : 'unrecognized operation code '
 
-1D	         mul		5	
+1A	         mul		5	
 	error [08] : 'unrecognized operation code '
 
-20	PROG2      LDA		6	
-23	soso      ldr		5	
+1D	PROG2      LDA		6	
+20	soso      ldr		5	
 	error [08] : 'unrecognized operation code '
 
-26	         ldx		100	
-29	         addr		a,a	
-2C	MM      RESW		1	
-2F	M      RESB		1	
-30	MA      RESB		2	
-32	SO      RESW		3	
-3B	ES      BYTE		C'x'	
-3C	         END			
+23	         ldx		100	
+26	         addr		a,a	
+29	MM      RESW		1	
+2C	M      RESB		1	
+2D	MA      RESB		2	
+2F	SO      RESW		3	
+38	ES      BYTE		C'x'	
+39	Test      BYTE		X'FF'	
+3A	test2      BYTE		X'FX'	
+	error [10] : 'not a hexadecimal string''
+
+3B	         END			
 
   **** END OF PASS 1 ****
 ****   SYMBOL TABLE   ****
 Address		Name
 14		PROG
-17		label
-1A		prog1
-20		PROG2
-23		soso
-2C		MM
-2F		M
-30		MA
-32		SO
-3B		ES
+14		label
+17		prog1
+1D		PROG2
+20		soso
+29		MM
+2C		M
+2D		MA
+2F		SO
+38		ES
+39		Test
+3A		test2

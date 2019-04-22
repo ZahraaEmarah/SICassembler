@@ -1,0 +1,26 @@
+  **** SIC Assembler ****
+
+0	PROG          START  		0	
+0	              MUL    		4	
+	error [08] : 'unrecognized operation code '
+
+3	              LDA    		0	
+6	              ADDR   		L,X	
+9	MAR           RESW   		1	
+C	SOSO          RESB   		2	
+E	ZEE           BYTE   		C'mr'	
+10	MARIAM        WORD   		12	
+13	TEST          BYTE   		X'FX'	
+	error [10] : 'not a hexadecimal string''
+
+14	              end			
+
+  **** END OF PASS 1 ****
+****   SYMBOL TABLE   ****
+Address		Name
+0		PROG    
+9		MAR     
+C		SOSO    
+E		ZEE     
+10		MARIAM  
+13		TEST    

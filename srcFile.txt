@@ -12,4 +12,6 @@ M             RESB  1
 MA            RESB 2
 SO      RESW 3
 ES     BYTE C'x'    
+Test BYTE X'FF'
+test2 BYTE X'FX'
                      END
