@@ -6,7 +6,8 @@ import java.util.ArrayList;
 
 public class Controller {
 	
-	int NEWBRANCHTRIAL =0;
+ 
+
 	String Label[]    = new String[1000];
 	String opCode[]   = new String[1000];
 	String operands[] = new String[1000];
@@ -15,8 +16,8 @@ public class Controller {
 	String wordsArr[] = {"","",""};
 	String lineArr[]  =  {"","","",""};
 	String directivesList[] = {"start","end","byte","word","resw","resb","equ","org","base"};
-	String opcodeList[] = {"RMO","LDA","LDB","LDX","LDS","LDT","STR","LDCH","STCH","ADD","SUB","ADDR","SUBR","COMP"
-			              ,"COMR","J","JEQ","JLT","JGT","TIX","TIXR"};
+	String opcodeList[] = {"RMO","LDA","LDB","LDX","LDS","LDT","STA","STB","STX","STT","STR","LDCH","STCH","ADD","SUB","ADDR","SUBR","COMP"
+            ,"COMR","J","JEQ","JLT","JGT","TIX","TIXR"};
 	int i=0;
 	int count = 0;
 	int error = 0;
@@ -25,6 +26,7 @@ public class Controller {
 	int flag=0;
 	public void ReadFile()
 	{
+		errorindex=0;
 		PC=0;
 	    Scanner input;
 	    BufferedReader reader;
@@ -166,13 +168,14 @@ public class Controller {
 				endstatment(opcodeArr[index-1]);
 			
 			errorindex=0;
+			
 			if (opCode[i].equalsIgnoreCase("org")||opCode[i].equalsIgnoreCase("base"))
 			{
 			ErrorArr[errorindex] ="\t"+ "error [05] : 'this statement can’t have a label '";
 		   errorindex++;
 		   }
 			
-			ValidateLabel(labelarr,opcodeArr,index,i);
+			ValidateLabel(labelarr,index,i);
 			ValidateOpcode(opcodeArr[i]);			
 			operandsArr[i]=ValidateOperands(operandsArr[i],opcodeArr[i]);	
 		
@@ -185,26 +188,26 @@ public class Controller {
 		
 	
 	
-	public void ValidateLabel(String label[],String opcode[], int size,int index)
+	public void ValidateLabel(String label[], int size,int index)
 	{		
-	        int i, j; 
+	        int i=index; 
 	        int same=0;
 	        
             String test = label[index]	;
-	       	for (i = index; i < size; i++)  	       
-			{ 	   
 	       		String space = "   ";
-	       	//	System.out.println(label[i]);
-	       		
-	       	    if(Label[i].compareTo("^") == 0)
+	       		if(index==0)
+	       		{
+	       			return;
+	       		}
+	       	    if(Label[index].compareTo("^") == 0)
 				{
-					Label[i] = "   ";  //replace all ^
+					Label[index] = "   ";  //replace all ^
 					
 				}
 	       	    else
 				{
 	       	    	
-	       	    	for (j = i+1 ; j < size; j++)  	           				
+	       	    	for (int j = 0 ; j < index; j++)  	           				
 	       	    	{
 	       	    		int compare1 = label[i].compareTo("^");
 	       	    		int compare2 = label[i].compareTo(space);
@@ -221,7 +224,6 @@ public class Controller {
 	       	    		
 	       	    	} 	       	    	
 				}
-			}
 	       	if(same!=0)
 	       	{
 	       		ErrorArr[errorindex] ="\t"+ "error [04] : 'duplicate label definition '";
@@ -235,7 +237,7 @@ public class Controller {
 		int j=0;
 		int found=0;	
 		
-			for(int i=0; i<17; i++)
+			for(int i=0; i<25; i++)
 			{
 				if(opcode.compareToIgnoreCase(opcodeList[i]) == 0)
 				{

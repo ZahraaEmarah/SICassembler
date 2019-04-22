@@ -10,3 +10,13 @@ prog mul 8
  plus 5
              SUBR 6
             
+=======
+PROG         START   20
+label          ORG  6
+prog          LDR     6
+              mul   5
+PROG          LDA   6   
+soso          ldr   5
+soso          ldx   100
+soso          addr  a,a           
+                     END

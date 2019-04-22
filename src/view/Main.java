@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 
 import controller.Controller;
+import controller.FixedController;
 import controller.Controller;
 
 public class Main {
@@ -23,6 +24,9 @@ public class Main {
 					
 					Controller f = new Controller();
 					f.ReadFile();
+					
+					FixedController fix = new FixedController();
+					fix.ReadFixedFile();
 					
 				} catch (Exception e) {
 					e.printStackTrace();
