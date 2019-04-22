@@ -4,26 +4,35 @@
 17	label      ORG		6	
 	error [05] : 'this statement can’t have a label '
 
-1A	prog      LDR		6	
-	error [04] : 'duplicate label definition '
-
+1A	prog1      LDR		6	
 	error [08] : 'unrecognized operation code '
 
 1D	         mul		5	
 	error [08] : 'unrecognized operation code '
 
-20	PROG      LDA		6	
-	error [04] : 'duplicate label definition '
-
+20	PROG2      LDA		6	
 23	soso      ldr		5	
 	error [08] : 'unrecognized operation code '
 
-26	soso      ldx		100	
-	error [04] : 'duplicate label definition '
-
-29	soso      addr		a,a	
-	error [04] : 'duplicate label definition '
-
-2C	         END			
+26	         ldx		100	
+29	         addr		a,a	
+2C	MM      RESW		1	
+2F	M      RESB		1	
+30	MA      RESB		2	
+32	SO      RESW		3	
+3B	ES      WORD		12	
+3E	         END			
 
   **** END OF PASS 1 ****
+****   SYMBOL TABLE   ****
+Address	Name
+14		PROG
+17		label
+1A		prog1
+20		PROG2
+23		soso
+2C		MM
+2F		M
+30		MA
+32		SO
+3B		ES

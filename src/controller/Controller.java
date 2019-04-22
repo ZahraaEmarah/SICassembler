@@ -10,7 +10,13 @@ public class Controller {
 	String opCode[]   = new String[1000];
 	String operands[] = new String[1000];
 	String ErrorArr[] = new String[5];
+	//For the symbol table 
+	String Labels[] = new String[100];
+	String PCS[] = new String[100];
+	int symbol;
 	int PC ;
+	int PCadd ;
+	int flagError;
 	String wordsArr[] = {"","",""};
 	String lineArr[]  =  {"","","",""};
 	String directivesList[] = {"start","end","byte","word","resw","resb","equ","org","base"};
@@ -22,8 +28,12 @@ public class Controller {
 	int index = 0;
 	int errorindex = 0;
 	int flag=0;
+	int constants=0;
 	public void ReadFile()
 	{
+		symbol =0;
+		flagError =0;
+		PCadd =3;
 		errorindex=0;
 		PC=0;
 	    Scanner input;
@@ -150,16 +160,16 @@ public class Controller {
 			if(i==2) // we have operands
 			{
 				operands[index] = wordarray[2];
-			} 
-			
+			} 	
 		}
-		
 		index++;
 		System.out.println(index);
 	}
 	
 	public void ValidateInstruction(String labelarr[], String opcodeArr[], String operandsArr[])
 	{
+		String space = "   ";
+		int compare =0;
 		for(int i=0; i< index; i++)
 		{
 			if(i==index-1)
@@ -171,36 +181,72 @@ public class Controller {
 			{
 			ErrorArr[errorindex] ="\t"+ "error [05] : 'this statement can’t have a label '";
 		   errorindex++;
+		   compare =1;
 		   }
+			if(opCode[i].equalsIgnoreCase("RESW")||opCode[i].equalsIgnoreCase("RESB")||opCode[i].equalsIgnoreCase("WORD")||opCode[i].equalsIgnoreCase("BYTE"))
+			{
+				constants =1;
 			
-			ValidateLabel(labelarr,index,i);
-			ValidateOpcode(opcodeArr[i]);			
-			operandsArr[i]=ValidateOperands(operandsArr[i],opcodeArr[i]);	
+			}
 		
+			
+			
+			ValidateOpcode(opcodeArr[i]);			
+			operandsArr[i]=ValidateOperands(operandsArr[i],opcodeArr[i],i);	
+			compare =	ValidateLabel(labelarr,index,i);
+            
 			writeToFile(labelarr[i],opcodeArr[i],operandsArr[i], ErrorArr, i);
 			ErrorArr = new String[50];
 		    errorindex=0;
-			PC=PC+3;
+			PC=PC+PCadd ;
+		    PCadd =3 ;
+			constants=0;
 		}
 	}
 		
 	
 	
-	public void ValidateLabel(String label[], int size,int index)
-	{		
+	public int ValidateLabel(String label[], int size,int index)
+	{		int compare =0;
 	        int i=index; 
 	        int same=0;
-	        
+	        int noLabel=0;
             String test = label[index]	;
 	       		String space = "   ";
+	       		if(constants == 1) {
+	       			if(label[index].compareTo("^")==0||label[index].compareTo(space)==0)
+	       			{
+	       			 noLabel=1;
+	       			ErrorArr[errorindex] ="\t"+ "error : No Label Defined!! '";
+					errorindex++;
+					return 1;
+	       			}
+	       		}
+	       		if(Label[index].compareTo("^") == 0)
+				{
+	       			
+					Label[index] = "   ";  //replace all ^
+					return 1;
+					
+				}
+	       		if(noLabel==0) {
 	       		if(index==0)
 	       		{
-	       			return;
+	       			if(flagError == 0 && compare ==0)
+	           		{
+	    				
+	           			Labels[symbol] = label[index];
+	           			PCS[symbol] = Integer.toHexString(PC).toUpperCase();
+	           			
+	           			System.out.println(label[index] + PCS[symbol]);
+	           			symbol++;
+	           		}
+	       			return compare;
 	       		}
 	       	    if(Label[index].compareTo("^") == 0)
 				{
 					Label[index] = "   ";  //replace all ^
-					
+					return 1;
 				}
 	       	    else
 				{
@@ -215,21 +261,28 @@ public class Controller {
 	       	    				if(test.compareTo(label[i]) == 0)
 	       	    					same++;
 	       	    			   System.out.println("Repeated Elements are :");        	    			
-	       	    			   System.out.println(label[i]);
-	       	    			   
+	       	    			   System.out.println(label[i]);   
 	       	    			} 
-	       	    			
-	       	    		
 	       	    	} 	       	    	
 				}
 	       	if(same!=0)
 	       	{
+	       		flagError =1;
 	       		ErrorArr[errorindex] ="\t"+ "error [04] : 'duplicate label definition '";
 				errorindex++;
 	       	}
+	    }
+	       		if(flagError == 0 && compare ==0)
+	       		{
+					
+	       			Labels[symbol] = label[index];
+	       			PCS[symbol] = Integer.toHexString(PC).toUpperCase();;
+	       			System.out.println(PC);
+	       			symbol++;
+	       		}
+	       		noLabel =0;
+	       		return compare;
 }
-			
-	
 	public void ValidateOpcode(String opcode)
 	{
 		int j=0;
@@ -273,7 +326,7 @@ public class Controller {
 
 	
 	
-	public String ValidateOperands(String operand, String opcode)
+	public String ValidateOperands(String operand, String opcode , int index)
 	{
 		if(PC<=0) {
 			PC =Integer.parseInt(operands[0]);
@@ -359,9 +412,25 @@ public class Controller {
 				errorindex++;
 			}
 		}
-		
+		if(opcode.equalsIgnoreCase("RESB"))
+		{
+			PCadd= Integer.parseInt(operands[index]) ;
+		}
+		if(opcode.equalsIgnoreCase("RESW"))
+		{
+			PCadd = Integer.parseInt(operands[index]) * 3 ;
+		}
+		if(opcode.equalsIgnoreCase("BYTE"))
+		{
+			PCadd =1;
+		}
+		if(opcode.equalsIgnoreCase("WORD"))
+		{
+			PCadd = 3;
+		}
 		return operand;
 }
+	
 	
 	public void writeToFile(String label, String opcode, String operands, String Error[], int indx)
 	{
@@ -412,6 +481,21 @@ public class Controller {
 	           {
 	        	  bw.newLine();
 	        	  bw.write("  **** END OF PASS 1 ****"); 
+	        	  //End of pass then write the Symbol Table
+	        	  bw.newLine();
+	        	  if(flagError == 0) {
+	        	  bw.write( "****   SYMBOL TABLE   ****");
+	        	  bw.newLine();
+	        	  Inst = "Address" + "\t" + "Name" ;
+	        	  bw.write(Inst);
+	        	  bw.newLine();
+	        	  for(int i=0 ; i<symbol ; i++)
+	        	  {
+	        		  Inst = PCS[i] + "\t\t" + Labels[i];
+	        		  bw.write(Inst);
+	        		  bw.newLine();
+	        	  }
+	           }
 	           }
 	           
 	           bw.close();
