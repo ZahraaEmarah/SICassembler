@@ -1,5 +1,10 @@
 .23456789012345678
 PROG         START   20
-             addr s,0
-PROG           LDR     6
+label          ORG  6
+prog          LDR     6
+              mul   5
+PROG          LDA   6   
+soso          ldr   5
+soso          ldx   100
+soso          addr  a,a           
                      END

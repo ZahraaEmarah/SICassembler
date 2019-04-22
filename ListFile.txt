@@ -1,12 +1,29 @@
   **** SIC Assembler ****
 
-20PROG      START		20	
-error [04] : 'duplicate label definition '
+14	PROG      START		20	
+17	label      ORG		6	
+	error [05] : 'this statement can’t have a label '
 
-23         addr		s,0	
-error [12] : 'illegal address for a register '
+1A	prog      LDR		6	
+	error [04] : 'duplicate label definition '
 
-26PROG      LDR		6	
-29         END			
+	error [08] : 'unrecognized operation code '
+
+1D	         mul		5	
+	error [08] : 'unrecognized operation code '
+
+20	PROG      LDA		6	
+	error [04] : 'duplicate label definition '
+
+23	soso      ldr		5	
+	error [08] : 'unrecognized operation code '
+
+26	soso      ldx		100	
+	error [04] : 'duplicate label definition '
+
+29	soso      addr		a,a	
+	error [04] : 'duplicate label definition '
+
+2C	         END			
 
   **** END OF PASS 1 ****

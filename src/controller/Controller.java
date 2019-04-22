@@ -9,30 +9,31 @@ public class Controller {
 	String Label[]    = new String[1000];
 	String opCode[]   = new String[1000];
 	String operands[] = new String[1000];
-	String ErrorArr[] = new String[100];
+	String ErrorArr[] = new String[5];
 	int PC ;
 	String wordsArr[] = {"","",""};
 	String lineArr[]  =  {"","","",""};
 	String directivesList[] = {"start","end","byte","word","resw","resb","equ","org","base"};
-	String opcodeList[] = {"RMO","LDR","STR","LDCH","STCH","ADD","SUB","ADDR","SUBR","COMP"
+	String opcodeList[] = {"RMO","LDA","LDB","LDX","LDS","LDT","STR","LDCH","STCH","ADD","SUB","ADDR","SUBR","COMP"
 			              ,"COMR","J","JEQ","JLT","JGT","TIX","TIXR"};
 	int i=0;
 	int count = 0;
 	int error = 0;
 	int index = 0;
 	int errorindex = 0;
-	
+	int flag=0;
 	public void ReadFile()
-	{	errorindex=0; 
+	{
+		PC=0;
 	    Scanner input;
 	    BufferedReader reader;
 	    int j=0;
 	    int commentflag = 0;
-	    PC=0;
 		try {
 			
 			reader = new BufferedReader(new FileReader("srcFile.txt"));
 			String line = reader.readLine();
+			
 			while(line != null) {
 				
 				input = new Scanner(line);	
@@ -158,83 +159,74 @@ public class Controller {
 	
 	public void ValidateInstruction(String labelarr[], String opcodeArr[], String operandsArr[])
 	{
-		int p;
 		for(int i=0; i< index; i++)
 		{
-			if(i==0 && labelarr[0].equals("^"))
-			{
-				//error missing label
-			}
+			if(i==index-1)
+				endstatment(opcodeArr[index-1]);
 			
-			ValidateLabel(labelarr,index,i);
-			ValidateOpcode(opcodeArr[i]);
-			operandsArr[i]=ValidateOperands(operandsArr[i],opcodeArr[i]);
+			errorindex=0;
+			if (opCode[i].equalsIgnoreCase("org")||opCode[i].equalsIgnoreCase("base"))
+			{
+			ErrorArr[errorindex] ="\t"+ "error [05] : 'this statement can’t have a label '";
+		   errorindex++;
+		   }
+			
+			ValidateLabel(labelarr,opcodeArr,index,i);
+			ValidateOpcode(opcodeArr[i]);			
+			operandsArr[i]=ValidateOperands(operandsArr[i],opcodeArr[i]);	
+		
 			writeToFile(labelarr[i],opcodeArr[i],operandsArr[i], ErrorArr, i);
-			ErrorArr = new String[100];
-			PC = PC+3;
+			ErrorArr = new String[50];
+		    errorindex=0;
+			PC=PC+3;
 		}
 	}
 		
 	
-	public void ValidateLabel(String label[], int size,int index)
+	
+	public void ValidateLabel(String label[],String opcode[], int size,int index)
 	{		
-	        int i, j; 
+	        int i=index; 
 	        int same=0;
 	        
-	        String[] arr = new String[10];
-	
-	       	for (i = index; i < size; i++)  	       
-			{ 	   
+            String test = label[index]	;
 	       		String space = "   ";
-	       	//	System.out.println(label[i]);
-	       		
-	       	    if(Label[i].compareTo("^") == 0)
+	       		if(index==0)
+	       		{
+	       			return;
+	       		}
+	       	    if(Label[index].compareTo("^") == 0)
 				{
-					Label[i] = "   ";  //replace all ^
+					Label[index] = "   ";  //replace all ^
 					
 				}
 	       	    else
 				{
-	       	    	for (j = i+1 ; j < size; j++)  	           				
+	       	    	
+	       	    	for (int j = 0 ; j < index; j++)  	           				
 	       	    	{
 	       	    		int compare1 = label[i].compareTo("^");
 	       	    		int compare2 = label[i].compareTo(space);
-	       	    		int compare = label[i].compareTo(label[j]);
-	       	    			if (compare == 0 && compare1  !=0 && compare2 !=0 )         	 	        
+	       	    		
+	       	    			if (Label[i].equalsIgnoreCase(label[j]) && compare1  !=0 && compare2 !=0 )         	 	        
 	       	    			{
+	       	    				if(test.compareTo(label[i]) == 0)
+	       	    					same++;
 	       	    			   System.out.println("Repeated Elements are :");        	    			
 	       	    			   System.out.println(label[i]);
-	       	    			   arr[same] = label[i];
-	       	    			   same++;
+	       	    			   
 	       	    			} 
+	       	    			
 	       	    		
 	       	    	} 	       	    	
 				}
-			}
-	       	for(i=0;i<same;i++)
+	       	if(same!=0)
 	       	{
-	       		ErrorArr[errorindex] = "error [04] : 'duplicate label definition '";
+	       		ErrorArr[errorindex] ="\t"+ "error [04] : 'duplicate label definition '";
 				errorindex++;
 	       	}
-	       	
-		/**
-		for(int i=0; i< index;i++)
-		{
-			if(Label[i].compareTo("^") == 0)
-			{
-				Label[i] = "    ";  //replace all ^
-			}
-			else if(Label[i].compareTo(label) != 0)
-			{
-				duplicate = 1;
-				ErrorArr[errorindex] = "error [04] : 'duplicate label definition '";
-				errorindex++;
-			}
+}
 			
-			//System.out.println("new label "+ Label[i]);
-		}**/
-	}
-	
 	
 	public void ValidateOpcode(String opcode)
 	{
@@ -259,11 +251,24 @@ public class Controller {
 			
 			if(found == 0)
 			{
-				ErrorArr[errorindex] = "error [08] : 'unrecognized operation code '";
+				ErrorArr[errorindex] = "\t"+"error [08] : 'unrecognized operation code '";
 				errorindex++;
 			}
 			
 	}
+	
+	public void endstatment(String opcode)
+	{
+		
+		if (!opcode.equalsIgnoreCase("end") )
+			{
+			ErrorArr[errorindex] = "\t"+"error [13] : ' missing END statement '";
+			errorindex++;
+			}
+			
+	}
+	
+
 	
 	
 	public String ValidateOperands(String operand, String opcode)
@@ -293,26 +298,26 @@ public class Controller {
 		{
 			if(op.length == 1)
 			{
-				ErrorArr[errorindex] = "error [03] : 'missing or misplaced operand field '";
+				ErrorArr[errorindex] = "\t"+"error [03] : 'missing or misplaced operand field '";
 				errorindex++;
 			}
 			else {
 				for(i=0;i<registerList.length;i++)
 				{
-					if (op[0] == registerList[i])
+					if (op[0].equalsIgnoreCase(registerList[i]) )
 					{
 						foundop1 = 1;
 					}
 					
-					if (op[1] == registerList[i])
+					if (op[1].equalsIgnoreCase(registerList[i]))
 					{
 						foundop2 = 1;
 					}
 				}
 				
-				if(foundop1==0 && foundop2==0)
+				if(foundop1==0 || foundop2==0)
 				{
-					ErrorArr[errorindex] = "error [12] : 'illegal address for a register '";
+					ErrorArr[errorindex] = "\t"+"error [12] : 'illegal address for a register '";
 					errorindex++;
 				}
 					
@@ -323,14 +328,14 @@ public class Controller {
 		{
 			if(op.length != 1)
 			{
-				ErrorArr[errorindex] = "error [03] : 'missing or misplaced operand field '";
+				ErrorArr[errorindex] = "\t"+"error [03] : 'missing or misplaced operand field '";
 				errorindex++;
 			}
 			else
 			{
 				for(i=0;i<registerList.length;i++)
 				{
-					if (operand.equals(registerList[i]))
+					if (operand.equalsIgnoreCase((registerList[i])))
 					{
 						foundop1 = 1;
 					}
@@ -338,7 +343,7 @@ public class Controller {
 				}
 				if(foundop1 == 0)
 				{
-					ErrorArr[errorindex] = "error [12] : 'illegal address for a register '";
+					ErrorArr[errorindex] = "\t"+"error [12] : 'illegal address for a register '";
 					errorindex++;
 				}
 			}
@@ -348,36 +353,40 @@ public class Controller {
 		{
 			if(op.length != 1)
 			{
-				ErrorArr[errorindex] = "error [03] : 'missing or misplaced operand field '";
+				ErrorArr[errorindex] = "\t"+"error [03] : 'missing or misplaced operand field '";
 				errorindex++;
 			}
 		}
 		
 		return operand;
-	}
-	
-	
-	
+}
 	
 	public void writeToFile(String label, String opcode, String operands, String Error[], int indx)
 	{
+		
 		String Inst;	
-		String PCcount = Integer.toString(PC);
-		  Inst = PCcount+label +"      "+ opcode +"\t\t" + operands + "\t"  ;
-		  
-		  for(int i=0; i<Error.length; i++)
-		  {
-			  if(Error[i] != null)
+		String PCcount = Integer.toHexString(PC).toUpperCase();
+			  Inst = PCcount+"\t"+label +"      "+ opcode +"\t\t" + operands + "\t"  ;
+			  
+			  for(int i=0; i<Error.length; i++)
 			  {
-				  Inst = Inst +"\n"+ Error[i] + "\n";
+				  if(Error.length > 1)
+				  {
+					  if(Error[i] != null)		 
+					  {
+						  Inst = Inst +"\n"+ Error[i]+ "\n" ;
+				      }
+				  }else
+				  {
+					  if(Error[i] != null)		 
+					  {
+						  Inst = Inst +"\n"+ Error[i] ;
+				      }
+				  }
 			  }
-		  }
-	
-		
-		
+
 		 try
 		 { 
-			
 			 BufferedWriter bw = new BufferedWriter(new FileWriter(new File("ListFile.txt"), true)); 
 			 System.out.println(Inst);
 	           
@@ -412,5 +421,3 @@ public class Controller {
 	}
 	    
 }
-
-
