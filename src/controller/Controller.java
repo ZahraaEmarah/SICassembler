@@ -422,7 +422,8 @@ public class Controller {
 		}
 		if(opcode.equalsIgnoreCase("BYTE"))
 		{
-			PCadd =1;
+			
+			PCadd =operands[index].length()-3;
 		}
 		if(opcode.equalsIgnoreCase("WORD"))
 		{

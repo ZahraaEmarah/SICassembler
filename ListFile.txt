@@ -20,12 +20,12 @@
 2F	M      RESB		1	
 30	MA      RESB		2	
 32	SO      RESW		3	
-3B	ES      WORD		12	
-3E	         END			
+3B	ES      BYTE		C'x'	
+3C	         END			
 
   **** END OF PASS 1 ****
 ****   SYMBOL TABLE   ****
-Address	Name
+Address		Name
 14		PROG
 17		label
 1A		prog1

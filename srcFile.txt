@@ -11,5 +11,5 @@ MM            RESW  1
 M             RESB  1  
 MA            RESB 2
 SO      RESW 3
-ES     WORD 12    
+ES     BYTE C'x'    
                      END
