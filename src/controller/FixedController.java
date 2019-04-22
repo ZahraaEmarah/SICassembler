@@ -17,11 +17,12 @@ public class FixedController {
 	String operands[] = new String[1000];
 	String Labels[]   = new String[100];
 	String PCS[]      = new String[100];
-	String ErrorArr[] = new String[5];
+	String ErrorArr[] = new String[10];
 	int PC ;
 	String directivesList[] = {"start","end","byte","word","resw","resb","equ","org","base"};
 	String opcodeList[] = {"RMO","LDA","LDB","LDX","LDS","LDT","STA","STB","STX","STT","STR","LDCH","STCH","ADD","SUB","ADDR","SUBR","COMP"
             ,"COMR","J","JEQ","JLT","JGT","TIX","TIXR"};
+	String comment;
 	int i=0;
 	int count = 0;
 	int error = 0;
@@ -49,11 +50,12 @@ public class FixedController {
 			
 			while(line != null) {
 				
-				System.out.println(line);
-													    	
+				//System.out.println(line);
+	
 			    	if(line.charAt(0) == '.')
 			    	{
 			    		commentflag=1;
+			    		comment = line;
 			    	} 
 			    	else
 			    	{
@@ -61,19 +63,28 @@ public class FixedController {
 			    	}
 			    				       	
 			       	if(commentflag == 0 && !line.replaceAll(" ", "").equals(""))
-					 VALIDATEINSTRUCTION(line);
+					  {
+			       		VALIDATEINSTRUCTION(line);
+			       	  }
 			       	
-			     	line = reader.readLine(); //next line
+			       	else if(commentflag == 1)
+			       	{
+			       		writeToFile("","","",ErrorArr,index,comment);
+			       		//System.out.println("cmnt is"+comment);
+			       		commentflag=0;
+			       		comment="";
+			       	}
+			       			       	
+			       	line = reader.readLine(); //next line
 		        }
 			
 		    error = 0;   	
-		    commentflag=0;   		
 			reader.close();
 			for(int i=0; i<index; i++)
 			{
-				System.out.println("Label Array "+Label[i]);
-				System.out.println("Opcode Array "+opCode[i]);
-				System.out.println("operands Array "+operands[i]);
+				//System.out.println("Label Array "+Label[i]);
+				//System.out.println("Opcode Array "+opCode[i]);
+				//System.out.println("operands Array "+operands[i]);
 			}
 			ValidateInstruction(Label,opCode,operands);
 			
@@ -215,7 +226,7 @@ public class FixedController {
 			ValidateOpcode(opcodeArr[i]);			
 			operandsArr[i]=ValidateOperands(operandsArr[i],opcodeArr[i],i);	
 			compare =	ValidateLabel(labelarr,index,i);    
-			writeToFile(labelarr[i],opcodeArr[i],operandsArr[i], ErrorArr, i);
+			writeToFile(labelarr[i],opcodeArr[i],operandsArr[i], ErrorArr, i,"");
 			ErrorArr = new String[50];
 		    errorindex=0;
 			PC=PC+PCadd ;
@@ -270,8 +281,8 @@ public class FixedController {
 	       	    			{
 	       	    				if(test.compareTo(label[i]) == 0)
 	       	    					same++;
-	       	    			   System.out.println("Repeated Elements are :");        	    			
-	       	    			   System.out.println(label[i]);   
+	       	    			   //System.out.println("Repeated Elements are :");        	    			
+	       	    			   //System.out.println(label[i]);   
 	       	    			} 
 	       	    	} 	       	    	
 				}
@@ -395,11 +406,11 @@ public class FixedController {
 				String[] op = operand.split(",");
 				if(op.length == 1 && criticalerror == 0) {
 					String operand1 = op[0];
-					System.out.println("ONE");
+					//System.out.println("ONE");
 				}
 				else if( criticalerror == 0)
 				{
-					System.out.println("TWO");
+					//System.out.println("TWO");
 					String operand2= op[1];
 					String operand1 = op[0];
 				}
@@ -471,12 +482,11 @@ public class FixedController {
 			return operand;
 	}
 	
-	public void writeToFile(String label, String opcode, String operands, String Error[], int indx)
+	public void writeToFile(String label, String opcode, String operands, String Error[], int indx,String commnt)
 	{
-		
-		String Inst;	
+	    String Inst;	
 		String PCcount = Integer.toHexString(PC).toUpperCase();
-			  Inst = PCcount+"\t"+label +"      "+ opcode +"\t\t" + operands + "\t"  ;
+	    Inst = PCcount+"\t"+label +"      "+ opcode +"\t\t" + operands + "\t"  ;
 			  
 			  for(int i=0; i<Error.length; i++)
 			  {
@@ -486,6 +496,7 @@ public class FixedController {
 					  {
 						  Inst = Inst +"\n"+ Error[i]+ "\n" ;
 				      }
+					  
 				  }else
 				  {
 					  if(Error[i] != null)		 
@@ -494,11 +505,9 @@ public class FixedController {
 				      }
 				  }
 			  }
-
 		 try
 		 { 
 			 BufferedWriter bw = new BufferedWriter(new FileWriter(new File("ListFile-Fixed.txt"), true)); 
-			 System.out.println(Inst);
 	           
 	           if(indx == 0)
 	           {
@@ -506,13 +515,15 @@ public class FixedController {
 	        	   pw.close();
 	        	   bw.write("  **** SIC Assembler ****"); 
 	        	   bw.newLine();bw.newLine();
-	        	   bw.write(Inst);
-	        	   bw.newLine();	        	   
+	  			   System.out.println(Inst);
+	       		   bw.write(Inst);
+		       	   bw.newLine();	        	   
+	        	    
 	           }	      
 	           else 
-	           {
-	        	   
+	           {        	   
 	        	   bw.write(Inst);
+	  			   System.out.println(Inst);
 	        	   bw.newLine();
 	           }
 	           
@@ -543,4 +554,5 @@ public class FixedController {
 			 e.printStackTrace();
 	     }
 	}
+	
 }

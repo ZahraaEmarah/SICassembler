@@ -10,10 +10,9 @@
 73	SO      RESW		3	
 7C	ES      BYTE		C'x'	
 7D	Test      BYTE		X'FF'	
-7E	test2      BYTE		X'FX'	
-	error [10] : 'not a hexadecimal string''
+7E	test2      BYTE		X'55'	
+	error [13] : ' missing END statement '
 
-7F	         END			
 
   **** END OF PASS 1 ****
 ****   SYMBOL TABLE   ****
