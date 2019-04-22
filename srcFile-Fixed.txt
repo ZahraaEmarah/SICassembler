@@ -1,4 +1,8 @@
 .23456789012345678
 PROG     START   0
          LDb     5
-          end
+PROG     ADD     9
+         ADDR    H
+         SUB     9
+         DIV     6
+         end

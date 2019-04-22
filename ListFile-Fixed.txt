@@ -1,9 +1,15 @@
   **** SIC Assembler ****
 
 0	PROG          START  		0	
-	error [02] : 'missing or misplaced operation mnemonic '
-
 3	              LDb    		5	
-6	               end			
+6	PROG          ADD    		9	
+	error [04] : 'duplicate label definition '
+
+9	              ADDR   		H	
+C	              SUB    		9	
+F	              DIV    		6	
+	error [08] : 'unrecognized operation code '
+
+12	              end			
 
   **** END OF PASS 1 ****
