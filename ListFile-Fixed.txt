@@ -5,7 +5,7 @@
 6	PROG          ADD    		9	
 	error [04] : 'duplicate label definition '
 
-9	              ADDR   		H	
+9	              ADDR   		S,T	
 C	              SUB    		9	
 F	              DIV    		6	
 	error [08] : 'unrecognized operation code '

@@ -2,7 +2,9 @@
 PROG     START   0
          LDb     5
 PROG     ADD     9
-         ADDR    H
+         ADDR    S,T
+         
          SUB     9
          DIV     6
          end
+         

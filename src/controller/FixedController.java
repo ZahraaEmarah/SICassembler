@@ -53,7 +53,7 @@ public class FixedController {
 			    		commentflag = 0;
 			    	}
 			    				       	
-			       	if(commentflag == 0)
+			       	if(commentflag == 0 && !line.replaceAll(" ", "").equals(""))
 					 VALIDATEINSTRUCTION(line);
 			       	
 			     	line = reader.readLine(); //next line
@@ -186,7 +186,7 @@ public class FixedController {
 		for(int i=0; i< index; i++)
 		{
 			if(i==index-1)
-				endstatment(opcodeArr[index-1]);
+				endstatment(opcodeArr[index-1],opcodeArr[index-2]);
 			
 			errorindex=0;
 			
@@ -269,7 +269,7 @@ public class FixedController {
 			
 	}
 	
-	public void endstatment(String opcode)
+	public void endstatment(String opcode,String prev)
 	{
 		
 		if (!opcode.replaceAll(" ", "").equalsIgnoreCase("end") || opcode.replaceAll(" ", "") == "")
@@ -301,7 +301,7 @@ public class FixedController {
 			String operand1 = op[0];
 		}
 		
-		if(opcode.equalsIgnoreCase("addr") || opcode.equalsIgnoreCase("subr") || opcode.equalsIgnoreCase("comr") || opcode.equalsIgnoreCase("rmo"))
+		if(opcode.replaceAll(" ", "").equalsIgnoreCase("addr") || opcode.replaceAll(" ", "").equalsIgnoreCase("subr") || opcode.replaceAll(" ", "").equalsIgnoreCase("comr") || opcode.replaceAll(" ", "").equalsIgnoreCase("rmo"))
 		{
 			if(op.length == 1)
 			{
@@ -311,12 +311,12 @@ public class FixedController {
 			else {
 				for(i=0;i<registerList.length;i++)
 				{
-					if (op[0].equalsIgnoreCase(registerList[i]) )
+					if (op[0].replaceAll(" ", "").equalsIgnoreCase(registerList[i]) )
 					{
 						foundop1 = 1;
 					}
 					
-					if (op[1].equalsIgnoreCase(registerList[i]))
+					if (op[1].replaceAll(" ", "").equalsIgnoreCase(registerList[i]))
 					{
 						foundop2 = 1;
 					}
@@ -331,7 +331,7 @@ public class FixedController {
 				
 			}
 		}
-		else if(opcode.equalsIgnoreCase("tixr")) 
+		else if(opcode.replaceAll(" ", "").equalsIgnoreCase("tixr")) 
 		{
 			if(op.length != 1)
 			{
@@ -342,7 +342,7 @@ public class FixedController {
 			{
 				for(i=0;i<registerList.length;i++)
 				{
-					if (operand.equalsIgnoreCase((registerList[i])))
+					if (operand.replaceAll(" ", "").equalsIgnoreCase((registerList[i])))
 					{
 						foundop1 = 1;
 					}
