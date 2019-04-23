@@ -22,8 +22,8 @@ public class Main {
 					Main window = new Main();
 					window.frame.setVisible(true);
 					
-					//Controller f = new Controller();
-					//f.ReadFile();
+					Controller f = new Controller();
+					f.ReadFile();
 
 					FixedController fix = new FixedController();
 					fix.ReadFixedFile();

@@ -1,21 +1,22 @@
   **** SIC Assembler ****
 
-0	PROG          START  		0	
+0	PROGprog      START  		0	
+	'wrong operation prefix '
 0	              LDA    		0	
-3	              ADDR   		L,X	
+3	              ADDR   		t,s	
 6	MAR           RESW   		1	
 9	SOSO          RESB   		2	
 B	ZEE           BYTE   		C'mr'	
 D	MARIAM        WORD   		12	
-10	TEST          BYTe   		X'11'	
-11	              end			
+10	jkl           BYTe   		X'5' 	
+10	              end    			
 
   **** END OF PASS 1 ****
 ****   SYMBOL TABLE   ****
 Address		Name
-0		PROG    
+0		PROGprog
 6		MAR     
 9		SOSO    
 B		ZEE     
 D		MARIAM  
-10		TEST    
+10		jkl     

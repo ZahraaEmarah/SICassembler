@@ -1,11 +1,10 @@
 .23456789012345678
-PROG     START   0
+PROGprog START   0
          LDA     0
-         ADDR    L,X
-.This is a comment
+         ADDR    t,s
 MAR      RESW    1
 SOSO     RESB    2
 ZEE      BYTE    C'mr'
 MARIAM   WORD    12
-TEST     BYTe    X'11'
-         end
+jkl      BYTe    X'5' 
+         end    
