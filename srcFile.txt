@@ -1,5 +1,5 @@
 .23456789012345678
-soso          ldx   100
+soso ldx   100
            addr  a,a           
          ldx   100
          addr  a,a     

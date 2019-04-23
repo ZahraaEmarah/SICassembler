@@ -1,11 +1,10 @@
 .23456789012345678
 prog     start   0
          add     8
-         mul     9
-         subr    a
-         div     x
+         subr    a,b
+.this is a comment
 alpha    resw    4
-prog     resb    3
+zahraa   resb    3
 gamma    word    8
 beta     byte    x'55'
          
