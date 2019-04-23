@@ -166,36 +166,6 @@ public class FixedController {
 			 criticalerror = 1;
     	 }
     	 
-    	 ///VALIDATE NO SPACE BETWEEN CHARACTERS
-    	 for(int j=0; j < Labelstr.length()-1; j++)
-    	 {
-    		 if(Labelstr.charAt(j) == ' ' && Labelstr.charAt(j+1) != ' ')
-    		 {
-    			 ErrorArr[errorindex] = "\t"+"'Illegal format in Label Field'";
-				 errorindex++;    	
-				 criticalerror = 1;
-			 }
-    	 }
-    	 
-    	 for(int j=0; j<Opcode.length()-1; j++)
-    	 {
-    		 if(Opcode.charAt(j) == ' ' && Opcode.charAt(j+1) != ' ')
-    		 {
-    			 ErrorArr[errorindex] = "\t"+"'missing or misplaced operation mnemonic '";
-				 errorindex++;
-    		 }
-    	 }
-    	 
-    	 for(int j=0; j<operandsstr.length()-1; j++)
-    	 {
-    		 if(operandsstr.charAt(j) == ' ' && operandsstr.charAt(j+1) != ' ')
-    		 {
-    			 ErrorArr[errorindex] = "\t"+"'Illegal format in operands Field'";
-				 errorindex++;
-				 criticalerror = 1;
-    		 }
-    	 }
-    	 
     	 Label[index] = Labelstr;
     	 opCode[index] = Opcode;
     	 operands[index] = operandsstr;
@@ -206,8 +176,40 @@ public class FixedController {
 	{
 		String space = "   ";
 		int compare =0;
+		
 		for(int i=0; i< index; i++)
 		{
+					 
+	    	 ///VALIDATE NO SPACE BETWEEN CHARACTERS
+	    	 for(int j=0; j < labelarr[i].length()-1; j++)
+	    	 {
+	    		 if(labelarr[i].charAt(j) == ' ' && labelarr[i].charAt(j+1) != ' ')
+	    		 {
+	    			 ErrorArr[errorindex] = "\t"+"'misplaced label'";
+					 errorindex++;    	
+					 criticalerror = 1;
+				 }
+	    	 }
+			
+			 for(int j=0; j<opcodeArr[i].length()-1; j++)
+	    	 {
+	    		 if(opcodeArr[i].charAt(j) == ' ' && opcodeArr[i].charAt(j+1) != ' ')
+	    		 {
+	    			 ErrorArr[errorindex] = "\t"+"'missing or misplaced operation mnemonic '";
+					 errorindex++;
+	    		 }
+	    	 }
+			 
+		 	 for(int j=0; j<operandsArr[i].length()-1; j++)
+	    	 {
+	    		 if(operandsArr[i].charAt(j) == ' ' && operandsArr[i].charAt(j+1) != ' ')
+	    		 {
+	    			 ErrorArr[errorindex] = "\t"+"'Illegal format in operands Field'";
+					 errorindex++;
+					 criticalerror = 1;
+	    		 }
+	    	 }
+						
 			if(i==index-1)
 				endstatment(opcodeArr[index-1]);
 			
@@ -352,15 +354,15 @@ public class FixedController {
 		if(PC<=0 && criticalerror == 0) {
 			PC =Integer.parseInt(operands[0]);
 			}
-		if(opcode.replaceAll(" ", "").equalsIgnoreCase("RESB") )
+		if(opcode.replaceAll(" ", "").equalsIgnoreCase("RESB") && criticalerror == 0)
 		{
 			PCadd= Integer.parseInt(operands[index]) ;
 		}
-		if(opcode.replaceAll(" ", "").equalsIgnoreCase("RESW") )
+		if(opcode.replaceAll(" ", "").equalsIgnoreCase("RESW") && criticalerror == 0)
 		{
 			PCadd = Integer.parseInt(operands[index]) * 3 ;
 		}
-		if(opcode.replaceAll(" ", "").equalsIgnoreCase("BYTE") )
+		if(opcode.replaceAll(" ", "").equalsIgnoreCase("BYTE") && criticalerror == 0)
 		{
 			String[] temp = operands[index].split("'");
 			if(temp[0].equalsIgnoreCase("C"))
@@ -534,14 +536,14 @@ public class FixedController {
 	        	  //End of pass then write the Symbol Table
 	        	  bw.newLine();
 	        	  if(flagError == 0) {
-	        	  bw.write( "****   SYMBOL TABLE   ****");
+	        	  bw.write( "\n" + "  **** SYMBOL TABLE *****");
 	        	  bw.newLine();
 	        	  Inst = "Address" + "\t\t" + "Name" ;
 	        	  bw.write(Inst);
 	        	  bw.newLine();
 	        	  for(int i=0 ; i<symbol ; i++)
 	        	  {
-	        		  Inst = PCS[i] + "\t\t" + Labels[i];
+	        		  Inst ="\t" + PCS[i] + "\t\t" + Labels[i];
 	        		  bw.write(Inst);
 	        		  bw.newLine();
 	        	  }

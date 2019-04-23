@@ -1,10 +1,11 @@
 .23456789012345678
-PROGprog START   0
-         LDA     0
-         ADDR    t,s
-MAR      RESW    1
-SOSO     RESB    2
-ZEE      BYTE    C'mr'
-MARIAM   WORD    12
-jkl      BYTe    X'5' 
-         end    
+prog     start   0
+         add     8
+         mul     9
+         subr    a
+         div     x
+alpha    resw    4
+prog     resb    3
+gamma    word    8
+beta     byte    x'55'
+         

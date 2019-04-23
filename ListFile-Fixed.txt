@@ -1,22 +1,19 @@
   **** SIC Assembler ****
 
-0	PROGprog      START  		0	
-	'wrong operation prefix '
-0	              LDA    		0	
-3	              ADDR   		t,s	
-6	MAR           RESW   		1	
-9	SOSO          RESB   		2	
-B	ZEE           BYTE   		C'mr'	
-D	MARIAM        WORD   		12	
-10	jkl           BYTe   		X'5' 	
-10	              end    			
+0	prog          start  		0	
+0	              add    		8	
+3	              mul    		9	
+	'unrecognized operation code '
+6	              subr   		a	
+	'missing or misplaced operand field '
+9	              div    		x	
+	'unrecognized operation code '
+C	alpha         resw   		4	
+18	prog          resb   		3	
+	'duplicate label definition '
+1B	gamma         word   		8	
+1E	beta          byte   		x'55'	
+1F	              			
+	' missing END statement '
 
   **** END OF PASS 1 ****
-****   SYMBOL TABLE   ****
-Address		Name
-0		PROGprog
-6		MAR     
-9		SOSO    
-B		ZEE     
-D		MARIAM  
-10		jkl     
