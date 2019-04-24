@@ -1,21 +1,21 @@
-  **** SIC Assembler ****
+  **** SIC/XE Assembler ****
 
-	.23456789012345678
-	3	TERMPROJ      START  		3	
-	.THIS IS A COMMENT LINE
-	3	LBL1          BYTE   		C'ABCDEF'	
-	9	LBL2          RESB   		4	
-	D	LBL4          RESW   		1	
-	10	TOP           LDA    		ZERO	
-	13	              LDX    		#INDEX	
-	16	              end			
+		    .23456789012345678
+	3A0		TERMPROJ		START  		3A0	
+		    .THIS IS A COMMENT LINE
+	3A0		LBL1    		BYTE   		C'ABCDEF'	
+	3A6		LBL2    		RESB   		4	
+	3AA		LBL4    		RESW   		1	
+	3AD		TOP     		LDA    		ZERO	
+	3B0		        		LDX    		#INDEX	
+	3B3		        		end			
 
   **** END OF PASS 1 ****
 
   **** SYMBOL TABLE *****
-Address		Name
-	3		TERMPROJ
-	3		LBL1    
-	9		LBL2    
-	D		LBL4    
-	10		TOP     
+	Address		Name
+	3A0			TERMPROJ
+	3A0			LBL1    
+	3A6			LBL2    
+	3AA			LBL4    
+	3AD			TOP     

@@ -27,14 +27,12 @@ public class FixedController {
 			"ADD", "SUB", "ADDR", "SUBR", "COMP", "COMR", "J", "JEQ", "JLT", "JGT", "TIX", "TIXR" };
 	int i = 0;
 	int count = 0;
-	int error = 0;
 	int criticalerror = 0;
 	int index = 0;
 	int errorindex = 0;
 	int flag = 0;
 	int constants = 0;
 	int commentflag = 0;
-	int commentindex = 0;
 
 	public void ReadFixedFile() {
 		PCadd = 0;
@@ -61,20 +59,17 @@ public class FixedController {
 					commentflag = 0;
 				}
 
-				// if (commentflag == 0)
 				VALIDATEINSTRUCTION(line);
 
 				line = reader.readLine(); // next line
 			}
 
-			error = 0;
-			commentflag = 0;
 			reader.close();
 			for (int i = 0; i < index; i++) {
+				System.out.println("comments Array " + comment[i]);
 				System.out.println("Label Array " + Label[i]);
 				System.out.println("Opcode Array " + opCode[i]);
 				System.out.println("operands Array " + operands[i]);
-				System.out.println("comments Array " + comment[i]);
 			}
 
 			ValidateInstruction(Label, opCode, operands);
@@ -147,7 +142,6 @@ public class FixedController {
 		opCode[index] = Opcode;
 		operands[index] = operandsstr;
 		index++;
-
 	}
 
 	public void ValidateInstruction(String labelarr[], String opcodeArr[], String operandsArr[]) {
@@ -203,7 +197,6 @@ public class FixedController {
 			compare = ValidateLabel(labelarr, index, i);
 			writeToFile(labelarr[i], opcodeArr[i], operandsArr[i], ErrorArr, comment[i], i);
 			ErrorArr = new String[50];
-			// comment = new String[1000];
 			errorindex = 0;
 			PC = PC + PCadd;
 			PCadd = 3;
@@ -306,7 +299,7 @@ public class FixedController {
 	public String ValidateOperands(String operand, String opcode, int index) {
 
 		if (PC <= 0 && criticalerror == 0) {
-			PC = Integer.parseInt(operands[0]);
+			PC = Integer.parseInt(operands[0], 16);
 		}
 		if (opcode.replaceAll(" ", "").equalsIgnoreCase("RESB") && criticalerror == 0) {
 			PCadd = Integer.parseInt(operands[index]);
@@ -345,10 +338,14 @@ public class FixedController {
 		}
 
 		if (opcode.replaceAll(" ", "").equalsIgnoreCase("WORD")) {
-			PCadd = 3;
-
-			if (PC <= 0 && criticalerror == 0) {
-				PC = Integer.parseInt(operands[0]);
+			// PCadd = 3;
+			if (operands[index].length() >= 5) {
+				ErrorArr[errorindex] = "\t" + "'extra characters at end of statement''";
+				errorindex++;
+				flagError = 1;
+			}
+			if (criticalerror == 0) {
+				PCadd = 3;
 			}
 		}
 		int foundop1 = 0;
@@ -419,7 +416,7 @@ public class FixedController {
 
 		String Inst;
 		String PCcount = Integer.toHexString(PC).toUpperCase();
-		Inst = "\t" + PCcount + "\t" + label + "      " + opcode + "\t\t" + operands + "\t";
+		Inst = "\t" + PCcount + "\t\t" + label + "\t\t" + opcode + "\t\t" + operands + "\t";
 
 		for (int i = 0; i < Error.length; i++) {
 			if (Error.length > 1) {
@@ -434,7 +431,7 @@ public class FixedController {
 		}
 
 		if (cmnt != null) {
-			Inst = "\t" + cmnt + "\n" + Inst;
+			Inst = "\t\t    " + cmnt + "\n" + Inst;
 		}
 
 		try {
@@ -444,7 +441,7 @@ public class FixedController {
 			if (indx == 0) {
 				PrintWriter pw = new PrintWriter("ListFile-Fixed.txt");
 				pw.close();
-				bw.write("  **** SIC Assembler ****");
+				bw.write("  **** SIC/XE Assembler ****");
 				bw.newLine();
 				bw.newLine();
 				bw.write(Inst);
@@ -463,11 +460,11 @@ public class FixedController {
 				if (flagError == 0) {
 					bw.write("\n" + "  **** SYMBOL TABLE *****");
 					bw.newLine();
-					Inst = "Address" + "\t\t" + "Name";
+					Inst = "\t" + "Address" + "\t\t" + "Name";
 					bw.write(Inst);
 					bw.newLine();
 					for (int i = 0; i < symbol; i++) {
-						Inst = "\t" + PCS[i] + "\t\t" + Labels[i];
+						Inst = "\t" + PCS[i] + "\t\t\t" + Labels[i];
 						bw.write(Inst);
 						bw.newLine();
 					}

@@ -1,14 +1,21 @@
 package controller;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Scanner;
-import java.util.ArrayList;
 
 public class Controller {
 
 	String Label[] = new String[1000];
 	String opCode[] = new String[1000];
 	String operands[] = new String[1000];
+	String comment[] = new String[1000];
 	String ErrorArr[] = new String[5];
 	// For the symbol table
 	String Labels[] = new String[100];
@@ -29,6 +36,7 @@ public class Controller {
 	int errorindex = 0;
 	int flag = 0;
 	int constants = 0;
+	int commentflag = 0;
 
 	public void ReadFile() {
 		symbol = 0;
@@ -39,7 +47,7 @@ public class Controller {
 		Scanner input;
 		BufferedReader reader;
 		int j = 0;
-		int commentflag = 0;
+
 		try {
 
 			reader = new BufferedReader(new FileReader("srcFile.txt"));
@@ -47,19 +55,21 @@ public class Controller {
 
 			while (line != null) {
 
+				if (line.replaceAll(" ", "").startsWith(".")) {
+					commentflag = 1;
+					comment[index] = line;
+					line = reader.readLine();
+					commentflag = 0;
+
+				} else {
+					commentflag = 0;
+				}
+
 				input = new Scanner(line);
 
 				while (input.hasNext()) {
 
 					String word = input.next();
-
-					if (word.charAt(0) == '.') {
-						commentflag = 1;
-						break;
-					} else {
-						commentflag = 0;
-					}
-
 					lineArr[count] = word;
 					// System.out.println(word);
 					count = count + 1;
@@ -84,6 +94,12 @@ public class Controller {
 			}
 
 			reader.close();
+			for (int i = 0; i < index; i++) {
+				System.out.println("comments Array " + comment[i]);
+				System.out.println("Label Array " + Label[i]);
+				System.out.println("Opcode Array " + opCode[i]);
+				System.out.println("operands Array " + operands[i]);
+			}
 			ValidateInstruction(Label, opCode, operands);
 
 		} catch (FileNotFoundException e) {
@@ -104,12 +120,6 @@ public class Controller {
 				wordsArr[2] = "^";
 
 				InstructionHandler(count, wordsArr);
-			}
-
-			for (int i = 0; i < index; i++) {
-				System.out.println("Label Array " + Label[i]);
-				System.out.println("Opcode Array " + opCode[i]);
-				System.out.println("operands Array " + operands[i]);
 			}
 		}
 
@@ -151,7 +161,6 @@ public class Controller {
 			}
 		}
 		index++;
-		System.out.println(index);
 	}
 
 	public void ValidateInstruction(String labelarr[], String opcodeArr[], String operandsArr[]) {
@@ -178,7 +187,7 @@ public class Controller {
 			operandsArr[i] = ValidateOperands(operandsArr[i], opcodeArr[i], i);
 			compare = ValidateLabel(labelarr, index, i);
 
-			writeToFile(labelarr[i], opcodeArr[i], operandsArr[i], ErrorArr, i);
+			writeToFile(labelarr[i], opcodeArr[i], operandsArr[i], ErrorArr, comment[i], i);
 			ErrorArr = new String[50];
 			errorindex = 0;
 			PC = PC + PCadd;
@@ -289,7 +298,7 @@ public class Controller {
 
 	public String ValidateOperands(String operand, String opcode, int index) {
 		if (PC <= 0) {
-			PC = Integer.parseInt(operands[0]);
+			PC = Integer.parseInt(operands[0], 16);
 		}
 		int foundop1 = 0;
 		int foundop2 = 0;
@@ -389,27 +398,36 @@ public class Controller {
 		}
 
 		if (opcode.equalsIgnoreCase("WORD")) {
-			PCadd = 3;
+			if (operands[index].length() >= 5) {
+				ErrorArr[errorindex] = "\t" + "'extra characters at end of statement''";
+				errorindex++;
+				flagError = 1;
+			} else
+				PCadd = 3;
 		}
 		return operand;
 	}
 
-	public void writeToFile(String label, String opcode, String operands, String Error[], int indx) {
+	public void writeToFile(String label, String opcode, String operands, String Error[], String cmnt, int indx) {
 
 		String Inst;
 		String PCcount = Integer.toHexString(PC).toUpperCase();
-		Inst = PCcount + "\t" + label + "      " + opcode + "\t\t" + operands + "\t";
+		Inst = "\t" + PCcount + "\t\t" + label + "\t\t" + opcode + "\t\t" + operands + "\t";
 
 		for (int i = 0; i < Error.length; i++) {
 			if (Error.length > 1) {
 				if (Error[i] != null) {
-					Inst = Inst + "\n" + Error[i] + "\n";
+					Inst = Inst + "\n" + Error[i];
 				}
 			} else {
 				if (Error[i] != null) {
 					Inst = Inst + "\n" + Error[i];
 				}
 			}
+		}
+
+		if (cmnt != null) {
+			Inst = "\t\t    " + cmnt + "\n" + Inst;
 		}
 
 		try {
@@ -419,7 +437,7 @@ public class Controller {
 			if (indx == 0) {
 				PrintWriter pw = new PrintWriter("ListFile.txt");
 				pw.close();
-				bw.write("  **** SIC Assembler ****");
+				bw.write("  **** SIC/XE Assembler ****");
 				bw.newLine();
 				bw.newLine();
 				bw.write(Inst);

@@ -1,27 +1,30 @@
-  **** SIC Assembler ****
+  **** SIC/XE Assembler ****
 
-64	soso      ldx		100	
-64	         addr		a,a	
-67	         ldx		100	
-6A	         addr		a,a	
-6D	MM      RESW		1	
-70	M      RESB		1	
-71	MA      RESB		2	
-73	SO      RESW		3	
-7C	ES      BYTE		C'x'	
-7D	Test      BYTE		X'FF'	
-7E	test2      BYTE		X'55'	
-	error [13] : ' missing END statement '
-
+		    .23456789012345678
+	100		soso		ldx		100	
+	100		   		addr		a,a	
+	103		   		ldx		100	
+	106		   		addr		a,a	
+	109		MM		RESW		1	
+	10C		M		RESB		1	
+		    .THIS IS A COMMENT LINE 
+	10D		MA		RESB		2	
+	10F		SO		RESW		3	
+	118		ES		BYTE		C'x'	
+	119		mayar		WORD		1245	
+	11C		Test		BYTE		X'FF'	
+	11D		test2		BYTE		X'55'	
+	11E		   		end			
 
   **** END OF PASS 1 ****
 ****   SYMBOL TABLE   ****
 Address		Name
-	64		soso
-	6D		MM
-	70		M
-	71		MA
-	73		SO
-	7C		ES
-	7D		Test
-	7E		test2
+	100		soso
+	109		MM
+	10C		M
+	10D		MA
+	10F		SO
+	118		ES
+	119		mayar
+	11C		Test
+	11D		test2

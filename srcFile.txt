@@ -1,13 +1,15 @@
 .23456789012345678
-soso ldx   100
-           addr  a,a           
-         ldx   100
-         addr  a,a     
-MM            RESW  1
-M             RESB  1  
-MA            RESB 2
-SO      RESW 3
-ES     BYTE C'x'    
-Test BYTE X'FF'
-test2 BYTE X'55'
-                     
+soso        ldx   100
+            addr  a,a           
+            ldx   100
+            addr  a,a     
+MM          RESW  1
+M           RESB  1 
+.THIS IS A COMMENT LINE 
+MA          RESB 2
+SO          RESW 3
+ES          BYTE C'x'  
+mayar       WORD 1245  
+Test        BYTE X'FF'
+test2       BYTE X'55'
+            end         
