@@ -1,10 +1,9 @@
 .23456789012345678
-prog     start   0
-         add     8
-         subr    a,b
-.this is a comment
-alpha    resw    4
-zahraa   resb    3
-gamma    word    8
-beta     byte    x'55'
-         
+TERMPROJ START   3A
+.THIS IS A COMMENT LINE
+LBL1     BYTE    C'ABCDEF'
+LBL2     RESB    4
+LBL4     RESW    1
+TOP      LDA     ZERO
+         LDX     #INDEX
+         end

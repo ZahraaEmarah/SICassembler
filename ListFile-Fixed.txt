@@ -1,23 +1,21 @@
   **** SIC Assembler ****
 
 	.23456789012345678
-0	prog          start  		0	
-0	              add    		8	
-3	              subr   		a,b	
-	.this is a comment
-6	alpha         resw   		4	
-12	zahraa        resb   		3	
-15	gamma         word   		8	
-18	beta          byte   		x'55'	
-19	              			
-	' missing END statement '
+	3	TERMPROJ      START  		3	
+	.THIS IS A COMMENT LINE
+	3	LBL1          BYTE   		C'ABCDEF'	
+	9	LBL2          RESB   		4	
+	D	LBL4          RESW   		1	
+	10	TOP           LDA    		ZERO	
+	13	              LDX    		#INDEX	
+	16	              end			
 
   **** END OF PASS 1 ****
 
   **** SYMBOL TABLE *****
 Address		Name
-	0		prog    
-	6		alpha   
-	12		zahraa  
-	15		gamma   
-	18		beta    
+	3		TERMPROJ
+	3		LBL1    
+	9		LBL2    
+	D		LBL4    
+	10		TOP     

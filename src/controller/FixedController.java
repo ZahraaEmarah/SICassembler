@@ -419,7 +419,7 @@ public class FixedController {
 
 		String Inst;
 		String PCcount = Integer.toHexString(PC).toUpperCase();
-		Inst = PCcount + "\t" + label + "      " + opcode + "\t\t" + operands + "\t";
+		Inst = "\t" + PCcount + "\t" + label + "      " + opcode + "\t\t" + operands + "\t";
 
 		for (int i = 0; i < Error.length; i++) {
 			if (Error.length > 1) {
