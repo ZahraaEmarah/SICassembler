@@ -33,6 +33,7 @@ public class FixedController {
 	int flag = 0;
 	int constants = 0;
 	int commentflag = 0;
+	public int state = 0;
 
 	public void ReadFixedFile() {
 		PCadd = 0;
@@ -136,6 +137,7 @@ public class FixedController {
 			ErrorArr[errorindex] = "\t" + "'wrong operation prefix '";
 			errorindex++;
 			criticalerror = 1;
+			state = 1;
 		}
 
 		Label[index] = Labelstr;
@@ -156,6 +158,7 @@ public class FixedController {
 					ErrorArr[errorindex] = "\t" + "'misplaced label'";
 					errorindex++;
 					criticalerror = 1;
+					state = 1;
 				}
 			}
 
@@ -163,6 +166,7 @@ public class FixedController {
 				if (opcodeArr[i].charAt(j) == ' ' && opcodeArr[i].charAt(j + 1) != ' ') {
 					ErrorArr[errorindex] = "\t" + "'missing or misplaced operation mnemonic '";
 					errorindex++;
+					state = 1;
 				}
 			}
 
@@ -171,6 +175,7 @@ public class FixedController {
 					ErrorArr[errorindex] = "\t" + "'Illegal format in operands Field'";
 					errorindex++;
 					criticalerror = 1;
+					state = 1;
 				}
 			}
 
@@ -183,6 +188,7 @@ public class FixedController {
 					|| opCode[i].replaceAll(" ", "").equalsIgnoreCase("base")) {
 				ErrorArr[errorindex] = "\t" + "'this statement can’t have a label '";
 				errorindex++;
+				state = 1;
 				compare = 1;
 			}
 			if (opCode[i].replaceAll(" ", "").equalsIgnoreCase("RESW")
@@ -223,6 +229,7 @@ public class FixedController {
 		if (found == 0 && !opcode.replaceAll(" ", "").equals("")) {
 			ErrorArr[errorindex] = "\t" + "'unrecognized operation code '";
 			errorindex++;
+			state = 1;
 		}
 
 	}
@@ -239,6 +246,7 @@ public class FixedController {
 				noLabel = 1;
 				ErrorArr[errorindex] = "\t" + "error : No Label Defined!! '";
 				errorindex++;
+				state = 1;
 				return 1;
 			}
 		}
@@ -267,6 +275,7 @@ public class FixedController {
 							same++;
 						System.out.println("Repeated Elements are :");
 						System.out.println(label[i]);
+						state = 1;
 					}
 				}
 			}
@@ -274,6 +283,7 @@ public class FixedController {
 				flagError = 1;
 				ErrorArr[errorindex] = "\t" + "'duplicate label definition '";
 				errorindex++;
+				state = 1;
 			}
 		}
 		if (flagError == 0 && compare == 0) {
@@ -292,6 +302,7 @@ public class FixedController {
 		if (!opcode.replaceAll(" ", "").equalsIgnoreCase("end")) {
 			ErrorArr[errorindex] = "\t" + "' missing END statement '";
 			errorindex++;
+			state = 1;
 		}
 
 	}
@@ -333,6 +344,7 @@ public class FixedController {
 				if (errorI == 1) {
 					ErrorArr[errorindex] = "\t" + "'not a hexadecimal string''";
 					errorindex++;
+					state = 1;
 				}
 			}
 		}
@@ -343,6 +355,7 @@ public class FixedController {
 				ErrorArr[errorindex] = "\t" + "'extra characters at end of statement''";
 				errorindex++;
 				flagError = 1;
+				state = 1;
 			}
 			if (criticalerror == 0) {
 				PCadd = 3;
@@ -368,6 +381,7 @@ public class FixedController {
 			if (op.length == 1) {
 				ErrorArr[errorindex] = "\t" + "'missing or misplaced operand field '";
 				errorindex++;
+				state = 1;
 			} else {
 				for (i = 0; i < registerList.length; i++) {
 					if (op[0].replaceAll(" ", "").equalsIgnoreCase(registerList[i])) {
@@ -382,6 +396,7 @@ public class FixedController {
 				if (foundop1 == 0 || foundop2 == 0) {
 					ErrorArr[errorindex] = "\t" + "'illegal address for a register '";
 					errorindex++;
+					state = 1;
 				}
 
 			}
@@ -389,6 +404,7 @@ public class FixedController {
 			if (op.length != 1) {
 				ErrorArr[errorindex] = "\t" + "'missing or misplaced operand field '";
 				errorindex++;
+				state = 1;
 			} else {
 				for (i = 0; i < registerList.length; i++) {
 					if (operand.replaceAll(" ", "").equalsIgnoreCase((registerList[i]))) {
@@ -399,6 +415,7 @@ public class FixedController {
 				if (foundop1 == 0) {
 					ErrorArr[errorindex] = "\t" + "'illegal address for a register '";
 					errorindex++;
+					state = 1;
 				}
 			}
 
@@ -406,6 +423,7 @@ public class FixedController {
 			if (op.length != 1) {
 				ErrorArr[errorindex] = "\t" + "'missing or misplaced operand field '";
 				errorindex++;
+				state = 1;
 			}
 		}
 
@@ -421,11 +439,11 @@ public class FixedController {
 		for (int i = 0; i < Error.length; i++) {
 			if (Error.length > 1) {
 				if (Error[i] != null) {
-					Inst = Inst + "\n" + Error[i];
+					Inst = Inst + "\n" + "\t\t" + Error[i];
 				}
 			} else {
 				if (Error[i] != null) {
-					Inst = Inst + "\n" + Error[i];
+					Inst = Inst + "\n" + "\t\t" + Error[i];
 				}
 			}
 		}

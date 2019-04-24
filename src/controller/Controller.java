@@ -37,6 +37,7 @@ public class Controller {
 	int flag = 0;
 	int constants = 0;
 	int commentflag = 0;
+	public int state = 0;
 
 	public void ReadFile() {
 		symbol = 0;
@@ -173,9 +174,10 @@ public class Controller {
 			errorindex = 0;
 
 			if (opCode[i].equalsIgnoreCase("org") || opCode[i].equalsIgnoreCase("base")) {
-				ErrorArr[errorindex] = "\t" + "error [05] : 'this statement can’t have a label '";
+				ErrorArr[errorindex] = "\t" + "'this statement can’t have a label '";
 				errorindex++;
 				compare = 1;
+				state = 1;
 			}
 			if (opCode[i].equalsIgnoreCase("RESW") || opCode[i].equalsIgnoreCase("RESB")
 					|| opCode[i].equalsIgnoreCase("WORD") || opCode[i].equalsIgnoreCase("BYTE")) {
@@ -208,6 +210,7 @@ public class Controller {
 				noLabel = 1;
 				ErrorArr[errorindex] = "\t" + "error : No Label Defined!! '";
 				errorindex++;
+				state = 1;
 				return 1;
 			}
 		}
@@ -248,8 +251,9 @@ public class Controller {
 			}
 			if (same != 0) {
 				flagError = 1;
-				ErrorArr[errorindex] = "\t" + "error [04] : 'duplicate label definition '";
+				ErrorArr[errorindex] = "\t" + "'duplicate label definition '";
 				errorindex++;
+				state = 1;
 			}
 		}
 		if (flagError == 0 && compare == 0) {
@@ -281,8 +285,9 @@ public class Controller {
 		}
 
 		if (found == 0) {
-			ErrorArr[errorindex] = "\t" + "error [08] : 'unrecognized operation code '";
+			ErrorArr[errorindex] = "\t" + "'unrecognized operation code '";
 			errorindex++;
+			state = 1;
 		}
 
 	}
@@ -290,8 +295,9 @@ public class Controller {
 	public void endstatment(String opcode) {
 
 		if (!opcode.equalsIgnoreCase("end")) {
-			ErrorArr[errorindex] = "\t" + "error [13] : ' missing END statement '";
+			ErrorArr[errorindex] = "\t" + "' missing END statement '";
 			errorindex++;
+			state = 1;
 		}
 
 	}
@@ -319,8 +325,9 @@ public class Controller {
 		if (opcode.equalsIgnoreCase("addr") || opcode.equalsIgnoreCase("subr") || opcode.equalsIgnoreCase("comr")
 				|| opcode.equalsIgnoreCase("rmo")) {
 			if (op.length == 1) {
-				ErrorArr[errorindex] = "\t" + "error [03] : 'missing or misplaced operand field '";
+				ErrorArr[errorindex] = "\t" + "'missing or misplaced operand field '";
 				errorindex++;
+				state = 1;
 			} else {
 				for (i = 0; i < registerList.length; i++) {
 					if (op[0].equalsIgnoreCase(registerList[i])) {
@@ -333,15 +340,17 @@ public class Controller {
 				}
 
 				if (foundop1 == 0 || foundop2 == 0) {
-					ErrorArr[errorindex] = "\t" + "error [12] : 'illegal address for a register '";
+					ErrorArr[errorindex] = "\t" + "'illegal address for a register '";
 					errorindex++;
+					state = 1;
 				}
 
 			}
 		} else if (opcode.equalsIgnoreCase("tixr")) {
 			if (op.length != 1) {
-				ErrorArr[errorindex] = "\t" + "error [03] : 'missing or misplaced operand field '";
+				ErrorArr[errorindex] = "\t" + "'missing or misplaced operand field '";
 				errorindex++;
+				state = 1;
 			} else {
 				for (i = 0; i < registerList.length; i++) {
 					if (operand.equalsIgnoreCase((registerList[i]))) {
@@ -350,15 +359,17 @@ public class Controller {
 
 				}
 				if (foundop1 == 0) {
-					ErrorArr[errorindex] = "\t" + "error [12] : 'illegal address for a register '";
+					ErrorArr[errorindex] = "\t" + "'illegal address for a register '";
 					errorindex++;
+					state = 1;
 				}
 			}
 
 		} else {
 			if (op.length != 1) {
-				ErrorArr[errorindex] = "\t" + "error [03] : 'missing or misplaced operand field '";
+				ErrorArr[errorindex] = "\t" + "'missing or misplaced operand field '";
 				errorindex++;
+				state = 1;
 			}
 		}
 		if (opcode.equalsIgnoreCase("RESB")) {
@@ -391,8 +402,9 @@ public class Controller {
 					}
 				}
 				if (errorI == 1) {
-					ErrorArr[errorindex] = "\t" + "error [10] : 'not a hexadecimal string''";
+					ErrorArr[errorindex] = "\t" + "'not a hexadecimal string''";
 					errorindex++;
+					state = 1;
 				}
 			}
 		}
@@ -401,6 +413,7 @@ public class Controller {
 			if (operands[index].length() >= 5) {
 				ErrorArr[errorindex] = "\t" + "'extra characters at end of statement''";
 				errorindex++;
+				state = 1;
 				flagError = 1;
 			} else
 				PCadd = 3;

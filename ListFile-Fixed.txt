@@ -5,7 +5,7 @@
 		    .THIS IS A COMMENT LINE
 	3A0		LBL1    		BYTE   		C'ABCDEF'	
 	3A6		LBL2    		RESB   		4	
-	3AA		LBL4    		RESW   		1	
+	3AA		LBL7    		RESW   		1	
 	3AD		TOP     		LDA    		ZERO	
 	3B0		        		LDX    		#INDEX	
 	3B3		        		end			
@@ -17,5 +17,5 @@
 	3A0			TERMPROJ
 	3A0			LBL1    
 	3A6			LBL2    
-	3AA			LBL4    
+	3AA			LBL7    
 	3AD			TOP     
