@@ -1,11 +1,9 @@
 .23456789012345678
-PROG     START   0
+PROG     START   0A
          MUL     4
          LDA     0
          ADDR    L,X
 MAR      RESW    1
-SOSO     RESB    2
-ZEE      BYTE    C'mr'
-MARIAM   WORD    12
-TEST     BYTE    X'FX'
+SOSO     RESB    1
+MARIAM   WORD    2345
          end

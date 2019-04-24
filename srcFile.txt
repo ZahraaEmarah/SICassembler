@@ -11,7 +11,8 @@ MM            RESW  1
 M             RESB  1  
 MA            RESB 2
 SO      RESW 3
-ES     BYTE C'x'    
+ES     BYTE C'x'  
+mayar  WORD 12345  
 Test BYTE X'FF'
 test2 BYTE X'FX'
                      END
