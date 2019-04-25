@@ -50,17 +50,20 @@ public class FixedController {
 
 				System.out.println(line);
 
-				if (line.charAt(0) == '.') {
+				if (line.charAt(0) == '.')
+
+				{
 					commentflag = 1;
-					comment[index] = line;
-					line = reader.readLine();
-					commentflag = 0;
+					if (comment[index] == null)
+						comment[index] = "";
 
+					commentflag = 1;
+					comment[index] = comment[index] + "\n" + line;
 				} else {
-					commentflag = 0;
-				}
 
-				VALIDATEINSTRUCTION(line);
+					commentflag = 0;
+					POPULATEARRAYS(line);
+				}
 
 				line = reader.readLine(); // next line
 			}
@@ -74,6 +77,7 @@ public class FixedController {
 			}
 
 			ValidateInstruction(Label, opCode, operands);
+
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -83,7 +87,7 @@ public class FixedController {
 
 	}
 
-	public void VALIDATEINSTRUCTION(String str) {
+	public void POPULATEARRAYS(String str) {
 
 		String Labelstr = "";
 		String Opcode = "";
@@ -104,7 +108,7 @@ public class FixedController {
 				}
 
 			}
-		} else if (str.length() < 16 ) {
+		} else if (str.length() < 16) {
 			for (int i = 0; i < str.length(); i++) {
 				if (i < 8) {
 					Labelstr = Labelstr + str.charAt(i);
@@ -119,27 +123,7 @@ public class FixedController {
 				}
 
 			}
-		} else {
-			for (int i = 0; i < str.length(); i++) {
-				if (i < 8) {
-					Labelstr = Labelstr + str.charAt(i);
-				}
-
-				if (i >= 8 && i < 16) {
-					Opcode = Opcode + str.charAt(i);
-				}
-
-				if (i > 16 && i < str.length()) {
-					operandsstr = operandsstr + str.charAt(i);
-				}
-
-			}
-			ErrorArr[errorindex] = "\t" + "'wrong operation prefix '";
-			errorindex++;
-			criticalerror = 1;
-			state = 1;
 		}
-
 		Label[index] = Labelstr;
 		opCode[index] = Opcode;
 		operands[index] = operandsstr;
@@ -155,7 +139,7 @@ public class FixedController {
 			/// VALIDATE NO SPACE BETWEEN CHARACTERS
 			for (int j = 0; j < labelarr[i].length() - 1; j++) {
 				if (labelarr[i].charAt(j) == ' ' && labelarr[i].charAt(j + 1) != ' ') {
-					ErrorArr[errorindex] = "\t" + "'misplaced label'";
+					ErrorArr[errorindex] = "\t" + "*****'misplaced label'*****";
 					errorindex++;
 					criticalerror = 1;
 					state = 1;
@@ -164,7 +148,7 @@ public class FixedController {
 
 			for (int j = 1; j < opcodeArr[i].length() - 1; j++) {
 				if (opcodeArr[i].charAt(j) == ' ' && opcodeArr[i].charAt(j + 1) != ' ') {
-					ErrorArr[errorindex] = "\t" + "'missing or misplaced operation mnemonic '";
+					ErrorArr[errorindex] = "\t" + "*****'missing or misplaced operation mnemonic '*****";
 					errorindex++;
 					state = 1;
 				}
@@ -172,7 +156,7 @@ public class FixedController {
 
 			for (int j = 0; j < operandsArr[i].length() - 1; j++) {
 				if (operandsArr[i].charAt(j) == ' ' && operandsArr[i].charAt(j + 1) != ' ') {
-					ErrorArr[errorindex] = "\t" + "'Illegal format in operands Field'";
+					ErrorArr[errorindex] = "\t" + "*****'Illegal format in operands Field'*****";
 					errorindex++;
 					criticalerror = 1;
 					state = 1;
@@ -213,72 +197,69 @@ public class FixedController {
 	public void ValidateOpcode(String opcode) {
 		int j = 0;
 		int found = 0;
-		int formaterror =0;
-		int directiveformaterror =0;
-		int prefixerror =0;
-		
-		if(opcode.charAt(0)!=' ')
-		{
-			if(opcode.charAt(0)!='+'){
-				prefixerror =1;
+		int formaterror = 0;
+		int directiveformaterror = 0;
+		int prefixerror = 0;
+
+		if (opcode.charAt(0) != ' ') {
+			if (opcode.charAt(0) != '+') {
+				prefixerror = 1;
 			}
-			opcode=opcode.substring(1);
-			for (int i = 0; i < 25; i++) 
-			{
-				if (opcode.replaceAll(" ", "").compareToIgnoreCase(opcodeList[i]) == 0) 
-				{
+			opcode = opcode.substring(1);
+			for (int i = 0; i < 25; i++) {
+				if (opcode.replaceAll(" ", "").compareToIgnoreCase(opcodeList[i]) == 0) {
 					found = 1;
 				}
 			}
-			if (found == 1)
-			{
-				if(opcode.replaceAll(" ", "").equalsIgnoreCase("rmo")) formaterror=1;
-				else if(opcode.replaceAll(" ", "").equalsIgnoreCase("subr")) formaterror=1;
-				else if(opcode.replaceAll(" ", "").equalsIgnoreCase("comr")) formaterror=1;
-				else if(opcode.replaceAll(" ", "").equalsIgnoreCase("tixr" )) formaterror=1;
-			}
-			else {
+			if (found == 1) {
+				if (opcode.replaceAll(" ", "").equalsIgnoreCase("rmo"))
+					formaterror = 1;
+				else if (opcode.replaceAll(" ", "").equalsIgnoreCase("subr"))
+					formaterror = 1;
+				else if (opcode.replaceAll(" ", "").equalsIgnoreCase("comr"))
+					formaterror = 1;
+				else if (opcode.replaceAll(" ", "").equalsIgnoreCase("tixr"))
+					formaterror = 1;
+			} else {
 				for (int i = 0; i < 9; i++) {
 					if (opcode.replaceAll(" ", "").compareToIgnoreCase(directivesList[i]) == 0) {
 						directiveformaterror = 1;
-						found =1;
+						found = 1;
 					}
 				}
 			}
-		}
-		else {
-			
-		for (int i = 0; i < 25; i++) {
-			if (opcode.replaceAll(" ", "").compareToIgnoreCase(opcodeList[i]) == 0) {
-				found = 1;
-			}
-		}
+		} else {
 
-		for (int i = 0; i < 9; i++) {
-			if (opcode.replaceAll(" ", "").compareToIgnoreCase(directivesList[i]) == 0) {
-				found = 1;
+			for (int i = 0; i < 25; i++) {
+				if (opcode.replaceAll(" ", "").compareToIgnoreCase(opcodeList[i]) == 0) {
+					found = 1;
+				}
 			}
-		}
+
+			for (int i = 0; i < 9; i++) {
+				if (opcode.replaceAll(" ", "").compareToIgnoreCase(directivesList[i]) == 0) {
+					found = 1;
+				}
+			}
 		}
 
 		if (found == 0) {
-			ErrorArr[errorindex] = "\t" + "'unrecognized operation code '";
+			ErrorArr[errorindex] = "\t" + "*****'unrecognized operation code '*****";
+			errorindex++;
+			state = 1;
+		} else if (prefixerror == 1) {
+			ErrorArr[errorindex] = "\t" + "*****'wrong operation prefix '*****";
+			errorindex++;
+			state = 1;
+		} else if (formaterror == 1) {
+			ErrorArr[errorindex] = "\t" + "*****'can’t be format 4 instruction'*****";
+			errorindex++;
+			state = 1;
+		} else if (directiveformaterror == 1) {
+			ErrorArr[errorindex] = "\t" + "*****'illegal format in operation field'*****";
 			errorindex++;
 			state = 1;
 		}
-		else if (prefixerror ==1) {
-			ErrorArr[errorindex] = "\t" + "'wrong g operation prefix '";
-			errorindex++;
-		}
-		else if (formaterror ==1) {
-			ErrorArr[errorindex] = "\t" + "'can’t be format 4 instruction'";
-			errorindex++;
-	}
-		else if (directiveformaterror==1) {
-			ErrorArr[errorindex] = "\t" + "'illegal format in operation field'";
-			errorindex++;
-	}
-
 	}
 
 	public int ValidateLabel(String label[], int size, int index) {
@@ -291,7 +272,7 @@ public class FixedController {
 		if (constants == 1) {
 			if (label[index].compareTo(space) == 0) {
 				noLabel = 1;
-				ErrorArr[errorindex] = "\t" + "error : No Label Defined!! '";
+				ErrorArr[errorindex] = "\t" + "*****'No Label Defined!! '*****";
 				errorindex++;
 				state = 1;
 				return 1;
@@ -322,13 +303,12 @@ public class FixedController {
 							same++;
 						System.out.println("Repeated Elements are :");
 						System.out.println(label[i]);
-						state = 1;
 					}
 				}
 			}
 			if (same != 0) {
 				flagError = 1;
-				ErrorArr[errorindex] = "\t" + "'duplicate label definition '";
+				ErrorArr[errorindex] = "\t" + "*****'duplicate label definition '*****";
 				errorindex++;
 				state = 1;
 			}
@@ -336,7 +316,6 @@ public class FixedController {
 		if (flagError == 0 && compare == 0) {
 			Labels[symbol] = label[index];
 			PCS[symbol] = Integer.toHexString(PC).toUpperCase();
-			;
 			// System.out.println(PC);
 			symbol++;
 		}
@@ -347,7 +326,7 @@ public class FixedController {
 	public void endstatment(String opcode) {
 
 		if (!opcode.replaceAll(" ", "").equalsIgnoreCase("end")) {
-			ErrorArr[errorindex] = "\t" + "' missing END statement '";
+			ErrorArr[errorindex] = "\t" + "*****' missing END statement '*****";
 			errorindex++;
 			state = 1;
 		}
@@ -356,8 +335,8 @@ public class FixedController {
 
 	public String ValidateOperands(String operand, String opcode, int index) {
 
-		opcode=opcode.substring(1);
-		
+		opcode = opcode.substring(1);
+
 		if (PC <= 0 && criticalerror == 0) {
 			PC = Integer.parseInt(operands[0], 16);
 		}
@@ -391,7 +370,7 @@ public class FixedController {
 					}
 				}
 				if (errorI == 1) {
-					ErrorArr[errorindex] = "\t" + "'not a hexadecimal string''";
+					ErrorArr[errorindex] = "\t" + "*****'not a hexadecimal string'*****";
 					errorindex++;
 					state = 1;
 				}
@@ -401,7 +380,7 @@ public class FixedController {
 		if (opcode.replaceAll(" ", "").equalsIgnoreCase("WORD")) {
 			// PCadd = 3;
 			if (operands[index].length() >= 5) {
-				ErrorArr[errorindex] = "\t" + "'extra characters at end of statement''";
+				ErrorArr[errorindex] = "\t" + "*****'extra characters at end of statement'*****";
 				errorindex++;
 				flagError = 1;
 				state = 1;
@@ -428,7 +407,7 @@ public class FixedController {
 				|| opcode.replaceAll(" ", "").equalsIgnoreCase("comr")
 				|| opcode.replaceAll(" ", "").equalsIgnoreCase("rmo")) {
 			if (op.length == 1) {
-				ErrorArr[errorindex] = "\t" + "'missing or misplaced operand field '";
+				ErrorArr[errorindex] = "\t" + "*****'missing or misplaced operand field '*****";
 				errorindex++;
 				state = 1;
 			} else {
@@ -443,7 +422,7 @@ public class FixedController {
 				}
 
 				if (foundop1 == 0 || foundop2 == 0) {
-					ErrorArr[errorindex] = "\t" + "'illegal address for a register '";
+					ErrorArr[errorindex] = "\t" + "*****'illegal address for a register '*****";
 					errorindex++;
 					state = 1;
 				}
@@ -451,7 +430,7 @@ public class FixedController {
 			}
 		} else if (opcode.replaceAll(" ", "").equalsIgnoreCase("tixr")) {
 			if (op.length != 1) {
-				ErrorArr[errorindex] = "\t" + "'missing or misplaced operand field '";
+				ErrorArr[errorindex] = "\t" + "*****'missing or misplaced operand field '*****";
 				errorindex++;
 				state = 1;
 			} else {
@@ -462,7 +441,7 @@ public class FixedController {
 
 				}
 				if (foundop1 == 0) {
-					ErrorArr[errorindex] = "\t" + "'illegal address for a register '";
+					ErrorArr[errorindex] = "\t" + "*****'illegal address for a register '*****";
 					errorindex++;
 					state = 1;
 				}
@@ -470,7 +449,7 @@ public class FixedController {
 
 		} else {
 			if (op.length != 1) {
-				ErrorArr[errorindex] = "\t" + "'missing or misplaced operand field '";
+				ErrorArr[errorindex] = "\t" + "*****'missing or misplaced operand field '*****";
 				errorindex++;
 				state = 1;
 			}
@@ -509,7 +488,6 @@ public class FixedController {
 				PrintWriter pw = new PrintWriter("ListFile-Fixed.txt");
 				pw.close();
 				bw.write("  **** SIC/XE Assembler ****");
-				bw.newLine();
 				bw.newLine();
 				bw.write(Inst);
 				bw.newLine();

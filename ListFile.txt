@@ -1,16 +1,21 @@
   **** SIC/XE Assembler ****
-
-		    .23456789012345678
+		    
+.23456789012345678
 	100		soso		ldx		100	
-	100		   		addr		a,a	
+	100		ZAHRAA		addr		a,a	
 	103		   		add		a	
 	106		   		ldx		100	
-	109		   		rmo		a,a	
+	109		   		rmo		a,X	
+		    
+.hhey man
 	10C		   		+comp		#5	
 	10F		   		comr		a,x	
 	112		MM		RESW		1	
 	115		M		RESB		1	
-		    .THIS IS A COMMENT LINE 
+		    
+.THIS IS A COMMENT LINE 
+.THIS IS A COMMENT LINE 
+.this is another comment
 	116		MA		RESB		2	
 	118		SO		RESW		3	
 	121		ES		BYTE		C'x'	
@@ -23,6 +28,7 @@
 ****   SYMBOL TABLE   ****
 Address		Name
 	100		soso
+	100		ZAHRAA
 	112		MM
 	115		M
 	116		MA

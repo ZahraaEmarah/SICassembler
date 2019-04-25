@@ -1,14 +1,17 @@
 .23456789012345678
-soso        ldx   100
-            addr  a,a
+soso        ldx   100 
+ZAHRAA      addr  a,a
             add  a           
             ldx   100
-            rmo   a,a 
+            rmo   a,X
+.hhey man
             +comp #5 
             comr a,x   
 MM         RESW  1
 M           RESB  1 
 .THIS IS A COMMENT LINE 
+.THIS IS A COMMENT LINE 
+.this is another comment
 MA          RESB 2
 SO          RESW 3
 ES          BYTE C'x'  

@@ -4,9 +4,12 @@ TERMPRO  START   3A0
          comp    #3
 LBL1     BYTE    C'ABCDEF'
 LBL2     RESB    4
+.thats a comment
+.that one too
+.what about this one ?
 LBL7     RESW    1
 TOP      LDA     ZERO
-         LDX     #INDEX
+LABEL    LDX     #INDEX
 LBL4     RESW    1
 TOP2    +LDA     ZERO
          LDA     #INDEX

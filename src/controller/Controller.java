@@ -31,8 +31,8 @@ public class Controller {
 			"ADD", "SUB", "ADDR", "SUBR", "COMP", "COMR", "J", "JEQ", "JLT", "JGT", "TIX", "TIXR" };
 	int i = 0;
 	int count = 0;
-	int error = 0;
 	int index = 0;
+	int cmntindex = 0;
 	int errorindex = 0;
 	int flag = 0;
 	int constants = 0;
@@ -57,39 +57,33 @@ public class Controller {
 			while (line != null) {
 
 				if (line.replaceAll(" ", "").startsWith(".")) {
+
+					if (comment[index] == null)
+						comment[index] = "";
+
 					commentflag = 1;
-					comment[index] = line;
-					line = reader.readLine();
-					commentflag = 0;
+					comment[index] = comment[index] + "\n" + line;
 
 				} else {
-					commentflag = 0;
-				}
 
-				input = new Scanner(line);
+					input = new Scanner(line);
 
-				while (input.hasNext()) {
+					while (input.hasNext()) {
 
-					String word = input.next();
-					lineArr[count] = word;
-					// System.out.println(word);
-					count = count + 1;
+						String word = input.next();
+						lineArr[count] = word;
+						count = count + 1;
 
-					if (count >= 4 && commentflag == 0) {
-						System.out.println("----- WARNING -----");
-						error = 1;
+						if (count >= 4) {
+							ErrorArr[errorindex] = "\t" + "*****'illegal address for a register '*****";
+							errorindex++;
+							state = 1;
+						}
 					}
-				}
 
-				if (error == 1) {
-					break;
-				} else {
 					PopulateWordArray(lineArr); /// *** Populates the 3 Main Arrays ***///
 				}
-
-				// System.out.println("Word count: " + count);
 				count = 0;
-				error = 0;
 				commentflag = 0;
 				line = reader.readLine(); // next line
 			}
@@ -174,7 +168,7 @@ public class Controller {
 			errorindex = 0;
 
 			if (opCode[i].equalsIgnoreCase("org") || opCode[i].equalsIgnoreCase("base")) {
-				ErrorArr[errorindex] = "\t" + "'this statement can’t have a label '";
+				ErrorArr[errorindex] = "\t" + "*****'this statement can’t have a label '*****";
 				errorindex++;
 				compare = 1;
 				state = 1;
@@ -208,7 +202,7 @@ public class Controller {
 		if (constants == 1) {
 			if (label[index].compareTo("^") == 0 || label[index].compareTo(space) == 0) {
 				noLabel = 1;
-				ErrorArr[errorindex] = "\t" + "error : No Label Defined!! '";
+				ErrorArr[errorindex] = "\t" + "*****'No Label Defined!! '*****";
 				errorindex++;
 				state = 1;
 				return 1;
@@ -251,7 +245,7 @@ public class Controller {
 			}
 			if (same != 0) {
 				flagError = 1;
-				ErrorArr[errorindex] = "\t" + "'duplicate label definition '";
+				ErrorArr[errorindex] = "\t" + "*****'duplicate label definition '*****";
 				errorindex++;
 				state = 1;
 			}
@@ -315,15 +309,15 @@ public class Controller {
 		}
 
 		if (found == 0) {
-			ErrorArr[errorindex] = "\t" + "'unrecognized operation code '";
+			ErrorArr[errorindex] = "\t" + "*****'unrecognized operation code '*****";
 			errorindex++;
 			state = 1;
 		} else if (formaterror == 1) {
-			ErrorArr[errorindex] = "\t" + "'can’t be format 4 instruction'";
+			ErrorArr[errorindex] = "\t" + "*****'can’t be format 4 instruction'*****";
 			errorindex++;
 			state = 1;
 		} else if (directiveformaterror == 1) {
-			ErrorArr[errorindex] = "\t" + "'illegal format in operation field'";
+			ErrorArr[errorindex] = "\t" + "*****'illegal format in operation field'*****";
 			errorindex++;
 			state = 1;
 		}
@@ -332,7 +326,7 @@ public class Controller {
 	public void endstatment(String opcode) {
 
 		if (!opcode.equalsIgnoreCase("end")) {
-			ErrorArr[errorindex] = "\t" + "' missing END statement '";
+			ErrorArr[errorindex] = "\t" + "*****' missing END statement '*****";
 			errorindex++;
 			state = 1;
 		}
@@ -365,7 +359,7 @@ public class Controller {
 		if (opcode.equalsIgnoreCase("addr") || opcode.equalsIgnoreCase("subr") || opcode.equalsIgnoreCase("comr")
 				|| opcode.equalsIgnoreCase("rmo")) {
 			if (op.length == 1) {
-				ErrorArr[errorindex] = "\t" + "'missing or misplaced operand field '";
+				ErrorArr[errorindex] = "\t" + "*****'missing or misplaced operand field '*****";
 				errorindex++;
 				state = 1;
 			} else {
@@ -380,7 +374,7 @@ public class Controller {
 				}
 
 				if (foundop1 == 0 || foundop2 == 0) {
-					ErrorArr[errorindex] = "\t" + "'illegal address for a register '";
+					ErrorArr[errorindex] = "\t" + "*****'illegal address for a register '*****";
 					errorindex++;
 					state = 1;
 				}
@@ -388,7 +382,7 @@ public class Controller {
 			}
 		} else if (opcode.equalsIgnoreCase("tixr")) {
 			if (op.length != 1) {
-				ErrorArr[errorindex] = "\t" + "'missing or misplaced operand field '";
+				ErrorArr[errorindex] = "\t" + "*****'missing or misplaced operand field '*****";
 				errorindex++;
 				state = 1;
 			} else {
@@ -399,7 +393,7 @@ public class Controller {
 
 				}
 				if (foundop1 == 0) {
-					ErrorArr[errorindex] = "\t" + "'illegal address for a register '";
+					ErrorArr[errorindex] = "\t" + "*****'illegal address for a register '*****";
 					errorindex++;
 					state = 1;
 				}
@@ -407,7 +401,7 @@ public class Controller {
 
 		} else {
 			if (op.length != 1) {
-				ErrorArr[errorindex] = "\t" + "'missing or misplaced operand field '";
+				ErrorArr[errorindex] = "\t" + "*****'missing or misplaced operand field '*****";
 				errorindex++;
 				state = 1;
 			}
@@ -442,7 +436,7 @@ public class Controller {
 					}
 				}
 				if (errorI == 1) {
-					ErrorArr[errorindex] = "\t" + "'not a hexadecimal string''";
+					ErrorArr[errorindex] = "\t" + "*****'not a hexadecimal string'*****";
 					errorindex++;
 					state = 1;
 				}
@@ -451,7 +445,7 @@ public class Controller {
 
 		if (opcode.equalsIgnoreCase("WORD")) {
 			if (operands[index].length() >= 5) {
-				ErrorArr[errorindex] = "\t" + "'extra characters at end of statement''";
+				ErrorArr[errorindex] = "\t" + "*****'extra characters at end of statement'*****";
 				errorindex++;
 				state = 1;
 				flagError = 1;
@@ -491,7 +485,6 @@ public class Controller {
 				PrintWriter pw = new PrintWriter("ListFile.txt");
 				pw.close();
 				bw.write("  **** SIC/XE Assembler ****");
-				bw.newLine();
 				bw.newLine();
 				bw.write(Inst);
 				bw.newLine();
