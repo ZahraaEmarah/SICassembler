@@ -267,6 +267,38 @@ public class Controller {
 	public void ValidateOpcode(String opcode) {
 		int j = 0;
 		int found = 0;
+		int formaterror =0;
+		int directiveformaterror =0;
+		
+		if(opcode.charAt(0)=='+')
+		{
+			opcode=opcode.substring(1);
+			for (int i = 0; i < 25; i++) 
+			{
+				if (opcode.compareToIgnoreCase(opcodeList[i]) == 0) 
+				{
+					found = 1;
+				}
+			}
+			if (found == 1)
+			{
+				if(opcode.equalsIgnoreCase("rmo")) formaterror=1;
+				else if(opcode.equalsIgnoreCase("subr")) formaterror=1;
+				else if(opcode.equalsIgnoreCase("comr")) formaterror=1;
+				else if(opcode.equalsIgnoreCase("tixr" )) formaterror=1;
+			}
+			else {
+				for (int i = 0; i < 9; i++) {
+					if (opcode.compareToIgnoreCase(directivesList[i]) == 0) {
+						directiveformaterror = 1;
+						found =1;
+					}
+				}
+			}
+			
+		}
+		else 
+        {
 
 		for (int i = 0; i < 25; i++) {
 			if (opcode.compareToIgnoreCase(opcodeList[i]) == 0) {
@@ -279,12 +311,20 @@ public class Controller {
 				found = 1;
 			}
 		}
+	    }
 
 		if (found == 0) {
 			ErrorArr[errorindex] = "\t" + "error [08] : 'unrecognized operation code '";
 			errorindex++;
 		}
-
+		else if (formaterror ==1) {
+			ErrorArr[errorindex] = "\t" + "error [11] : 'can’t be format 4 instruction'";
+			errorindex++;
+	}
+		else if (directiveformaterror==1) {
+			ErrorArr[errorindex] = "\t" + "error [14] : 'illegal format in operation field'";
+			errorindex++;
+	}
 	}
 
 	public void endstatment(String opcode) {
@@ -297,6 +337,9 @@ public class Controller {
 	}
 
 	public String ValidateOperands(String operand, String opcode, int index) {
+		if(opcode.charAt(0)=='+')
+			opcode=opcode.substring(1);
+
 		if (PC <= 0) {
 			PC = Integer.parseInt(operands[0], 16);
 		}
