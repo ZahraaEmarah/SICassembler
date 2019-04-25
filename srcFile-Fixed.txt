@@ -5,5 +5,5 @@ LBL1     BYTE    C'ABCDEF'
 LBL2     RESB    4
 LBL7     RESW    1
 TOP      LDA     ZERO
-         LDX     #INDEX
+         LDX      #INDEX
          end
