@@ -89,13 +89,13 @@ public class FixedController {
 		String Opcode = "";
 		String operandsstr = "";
 
-		if (str.length() > 17 && str.charAt(8) == ' ' && str.charAt(16) == ' ') {
+		if (str.length() > 17 && str.charAt(16) == ' ') {
 			for (int i = 0; i < str.length(); i++) {
 				if (i < 8) {
 					Labelstr = Labelstr + str.charAt(i);
 				}
 
-				if (i > 8 && i < 16) {
+				if (i >= 8 && i < 16) {
 					Opcode = Opcode + str.charAt(i);
 				}
 
@@ -104,13 +104,13 @@ public class FixedController {
 				}
 
 			}
-		} else if (str.length() < 16 && str.charAt(8) == ' ') {
+		} else if (str.length() < 16 ) {
 			for (int i = 0; i < str.length(); i++) {
 				if (i < 8) {
 					Labelstr = Labelstr + str.charAt(i);
 				}
 
-				if (i > 8 && i < 16) {
+				if (i >= 8 && i < 16) {
 					Opcode = Opcode + str.charAt(i);
 				}
 
@@ -125,7 +125,7 @@ public class FixedController {
 					Labelstr = Labelstr + str.charAt(i);
 				}
 
-				if (i > 8 && i < 16) {
+				if (i >= 8 && i < 16) {
 					Opcode = Opcode + str.charAt(i);
 				}
 
@@ -162,7 +162,7 @@ public class FixedController {
 				}
 			}
 
-			for (int j = 0; j < opcodeArr[i].length() - 1; j++) {
+			for (int j = 1; j < opcodeArr[i].length() - 1; j++) {
 				if (opcodeArr[i].charAt(j) == ' ' && opcodeArr[i].charAt(j + 1) != ' ') {
 					ErrorArr[errorindex] = "\t" + "'missing or misplaced operation mnemonic '";
 					errorindex++;
@@ -213,7 +213,41 @@ public class FixedController {
 	public void ValidateOpcode(String opcode) {
 		int j = 0;
 		int found = 0;
-
+		int formaterror =0;
+		int directiveformaterror =0;
+		int prefixerror =0;
+		
+		if(opcode.charAt(0)!=' ')
+		{
+			if(opcode.charAt(0)!='+'){
+				prefixerror =1;
+			}
+			opcode=opcode.substring(1);
+			for (int i = 0; i < 25; i++) 
+			{
+				if (opcode.replaceAll(" ", "").compareToIgnoreCase(opcodeList[i]) == 0) 
+				{
+					found = 1;
+				}
+			}
+			if (found == 1)
+			{
+				if(opcode.replaceAll(" ", "").equalsIgnoreCase("rmo")) formaterror=1;
+				else if(opcode.replaceAll(" ", "").equalsIgnoreCase("subr")) formaterror=1;
+				else if(opcode.replaceAll(" ", "").equalsIgnoreCase("comr")) formaterror=1;
+				else if(opcode.replaceAll(" ", "").equalsIgnoreCase("tixr" )) formaterror=1;
+			}
+			else {
+				for (int i = 0; i < 9; i++) {
+					if (opcode.replaceAll(" ", "").compareToIgnoreCase(directivesList[i]) == 0) {
+						directiveformaterror = 1;
+						found =1;
+					}
+				}
+			}
+		}
+		else {
+			
 		for (int i = 0; i < 25; i++) {
 			if (opcode.replaceAll(" ", "").compareToIgnoreCase(opcodeList[i]) == 0) {
 				found = 1;
@@ -225,12 +259,25 @@ public class FixedController {
 				found = 1;
 			}
 		}
+		}
 
-		if (found == 0 && !opcode.replaceAll(" ", "").equals("")) {
+		if (found == 0) {
 			ErrorArr[errorindex] = "\t" + "'unrecognized operation code '";
 			errorindex++;
 			state = 1;
 		}
+		else if (prefixerror ==1) {
+			ErrorArr[errorindex] = "\t" + "'wrong g operation prefix '";
+			errorindex++;
+		}
+		else if (formaterror ==1) {
+			ErrorArr[errorindex] = "\t" + "'can’t be format 4 instruction'";
+			errorindex++;
+	}
+		else if (directiveformaterror==1) {
+			ErrorArr[errorindex] = "\t" + "'illegal format in operation field'";
+			errorindex++;
+	}
 
 	}
 
@@ -309,6 +356,8 @@ public class FixedController {
 
 	public String ValidateOperands(String operand, String opcode, int index) {
 
+		opcode=opcode.substring(1);
+		
 		if (PC <= 0 && criticalerror == 0) {
 			PC = Integer.parseInt(operands[0], 16);
 		}

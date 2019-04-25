@@ -271,16 +271,46 @@ public class Controller {
 	public void ValidateOpcode(String opcode) {
 		int j = 0;
 		int found = 0;
+		int formaterror = 0;
+		int directiveformaterror = 0;
 
-		for (int i = 0; i < 25; i++) {
-			if (opcode.compareToIgnoreCase(opcodeList[i]) == 0) {
-				found = 1;
+		if (opcode.charAt(0) == '+') {
+			opcode = opcode.substring(1);
+			for (int i = 0; i < 25; i++) {
+				if (opcode.compareToIgnoreCase(opcodeList[i]) == 0) {
+					found = 1;
+				}
 			}
-		}
+			if (found == 1) {
+				if (opcode.equalsIgnoreCase("rmo"))
+					formaterror = 1;
+				else if (opcode.equalsIgnoreCase("subr"))
+					formaterror = 1;
+				else if (opcode.equalsIgnoreCase("comr"))
+					formaterror = 1;
+				else if (opcode.equalsIgnoreCase("tixr"))
+					formaterror = 1;
+			} else {
+				for (int i = 0; i < 9; i++) {
+					if (opcode.compareToIgnoreCase(directivesList[i]) == 0) {
+						directiveformaterror = 1;
+						found = 1;
+					}
+				}
+			}
 
-		for (int i = 0; i < 9; i++) {
-			if (opcode.compareToIgnoreCase(directivesList[i]) == 0) {
-				found = 1;
+		} else {
+
+			for (int i = 0; i < 25; i++) {
+				if (opcode.compareToIgnoreCase(opcodeList[i]) == 0) {
+					found = 1;
+				}
+			}
+
+			for (int i = 0; i < 9; i++) {
+				if (opcode.compareToIgnoreCase(directivesList[i]) == 0) {
+					found = 1;
+				}
 			}
 		}
 
@@ -288,8 +318,15 @@ public class Controller {
 			ErrorArr[errorindex] = "\t" + "'unrecognized operation code '";
 			errorindex++;
 			state = 1;
+		} else if (formaterror == 1) {
+			ErrorArr[errorindex] = "\t" + "'can’t be format 4 instruction'";
+			errorindex++;
+			state = 1;
+		} else if (directiveformaterror == 1) {
+			ErrorArr[errorindex] = "\t" + "'illegal format in operation field'";
+			errorindex++;
+			state = 1;
 		}
-
 	}
 
 	public void endstatment(String opcode) {
@@ -303,6 +340,9 @@ public class Controller {
 	}
 
 	public String ValidateOperands(String operand, String opcode, int index) {
+		if (opcode.charAt(0) == '+')
+			opcode = opcode.substring(1);
+
 		if (PC <= 0) {
 			PC = Integer.parseInt(operands[0], 16);
 		}

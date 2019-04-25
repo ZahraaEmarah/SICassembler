@@ -3,28 +3,31 @@
 		    .23456789012345678
 	100		soso		ldx		100	
 	100		   		addr		a,a	
-	103		   		ldx		100	
-	106		   		addr		a,a	
-	109		MM		RESW		1	
-	10C		M		RESB		1	
+	103		   		add		a	
+	106		   		ldx		100	
+	109		   		rmo		a,a	
+	10C		   		+comp		#5	
+	10F		   		comr		a,x	
+	112		MM		RESW		1	
+	115		M		RESB		1	
 		    .THIS IS A COMMENT LINE 
-	10D		MA		RESB		2	
-	10F		SO		RESW		3	
-	118		ES		BYTE		C'x'	
-	119		mayar		WORD		1245	
-	11C		Test		BYTE		X'FF'	
-	11D		test2		BYTE		X'55'	
-	11E		   		end			
+	116		MA		RESB		2	
+	118		SO		RESW		3	
+	121		ES		BYTE		C'x'	
+	122		mayar		WORD		1245	
+	125		Test		BYTE		X'FF'	
+	126		test2		BYTE		X'55'	
+	127		   		end			
 
   **** END OF PASS 1 ****
 ****   SYMBOL TABLE   ****
 Address		Name
 	100		soso
-	109		MM
-	10C		M
-	10D		MA
-	10F		SO
-	118		ES
-	119		mayar
-	11C		Test
-	11D		test2
+	112		MM
+	115		M
+	116		MA
+	118		SO
+	121		ES
+	122		mayar
+	125		Test
+	126		test2

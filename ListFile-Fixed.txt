@@ -1,22 +1,27 @@
   **** SIC/XE Assembler ****
 
 		    .23456789012345678
-	3A0		TERMPROJ		START  		3A0	
+	3A0		TERMPRO 		 START  		3A0	
 		    .THIS IS A COMMENT LINE
-	3A0		LBL1    		BYTE   		C'ABCDEF'	
-	3A6		LBL2    		RESB   		4	
-	3AA		LBL7    		RESW   		1	
-	3AD		TOP     		LDA    		ZERO	
-	3B0		        		LDX    		 #INDEX	
-			'Illegal format in operands Field'
-	3B3		        		end			
+	3A0		        		 comp   		#3	
+	3A3		LBL1    		 BYTE   		C'ABCDEF'	
+	3A9		LBL2    		 RESB   		4	
+	3AD		LBL7    		 RESW   		1	
+	3B0		TOP     		 LDA    		ZERO	
+	3B3		        		 LDX    		#INDEX	
+	3B6		LBL4    		 RESW   		1	
+	3B9		TOP2    		+LDA    		ZERO	
+	3BC		        		 LDA    		#INDEX	
+	3BF		        		 end			
 
   **** END OF PASS 1 ****
 
   **** SYMBOL TABLE *****
 	Address		Name
-	3A0			TERMPROJ
-	3A0			LBL1    
-	3A6			LBL2    
-	3AA			LBL7    
-	3AD			TOP     
+	3A0			TERMPRO 
+	3A3			LBL1    
+	3A9			LBL2    
+	3AD			LBL7    
+	3B0			TOP     
+	3B6			LBL4    
+	3B9			TOP2    
