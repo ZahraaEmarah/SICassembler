@@ -256,19 +256,19 @@ public class FixedController {
 		}
 
 		if (found == 0) {
-			ErrorArr[errorindex] = "\t" + "error [08] : 'unrecognized operation code '";
+			ErrorArr[errorindex] = "\t" + "'unrecognized operation code '";
 			errorindex++;
 		}
 		else if (prefixerror ==1) {
-			ErrorArr[errorindex] = "\t" + "error [07] : 'wrong g operation prefix '";
+			ErrorArr[errorindex] = "\t" + "'wrong g operation prefix '";
 			errorindex++;
 		}
 		else if (formaterror ==1) {
-			ErrorArr[errorindex] = "\t" + "error [11] : 'can’t be format 4 instruction'";
+			ErrorArr[errorindex] = "\t" + "'can’t be format 4 instruction'";
 			errorindex++;
 	}
 		else if (directiveformaterror==1) {
-			ErrorArr[errorindex] = "\t" + "error [14] : 'illegal format in operation field'";
+			ErrorArr[errorindex] = "\t" + "'illegal format in operation field'";
 			errorindex++;
 	}
 

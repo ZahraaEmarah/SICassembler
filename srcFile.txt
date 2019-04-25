@@ -1,9 +1,12 @@
 .23456789012345678
 soso        ldx   100
-            addr  a,a           
+            addr  a,a
+            add  a           
             ldx   100
-            addr  a,a     
-MM          RESW  1
+            rmo   a,a 
+            +comp #5 
+            +comr a,x   
+MM         +RESW  1
 M           RESB  1 
 .THIS IS A COMMENT LINE 
 MA          RESB 2

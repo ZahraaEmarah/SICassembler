@@ -1,21 +1,24 @@
   **** SIC/XE Assembler ****
 
 		    .23456789012345678
-	3A0		TERMPROJ		START  		3A0	
+	3A0		TERMPRO 		 START  		3A0	
 		    .THIS IS A COMMENT LINE
-	3A0		LBL1    		BYTE   		C'ABCDEF'	
-	3A6		LBL2    		RESB   		4	
-	3AA		LBL4    		RESW   		1	
-	3AD		TOP     		LDA    		ZERO	
-	3B0		        		LDX    		#INDEX	
-	3B3		        		end			
+	3A0		        		acomp   		#3	
+	error [07] : 'wrong g operation prefix '
+	3A3		LBL1    		aBYTE   		C'ABCDEF'	
+	error [07] : 'wrong g operation prefix '
+	3A9		LBL2    		 RESB   		4	
+	3AD		LBL4    		 RESW   		1	
+	3B0		TOP     		+LDA    		ZERO	
+	3B3		        		 LDA    		#INDEX	
+	3B6		        		 end			
 
   **** END OF PASS 1 ****
 
   **** SYMBOL TABLE *****
 	Address		Name
-	3A0			TERMPROJ
-	3A0			LBL1    
-	3A6			LBL2    
-	3AA			LBL4    
-	3AD			TOP     
+	3A0			TERMPRO 
+	3A3			LBL1    
+	3A9			LBL2    
+	3AD			LBL4    
+	3B0			TOP     

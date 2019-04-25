@@ -248,7 +248,7 @@ public class Controller {
 			}
 			if (same != 0) {
 				flagError = 1;
-				ErrorArr[errorindex] = "\t" + "error [04] : 'duplicate label definition '";
+				ErrorArr[errorindex] = "\t" + "'duplicate label definition '";
 				errorindex++;
 			}
 		}
@@ -314,15 +314,15 @@ public class Controller {
 	    }
 
 		if (found == 0) {
-			ErrorArr[errorindex] = "\t" + "error [08] : 'unrecognized operation code '";
+			ErrorArr[errorindex] = "\t" + "'unrecognized operation code '";
 			errorindex++;
 		}
 		else if (formaterror ==1) {
-			ErrorArr[errorindex] = "\t" + "error [11] : 'can’t be format 4 instruction'";
+			ErrorArr[errorindex] = "\t" + "'can’t be format 4 instruction'";
 			errorindex++;
 	}
 		else if (directiveformaterror==1) {
-			ErrorArr[errorindex] = "\t" + "error [14] : 'illegal format in operation field'";
+			ErrorArr[errorindex] = "\t" + "'illegal format in operation field'";
 			errorindex++;
 	}
 	}
@@ -330,7 +330,7 @@ public class Controller {
 	public void endstatment(String opcode) {
 
 		if (!opcode.equalsIgnoreCase("end")) {
-			ErrorArr[errorindex] = "\t" + "error [13] : ' missing END statement '";
+			ErrorArr[errorindex] = "\t" + "' missing END statement '";
 			errorindex++;
 		}
 
@@ -362,7 +362,7 @@ public class Controller {
 		if (opcode.equalsIgnoreCase("addr") || opcode.equalsIgnoreCase("subr") || opcode.equalsIgnoreCase("comr")
 				|| opcode.equalsIgnoreCase("rmo")) {
 			if (op.length == 1) {
-				ErrorArr[errorindex] = "\t" + "error [03] : 'missing or misplaced operand field '";
+				ErrorArr[errorindex] = "\t" + "'missing or misplaced operand field '";
 				errorindex++;
 			} else {
 				for (i = 0; i < registerList.length; i++) {
@@ -376,14 +376,14 @@ public class Controller {
 				}
 
 				if (foundop1 == 0 || foundop2 == 0) {
-					ErrorArr[errorindex] = "\t" + "error [12] : 'illegal address for a register '";
+					ErrorArr[errorindex] = "\t" + "'illegal address for a register '";
 					errorindex++;
 				}
 
 			}
 		} else if (opcode.equalsIgnoreCase("tixr")) {
 			if (op.length != 1) {
-				ErrorArr[errorindex] = "\t" + "error [03] : 'missing or misplaced operand field '";
+				ErrorArr[errorindex] = "\t" + "'missing or misplaced operand field '";
 				errorindex++;
 			} else {
 				for (i = 0; i < registerList.length; i++) {
@@ -393,14 +393,14 @@ public class Controller {
 
 				}
 				if (foundop1 == 0) {
-					ErrorArr[errorindex] = "\t" + "error [12] : 'illegal address for a register '";
+					ErrorArr[errorindex] = "\t" + "'illegal address for a register '";
 					errorindex++;
 				}
 			}
 
 		} else {
 			if (op.length != 1) {
-				ErrorArr[errorindex] = "\t" + "error [03] : 'missing or misplaced operand field '";
+				ErrorArr[errorindex] = "\t" + "'missing or misplaced operand field '";
 				errorindex++;
 			}
 		}
@@ -434,7 +434,7 @@ public class Controller {
 					}
 				}
 				if (errorI == 1) {
-					ErrorArr[errorindex] = "\t" + "error [10] : 'not a hexadecimal string''";
+					ErrorArr[errorindex] = "\t" + "'not a hexadecimal string''";
 					errorindex++;
 				}
 			}
