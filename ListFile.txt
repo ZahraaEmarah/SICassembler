@@ -3,13 +3,13 @@
 .23456789012345678
 	100		soso		ldx		100	
 	100		ZAHRAA		addr		a,a	
-	103		   		add		a	
-	106		   		ldx		100	
-	109		   		rmo		a,X	
+	103				add		a	
+	106				ldx		100	
+	109				rmo		a,X	
 		    
 .hhey man
-	10C		   		+comp		#5	
-	10F		   		comr		a,x	
+	10C				+comp		#5	
+	10F				comr		a,x	
 	112		MM		RESW		1	
 	115		M		RESB		1	
 		    
@@ -22,7 +22,7 @@
 	122		mayar		WORD		1245	
 	125		Test		BYTE		X'FF'	
 	126		test2		BYTE		X'55'	
-	127		   		end			
+	127				end			
 
   **** END OF PASS 1 ****
 ****   SYMBOL TABLE   ****

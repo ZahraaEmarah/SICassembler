@@ -459,7 +459,8 @@ public class Controller {
 
 		String Inst;
 		String PCcount = Integer.toHexString(PC).toUpperCase();
-		Inst = "\t" + PCcount + "\t\t" + label + "\t\t" + opcode + "\t\t" + operands + "\t";
+		Inst = "\t" + PCcount.replaceAll(" ", "") + "\t\t" + label.replaceAll(" ", "") + "\t\t"
+				+ opcode.replaceAll(" ", "") + "\t\t" + operands.replaceAll(" ", "") + "\t";
 
 		for (int i = 0; i < Error.length; i++) {
 			if (Error.length > 1) {
