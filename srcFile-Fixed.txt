@@ -1,12 +1,8 @@
 .23456789012345678
 TERMPRO  START   3A0
-.THIS IS A COMMENT LINE
          comp    #3
 LBL1     BYTE    C'ABCDEF'
 LBL2     RESB    4
-.thats a comment
-.that one too
-.what about this one ?
 LBL7     RESW    1
 TOP      LDA     ZERO
 LABEL    LDX     #INDEX

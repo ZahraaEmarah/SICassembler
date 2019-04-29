@@ -14,6 +14,8 @@ import controller.FixedController;
 public class Main {
 
 	private JFrame frame;
+	FixedController fix = new FixedController();
+	Controller f = new Controller();
 
 	/**
 	 * Launch the application.
@@ -44,10 +46,10 @@ public class Main {
 	 */
 	private void initialize() {
 
-		Controller f = new Controller();
+		f = new Controller();
 		f.ReadFile();
 
-		FixedController fix = new FixedController();
+		fix = new FixedController();
 		fix.ReadFixedFile();
 
 		frame = new JFrame();
