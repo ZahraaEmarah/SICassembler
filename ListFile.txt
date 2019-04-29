@@ -1,33 +1,28 @@
-  **** SIC Assembler ****
-
-20	PROG      START		20	
-20	label      ORG		6	
-	error [05] : 'this statement can’t have a label '
-
-23	prog1      LDR		6	
-	error [08] : 'unrecognized operation code '
-
-26	         mul		5	
-	error [08] : 'unrecognized operation code '
-
-29	PROG2      LDA		6	
-2C	soso      ldr		5	
-	error [08] : 'unrecognized operation code '
-
-2F	         ldx		100	
-32	         addr		a,a	
-35	MM      RESW		1	
-38	M      RESB		1	
-39	MA      RESB		2	
-3B	SO      RESW		3	
-44	ES      BYTE		C'x'	
-45	mayar      WORD		12345	
-	'extra characters at end of statement''
-
-48	Test      BYTE		X'FF'	
-49	test2      BYTE		X'FX'	
-	error [10] : 'not a hexadecimal string''
-
-4A	         END			
+  **** SIC/XE Assembler ****
+		    
+.23456789012345678
+	20		PROG		START		20	
+	20		label		ORG		6	
+	*****'this statement can’t have a label '*****
+	23		prog1		LDR		6	
+	*****'unrecognized operation code '*****
+	26				mul		5	
+	*****'unrecognized operation code '*****
+	29		PROG2		LDA		6	
+	2C		soso		ldr		5	
+	*****'unrecognized operation code '*****
+	2F				ldx		100	
+	32				addr		a,a	
+	35		MM		RESW		1	
+	38		M		RESB		1	
+	39		MA		RESB		2	
+	3B		SO		RESW		3	
+	44		ES		BYTE		C'x'	
+	45		mayar		WORD		12345	
+	*****'extra characters at end of statement'*****
+	48		Test		BYTE		X'FF'	
+	49		test2		BYTE		X'FX'	
+	*****'not a hexadecimal string'*****
+	4A				END			
 
   **** END OF PASS 1 ****

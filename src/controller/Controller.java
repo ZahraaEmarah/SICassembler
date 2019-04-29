@@ -1,14 +1,21 @@
 package controller;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Scanner;
-import java.util.ArrayList;
 
 public class Controller {
 
 	String Label[] = new String[1000];
 	String opCode[] = new String[1000];
 	String operands[] = new String[1000];
+	String comment[] = new String[1000];
 	String ErrorArr[] = new String[5];
 	// For the symbol table
 	String Labels[] = new String[100];
@@ -24,11 +31,13 @@ public class Controller {
 			"ADD", "SUB", "ADDR", "SUBR", "COMP", "COMR", "J", "JEQ", "JLT", "JGT", "TIX", "TIXR" };
 	int i = 0;
 	int count = 0;
-	int error = 0;
 	int index = 0;
+	int cmntindex = 0;
 	int errorindex = 0;
 	int flag = 0;
 	int constants = 0;
+	int commentflag = 0;
+	public int state = 0;
 
 	public void ReadFile() {
 		symbol = 0;
@@ -39,7 +48,7 @@ public class Controller {
 		Scanner input;
 		BufferedReader reader;
 		int j = 0;
-		int commentflag = 0;
+
 		try {
 
 			reader = new BufferedReader(new FileReader("srcFile.txt"));
@@ -47,43 +56,45 @@ public class Controller {
 
 			while (line != null) {
 
-				input = new Scanner(line);
+				if (line.replaceAll(" ", "").startsWith(".")) {
 
-				while (input.hasNext()) {
+					if (comment[index] == null)
+						comment[index] = "";
 
-					String word = input.next();
+					commentflag = 1;
+					comment[index] = comment[index] + "\n" + line;
 
-					if (word.charAt(0) == '.') {
-						commentflag = 1;
-						break;
-					} else {
-						commentflag = 0;
-					}
-
-					lineArr[count] = word;
-					// System.out.println(word);
-					count = count + 1;
-
-					if (count >= 4 && commentflag == 0) {
-						System.out.println("----- WARNING -----");
-						error = 1;
-					}
-				}
-
-				if (error == 1) {
-					break;
 				} else {
+
+					input = new Scanner(line);
+
+					while (input.hasNext()) {
+
+						String word = input.next();
+						lineArr[count] = word;
+						count = count + 1;
+
+						if (count >= 4) {
+							ErrorArr[errorindex] = "\t" + "*****'illegal address for a register '*****";
+							errorindex++;
+							state = 1;
+						}
+					}
+
 					PopulateWordArray(lineArr); /// *** Populates the 3 Main Arrays ***///
 				}
-
-				// System.out.println("Word count: " + count);
 				count = 0;
-				error = 0;
 				commentflag = 0;
 				line = reader.readLine(); // next line
 			}
 
 			reader.close();
+			for (int i = 0; i < index; i++) {
+				System.out.println("comments Array " + comment[i]);
+				System.out.println("Label Array " + Label[i]);
+				System.out.println("Opcode Array " + opCode[i]);
+				System.out.println("operands Array " + operands[i]);
+			}
 			ValidateInstruction(Label, opCode, operands);
 
 		} catch (FileNotFoundException e) {
@@ -104,12 +115,6 @@ public class Controller {
 				wordsArr[2] = "^";
 
 				InstructionHandler(count, wordsArr);
-			}
-
-			for (int i = 0; i < index; i++) {
-				System.out.println("Label Array " + Label[i]);
-				System.out.println("Opcode Array " + opCode[i]);
-				System.out.println("operands Array " + operands[i]);
 			}
 		}
 
@@ -151,7 +156,6 @@ public class Controller {
 			}
 		}
 		index++;
-		System.out.println(index);
 	}
 
 	public void ValidateInstruction(String labelarr[], String opcodeArr[], String operandsArr[]) {
@@ -164,9 +168,10 @@ public class Controller {
 			errorindex = 0;
 
 			if (opCode[i].equalsIgnoreCase("org") || opCode[i].equalsIgnoreCase("base")) {
-				ErrorArr[errorindex] = "\t" + "error [05] : 'this statement can’t have a label '";
+				ErrorArr[errorindex] = "\t" + "*****'this statement can’t have a label '*****";
 				errorindex++;
 				compare = 1;
+				state = 1;
 			}
 			if (opCode[i].equalsIgnoreCase("RESW") || opCode[i].equalsIgnoreCase("RESB")
 					|| opCode[i].equalsIgnoreCase("WORD") || opCode[i].equalsIgnoreCase("BYTE")) {
@@ -178,7 +183,7 @@ public class Controller {
 			operandsArr[i] = ValidateOperands(operandsArr[i], opcodeArr[i], i);
 			compare = ValidateLabel(labelarr, index, i);
 
-			writeToFile(labelarr[i], opcodeArr[i], operandsArr[i], ErrorArr, i);
+			writeToFile(labelarr[i], opcodeArr[i], operandsArr[i], ErrorArr, comment[i], i);
 			ErrorArr = new String[50];
 			errorindex = 0;
 			PC = PC + PCadd;
@@ -197,8 +202,9 @@ public class Controller {
 		if (constants == 1) {
 			if (label[index].compareTo("^") == 0 || label[index].compareTo(space) == 0) {
 				noLabel = 1;
-				ErrorArr[errorindex] = "\t" + "error : No Label Defined!! '";
+				ErrorArr[errorindex] = "\t" + "*****'No Label Defined!! '*****";
 				errorindex++;
+				state = 1;
 				return 1;
 			}
 		}
@@ -239,8 +245,9 @@ public class Controller {
 			}
 			if (same != 0) {
 				flagError = 1;
-				ErrorArr[errorindex] = "\t" + "error [04] : 'duplicate label definition '";
+				ErrorArr[errorindex] = "\t" + "*****'duplicate label definition '*****";
 				errorindex++;
+				state = 1;
 			}
 		}
 		if (flagError == 0 && compare == 0) {
@@ -258,38 +265,80 @@ public class Controller {
 	public void ValidateOpcode(String opcode) {
 		int j = 0;
 		int found = 0;
+		int formaterror = 0;
+		int directiveformaterror = 0;
 
-		for (int i = 0; i < 25; i++) {
-			if (opcode.compareToIgnoreCase(opcodeList[i]) == 0) {
-				found = 1;
+		if (opcode.charAt(0) == '+') {
+			opcode = opcode.substring(1);
+			for (int i = 0; i < 25; i++) {
+				if (opcode.compareToIgnoreCase(opcodeList[i]) == 0) {
+					found = 1;
+				}
 			}
-		}
+			if (found == 1) {
+				if (opcode.equalsIgnoreCase("rmo"))
+					formaterror = 1;
+				else if (opcode.equalsIgnoreCase("subr"))
+					formaterror = 1;
+				else if (opcode.equalsIgnoreCase("comr"))
+					formaterror = 1;
+				else if (opcode.equalsIgnoreCase("tixr"))
+					formaterror = 1;
+			} else {
+				for (int i = 0; i < 9; i++) {
+					if (opcode.compareToIgnoreCase(directivesList[i]) == 0) {
+						directiveformaterror = 1;
+						found = 1;
+					}
+				}
+			}
 
-		for (int i = 0; i < 9; i++) {
-			if (opcode.compareToIgnoreCase(directivesList[i]) == 0) {
-				found = 1;
+		} else {
+
+			for (int i = 0; i < 25; i++) {
+				if (opcode.compareToIgnoreCase(opcodeList[i]) == 0) {
+					found = 1;
+				}
+			}
+
+			for (int i = 0; i < 9; i++) {
+				if (opcode.compareToIgnoreCase(directivesList[i]) == 0) {
+					found = 1;
+				}
 			}
 		}
 
 		if (found == 0) {
-			ErrorArr[errorindex] = "\t" + "error [08] : 'unrecognized operation code '";
+			ErrorArr[errorindex] = "\t" + "*****'unrecognized operation code '*****";
 			errorindex++;
+			state = 1;
+		} else if (formaterror == 1) {
+			ErrorArr[errorindex] = "\t" + "*****'can’t be format 4 instruction'*****";
+			errorindex++;
+			state = 1;
+		} else if (directiveformaterror == 1) {
+			ErrorArr[errorindex] = "\t" + "*****'illegal format in operation field'*****";
+			errorindex++;
+			state = 1;
 		}
-
 	}
 
 	public void endstatment(String opcode) {
 
 		if (!opcode.equalsIgnoreCase("end")) {
-			ErrorArr[errorindex] = "\t" + "error [13] : ' missing END statement '";
+			ErrorArr[errorindex] = "\t" + "*****' missing END statement '*****";
 			errorindex++;
+			state = 1;
 		}
 
 	}
 
 	public String ValidateOperands(String operand, String opcode, int index) {
+		if (opcode.charAt(0) == '+')
+			opcode = opcode.substring(1);
+
 		if (PC <= 0) {
-			PC = Integer.parseInt(operands[0],16);
+			PC = Integer.parseInt(operands[0], 16);
 		}
 		int foundop1 = 0;
 		int foundop2 = 0;
@@ -310,8 +359,9 @@ public class Controller {
 		if (opcode.equalsIgnoreCase("addr") || opcode.equalsIgnoreCase("subr") || opcode.equalsIgnoreCase("comr")
 				|| opcode.equalsIgnoreCase("rmo")) {
 			if (op.length == 1) {
-				ErrorArr[errorindex] = "\t" + "error [03] : 'missing or misplaced operand field '";
+				ErrorArr[errorindex] = "\t" + "*****'missing or misplaced operand field '*****";
 				errorindex++;
+				state = 1;
 			} else {
 				for (i = 0; i < registerList.length; i++) {
 					if (op[0].equalsIgnoreCase(registerList[i])) {
@@ -324,15 +374,17 @@ public class Controller {
 				}
 
 				if (foundop1 == 0 || foundop2 == 0) {
-					ErrorArr[errorindex] = "\t" + "error [12] : 'illegal address for a register '";
+					ErrorArr[errorindex] = "\t" + "*****'illegal address for a register '*****";
 					errorindex++;
+					state = 1;
 				}
 
 			}
 		} else if (opcode.equalsIgnoreCase("tixr")) {
 			if (op.length != 1) {
-				ErrorArr[errorindex] = "\t" + "error [03] : 'missing or misplaced operand field '";
+				ErrorArr[errorindex] = "\t" + "*****'missing or misplaced operand field '*****";
 				errorindex++;
+				state = 1;
 			} else {
 				for (i = 0; i < registerList.length; i++) {
 					if (operand.equalsIgnoreCase((registerList[i]))) {
@@ -341,15 +393,17 @@ public class Controller {
 
 				}
 				if (foundop1 == 0) {
-					ErrorArr[errorindex] = "\t" + "error [12] : 'illegal address for a register '";
+					ErrorArr[errorindex] = "\t" + "*****'illegal address for a register '*****";
 					errorindex++;
+					state = 1;
 				}
 			}
 
 		} else {
 			if (op.length != 1) {
-				ErrorArr[errorindex] = "\t" + "error [03] : 'missing or misplaced operand field '";
+				ErrorArr[errorindex] = "\t" + "*****'missing or misplaced operand field '*****";
 				errorindex++;
+				state = 1;
 			}
 		}
 		if (opcode.equalsIgnoreCase("RESB")) {
@@ -382,41 +436,46 @@ public class Controller {
 					}
 				}
 				if (errorI == 1) {
-					ErrorArr[errorindex] = "\t" + "error [10] : 'not a hexadecimal string''";
+					ErrorArr[errorindex] = "\t" + "*****'not a hexadecimal string'*****";
 					errorindex++;
+					state = 1;
 				}
 			}
 		}
 
 		if (opcode.equalsIgnoreCase("WORD")) {
-			if(operands[index].length() >= 5)
-			{
-				ErrorArr[errorindex] = "\t" + "'extra characters at end of statement''";
+			if (operands[index].length() >= 5) {
+				ErrorArr[errorindex] = "\t" + "*****'extra characters at end of statement'*****";
 				errorindex++;
-				flagError=1;
-			}
-			else
-			PCadd = 3;
+				state = 1;
+				flagError = 1;
+			} else
+				PCadd = 3;
 		}
 		return operand;
 	}
 
-	public void writeToFile(String label, String opcode, String operands, String Error[], int indx) {
+	public void writeToFile(String label, String opcode, String operands, String Error[], String cmnt, int indx) {
 
 		String Inst;
 		String PCcount = Integer.toHexString(PC).toUpperCase();
-		Inst = PCcount + "\t" + label + "      " + opcode + "\t\t" + operands + "\t";
+		Inst = "\t" + PCcount.replaceAll(" ", "") + "\t\t" + label.replaceAll(" ", "") + "\t\t"
+				+ opcode.replaceAll(" ", "") + "\t\t" + operands.replaceAll(" ", "") + "\t";
 
 		for (int i = 0; i < Error.length; i++) {
 			if (Error.length > 1) {
 				if (Error[i] != null) {
-					Inst = Inst + "\n" + Error[i] + "\n";
+					Inst = Inst + "\n" + Error[i];
 				}
 			} else {
 				if (Error[i] != null) {
 					Inst = Inst + "\n" + Error[i];
 				}
 			}
+		}
+
+		if (cmnt != null) {
+			Inst = "\t\t    " + cmnt + "\n" + Inst;
 		}
 
 		try {
@@ -426,8 +485,7 @@ public class Controller {
 			if (indx == 0) {
 				PrintWriter pw = new PrintWriter("ListFile.txt");
 				pw.close();
-				bw.write("  **** SIC Assembler ****");
-				bw.newLine();
+				bw.write("  **** SIC/XE Assembler ****");
 				bw.newLine();
 				bw.write(Inst);
 				bw.newLine();

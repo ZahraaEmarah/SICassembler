@@ -1,22 +1,22 @@
-  **** SIC Assembler ****
-
-	.23456789012345678
-A	PROG          START  		0A	
-A	              MUL    		4	
-	'unrecognized operation code '
-D	              LDA    		0	
-10	              ADDR   		L,X	
-	'illegal address for a register '
-13	MAR           RESW   		1	
-16	SOSO          RESB   		1	
-17	MARIAM        WORD   		2345	
-1A	              end			
+  **** SIC/XE Assembler ****
+		    
+.23456789012345678
+	A		PROG    		 START  		0A	
+	A		        		 MUL    		4	
+			*****'unrecognized operation code '*****
+	D		        		 LDA    		0	
+	10		        		 ADDR   		L,X	
+			*****'illegal address for a register '*****
+	13		MAR     		 RESW   		1	
+	16		SOSO    		 RESB   		1	
+	17		MARIAM  		 WORD   		2345	
+	1A		        		 end			
 
   **** END OF PASS 1 ****
 
   **** SYMBOL TABLE *****
-Address		Name
-	A		PROG    
-	13		MAR     
-	16		SOSO    
-	17		MARIAM  
+	Address		Name
+	A			PROG    
+	13			MAR     
+	16			SOSO    
+	17			MARIAM  
