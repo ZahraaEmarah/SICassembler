@@ -23,8 +23,10 @@ public class FixedController {
 	int PCadd;
 	int flagError;
 	String directivesList[] = { "start", "end", "byte", "word", "resw", "resb", "equ", "org", "base" };
-	String opcodeList[] = { "RMO", "LDA", "LDB", "LDX", "LDS", "LDT", "STA", "STB", "STX", "STT", "STR", "LDCH", "STCH",
-			"ADD", "SUB", "ADDR", "SUBR", "COMP", "COMR", "J", "JEQ", "JLT", "JGT", "TIX", "TIXR" };
+	String opcodeList[] = { "RMO", "LDA", "LDB", "LDX", "LDS", "LDL", "LDT", "STA", "STB", "STX", "STT", "STL", "STS",
+			"LDCH", "STCH", "ADD", "SUB", "ADDR", "SUBR", "COMP", "COMPR", "J", "JEQ", "JLT", "JGT", "TIX", "TIXR" };
+	String opcodeNumberList[] = { "18", "90", "28", "A0", "3C", "30", "34", "38", "00", "68", "50", "08", "6C", "74",
+			"04", "AC", "0C", "78", "54", "14", "7C", "84", "10", "1C", "94", "2C", "B8" };
 	int i = 0;
 	int count = 0;
 	int criticalerror = 0;
@@ -103,7 +105,7 @@ public class FixedController {
 					Opcode = Opcode + str.charAt(i);
 				}
 
-				if (i > 16 && i < str.length()) {
+				if (i > 16 && i < 34) {
 					operandsstr = operandsstr + str.charAt(i);
 				}
 
@@ -118,7 +120,7 @@ public class FixedController {
 					Opcode = Opcode + str.charAt(i);
 				}
 
-				if (i > 16 && i < str.length()) {
+				if (i > 16 && i < 34) {
 					operandsstr = operandsstr + str.charAt(i);
 				}
 
@@ -233,6 +235,8 @@ public class FixedController {
 			for (int i = 0; i < 25; i++) {
 				if (opcode.replaceAll(" ", "").compareToIgnoreCase(opcodeList[i]) == 0) {
 					found = 1;
+				} else if (opcode.replaceAll(" ", "").compareToIgnoreCase(opcodeNumberList[i]) == 0) {
+					found = 1;
 				}
 			}
 
@@ -338,7 +342,32 @@ public class FixedController {
 		opcode = opcode.substring(1);
 
 		if (PC <= 0 && criticalerror == 0) {
-			PC = Integer.parseInt(operands[0], 16);
+
+			String check = operands[0]; // checks if the first digit is 0 - 9 else ERROR
+			if (check.charAt(0) >= 'A') {
+
+				ErrorArr[errorindex] = "\t" + "*****'wrong hexadecimal format'*****";
+				errorindex++;
+			}
+			char start = '0';
+			char end = 'F';
+			int errorI = 0;
+			for (int k = 0; k < operands[0].length(); k++) {
+				char test = operands[0].charAt(k);
+				if (test < start || test > end) {
+					errorI = 1;
+				}
+			}
+
+			if (errorI == 1) {
+				ErrorArr[errorindex] = "\t" + "*****'not a hexadecimal string'*****";
+				errorindex++;
+				state = 1;
+				PC = 0; // IF THE HEXA DECIMAL IS WRONG WRITTEN THE PC COUNTER IS TURNED TO ZERO
+			} else {
+				PC = Integer.parseInt(operands[0], 16);
+			}
+
 		}
 		if (opcode.replaceAll(" ", "").equalsIgnoreCase("RESB") && criticalerror == 0) {
 			PCadd = Integer.parseInt(operands[index]);
@@ -369,6 +398,10 @@ public class FixedController {
 						errorI = 1;
 					}
 				}
+				if (temp[1].charAt(0) >= 'A') {
+					ErrorArr[errorindex] = "\t" + "*****'wrong hexadecimal format'*****";
+					errorindex++;
+				}
 				if (errorI == 1) {
 					ErrorArr[errorindex] = "\t" + "*****'not a hexadecimal string'*****";
 					errorindex++;
@@ -391,7 +424,7 @@ public class FixedController {
 		}
 		int foundop1 = 0;
 		int foundop2 = 0;
-		String registerList[] = { "A", "B", "S", "T", "X" };
+		String registerList[] = { "A", "B", "S", "T", "X", "L" };
 
 		String[] op = operand.split(",");
 		if (op.length == 1 && criticalerror == 0) {
@@ -461,6 +494,7 @@ public class FixedController {
 	public void writeToFile(String label, String opcode, String operands, String Error[], String cmnt, int indx) {
 
 		String Inst;
+
 		String PCcount = Integer.toHexString(PC).toUpperCase();
 		Inst = "\t" + PCcount + "\t\t" + label + "\t\t" + opcode + "\t\t" + operands + "\t";
 

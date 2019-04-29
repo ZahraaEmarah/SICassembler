@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .23456789012345678
 soso        ldx   100 
 ZAHRAA      addr  a,a
@@ -19,3 +20,23 @@ mayar       WORD 1245
 Test        BYTE X'FF'
 test2       BYTE X'55'
             end         
+=======
+.23456789012345678
+PROG         START   3F
+label          ORG  6
+prog1          LDR     6
+              mul   5
+PROG2          LDA   6   
+soso          ldr   5
+         ldx   100
+         addr  a,a     
+MM            RESW  1
+M             RESB  1  
+MA            RESB 2
+SO      RESW 3
+ES     BYTE C'x'  
+mayar  WORD 12345  
+Test BYTE X'FF'
+test2 BYTE X'FX'
+                     END
+>>>>>>> refs/remotes/origin/MAYAR

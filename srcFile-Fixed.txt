@@ -1,12 +1,10 @@
 .23456789012345678
-TERMPRO  START   3A0
-         comp    #3
-LBL1     BYTE    C'ABCDEF'
-LBL2     RESB    4
-LBL7     RESW    1
-TOP      LDA     ZERO
-LABEL    LDX     #INDEX
-LBL4     RESW    1
-TOP2    +LDA     ZERO
-         LDA     #INDEX
+PROG     START   0F
+         MUL     4
+         LDA     0
+         ADDR    L,X
+MAR      RESW    1
+SOSO     RESB    1
+MARIAM   WORD    2345
+HEX      BYTE    X'AA'
          end

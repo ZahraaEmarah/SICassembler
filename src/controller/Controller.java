@@ -27,8 +27,10 @@ public class Controller {
 	String wordsArr[] = { "", "", "" };
 	String lineArr[] = { "", "", "", "" };
 	String directivesList[] = { "start", "end", "byte", "word", "resw", "resb", "equ", "org", "base" };
-	String opcodeList[] = { "RMO", "LDA", "LDB", "LDX", "LDS", "LDT", "STA", "STB", "STX", "STT", "STR", "LDCH", "STCH",
-			"ADD", "SUB", "ADDR", "SUBR", "COMP", "COMR", "J", "JEQ", "JLT", "JGT", "TIX", "TIXR" };
+	String opcodeList[] = { "RMO", "LDA", "LDB", "LDX", "LDS", "LDL", "LDT", "STA", "STB", "STX", "STT", "STL", "STS",
+			"LDCH", "STCH", "ADD", "SUB", "ADDR", "SUBR", "COMP", "COMPR", "J", "JEQ", "JLT", "JGT", "TIX", "TIXR" };
+	String opcodeNumberList[] = { "18", "90", "28", "A0", "3C", "30", "34", "38", "00", "68", "50", "08", "6C", "74",
+			"04", "AC", "0C", "78", "54", "14", "7C", "84", "10", "1C", "94", "2C", "B8" };
 	int i = 0;
 	int count = 0;
 	int index = 0;
@@ -298,6 +300,8 @@ public class Controller {
 			for (int i = 0; i < 25; i++) {
 				if (opcode.compareToIgnoreCase(opcodeList[i]) == 0) {
 					found = 1;
+				} else if (opcode.compareToIgnoreCase(opcodeNumberList[i]) == 0) {
+					found = 1;
 				}
 			}
 
@@ -338,11 +342,36 @@ public class Controller {
 			opcode = opcode.substring(1);
 
 		if (PC <= 0) {
-			PC = Integer.parseInt(operands[0], 16);
+
+			String check = operands[0]; // checks if the first digit is 0 - 9 else ERROR
+			if (check.charAt(0) >= 'A') {
+				ErrorArr[errorindex] = "\t" + "*****'wrong hexadecimal format'*****";
+				errorindex++;
+			}
+
+			char start = '0';
+			char end = 'F';
+			int errorI = 0;
+			for (int k = 0; k < operands[0].length(); k++) {
+				char test = operands[0].charAt(k);
+				if (test < start || test > end) {
+					errorI = 1;
+				}
+			}
+
+			if (errorI == 1) {
+				ErrorArr[errorindex] = "\t" + "*****'not a hexadecimal string'*****";
+				errorindex++;
+				state = 1;
+				PC = 0;
+			} else {
+				PC = Integer.parseInt(operands[0], 16);
+			}
+
 		}
 		int foundop1 = 0;
 		int foundop2 = 0;
-		String registerList[] = { "A", "B", "S", "T", "X" };
+		String registerList[] = { "A", "B", "S", "T", "X", "L" };
 		if (operand == "^")
 			operand = "";
 
@@ -422,10 +451,8 @@ public class Controller {
 				while (length >= 1) {
 					if (length % 2 == 0)
 						PCadd++;
-
 					length--;
 				}
-
 				char start = '0';
 				char end = 'F';
 				int errorI = 0;
@@ -435,10 +462,16 @@ public class Controller {
 						errorI = 1;
 					}
 				}
+
 				if (errorI == 1) {
 					ErrorArr[errorindex] = "\t" + "*****'not a hexadecimal string'*****";
 					errorindex++;
 					state = 1;
+				}
+
+				if (temp[1].charAt(0) >= 'A') {
+					ErrorArr[errorindex] = "\t" + "*****'wrong hexadecimal format'*****";
+					errorindex++;
 				}
 			}
 		}

@@ -1,39 +1,73 @@
   **** SIC/XE Assembler ****
+	0				<<<<<<<		HEAD	
+	*****'unrecognized operation code '*****
+	WRONG HEXA DECIMAL!!!
+	*****'not a hexadecimal string'*****
 		    
 .23456789012345678
-	100		soso		ldx		100	
-	100		ZAHRAA		addr		a,a	
-	103				add		a	
-	106				ldx		100	
-	109				rmo		a,X	
+	0		soso		ldx		100	
+	WRONG HEXA DECIMAL!!!
+	*****'not a hexadecimal string'*****
+	3		ZAHRAA		addr		a,a	
+	6				add		a	
+	9				ldx		100	
+	C				rmo		a,X	
 		    
 .hhey man
-	10C				+comp		#5	
-	10F				comr		a,x	
-	112		MM		RESW		1	
-	115		M		RESB		1	
+	F				+comp		#5	
+	12				comr		a,x	
+	*****'unrecognized operation code '*****
+	15		MM		RESW		1	
+	18		M		RESB		1	
 		    
 .THIS IS A COMMENT LINE 
 .THIS IS A COMMENT LINE 
 .this is another comment
-	116		MA		RESB		2	
-	118		SO		RESW		3	
-	121		ES		BYTE		C'x'	
-	122		mayar		WORD		1245	
-	125		Test		BYTE		X'FF'	
-	126		test2		BYTE		X'55'	
-	127				end			
+	19		MA		RESB		2	
+	1B		SO		RESW		3	
+	24		ES		BYTE		C'x'	
+	25		mayar		WORD		1245	
+	28		Test		BYTE		X'FF'	
+	WRONG HEXA DECIMAL!!!
+	29		test2		BYTE		X'55'	
+	2A				end			
+		    
+.23456789012345678
+	2D		PROG		START		3F	
+	30		label		ORG		6	
+	*****'this statement can’t have a label '*****
+	33		prog1		LDR		6	
+	*****'unrecognized operation code '*****
+	36				mul		5	
+	*****'unrecognized operation code '*****
+	39		PROG2		LDA		6	
+	3C		soso		ldr		5	
+	*****'unrecognized operation code '*****
+	*****'duplicate label definition '*****
+	3F				ldx		100	
+	42				addr		a,a	
+	45		MM		RESW		1	
+	*****'duplicate label definition '*****
+	48		M		RESB		1	
+	*****'duplicate label definition '*****
+	49		MA		RESB		2	
+	*****'duplicate label definition '*****
+	4B		SO		RESW		3	
+	*****'duplicate label definition '*****
+	54		ES		BYTE		C'x'	
+	*****'duplicate label definition '*****
+	55		mayar		WORD		12345	
+	*****'extra characters at end of statement'*****
+	*****'duplicate label definition '*****
+	58		Test		BYTE		X'FF'	
+	WRONG HEXA DECIMAL!!!
+	*****'duplicate label definition '*****
+	59		test2		BYTE		X'FX'	
+	*****'not a hexadecimal string'*****
+	WRONG HEXA DECIMAL!!!
+	*****'duplicate label definition '*****
+	5A				END			
+	5D				>>>>>>>		refs/remotes/origin/MAYAR	
+	*****'unrecognized operation code '*****
 
   **** END OF PASS 1 ****
-****   SYMBOL TABLE   ****
-Address		Name
-	100		soso
-	100		ZAHRAA
-	112		MM
-	115		M
-	116		MA
-	118		SO
-	121		ES
-	122		mayar
-	125		Test
-	126		test2
