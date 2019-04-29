@@ -1,9 +1,10 @@
 .23456789012345678
-PROG     START   0A
+PROG     START   3F
          MUL     4
          LDA     0
          ADDR    L,X
 MAR      RESW    1
 SOSO     RESB    1
 MARIAM   WORD    2345
+HEX      BYTE    X'AA'
          end

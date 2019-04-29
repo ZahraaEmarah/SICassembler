@@ -338,6 +338,11 @@ public class Controller {
 			opcode = opcode.substring(1);
 
 		if (PC <= 0) {
+			String check = operands[0] ; //checks if the first digit is 0 - 9 else ERROR
+			if(check.charAt(0)>='A') {
+		    ErrorArr[errorindex] = "\t" + "WRONG HEXA DECIMAL!!!";
+			errorindex++;
+			}
 			PC = Integer.parseInt(operands[0], 16);
 		}
 		int foundop1 = 0;
@@ -435,6 +440,11 @@ public class Controller {
 						errorI = 1;
 					}
 				}
+				
+				if(temp[1].charAt(0)>='A') {
+				    ErrorArr[errorindex] = "\t" + "WRONG HEXA DECIMAL!!!";
+					errorindex++;
+					}
 				if (errorI == 1) {
 					ErrorArr[errorindex] = "\t" + "*****'not a hexadecimal string'*****";
 					errorindex++;

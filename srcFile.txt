@@ -1,5 +1,5 @@
 .23456789012345678
-PROG         START   20
+PROG         START   0AF
 label          ORG  6
 prog1          LDR     6
               mul   5
