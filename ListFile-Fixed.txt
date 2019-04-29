@@ -1,25 +1,25 @@
   **** SIC/XE Assembler ****
 		    
 .23456789012345678
-	3F		PROG    		 START  		3F	
-	3F		        		 MUL    		4	
+	F		PROG    		 START  		0F	
+	F		        		 MUL    		4	
 			*****'unrecognized operation code '*****
-	42		        		 LDA    		0	
-	45		        		 ADDR   		L,X	
+	12		        		 LDA    		0	
+	15		        		 ADDR   		L,X	
 			*****'illegal address for a register '*****
-	48		MAR     		 RESW   		1	
-	4B		SOSO    		 RESB   		1	
-	4C		MARIAM  		 WORD   		2345	
-	4F		HEX     		 BYTE   		X'AA'	
+	18		MAR     		 RESW   		1	
+	1B		SOSO    		 RESB   		1	
+	1C		MARIAM  		 WORD   		2345	
+	1F		HEX     		 BYTE   		X'AA'	
 			WRONG HEXA DECIMAL!!!
-	50		        		 end			
+	20		        		 end			
 
   **** END OF PASS 1 ****
 
   **** SYMBOL TABLE *****
 	Address		Name
-	3F			PROG    
-	48			MAR     
-	4B			SOSO    
-	4C			MARIAM  
-	4F			HEX     
+	F			PROG    
+	18			MAR     
+	1B			SOSO    
+	1C			MARIAM  
+	1F			HEX     

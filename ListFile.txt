@@ -1,30 +1,30 @@
   **** SIC/XE Assembler ****
 		    
 .23456789012345678
-	AF		PROG		START		0AF	
-	AF		label		ORG		6	
+	3F		PROG		START		3F	
+	3F		label		ORG		6	
 	*****'this statement can’t have a label '*****
-	B2		prog1		LDR		6	
+	42		prog1		LDR		6	
 	*****'unrecognized operation code '*****
-	B5				mul		5	
+	45				mul		5	
 	*****'unrecognized operation code '*****
-	B8		PROG2		LDA		6	
-	BB		soso		ldr		5	
+	48		PROG2		LDA		6	
+	4B		soso		ldr		5	
 	*****'unrecognized operation code '*****
-	BE				ldx		100	
-	C1				addr		a,a	
-	C4		MM		RESW		1	
-	C7		M		RESB		1	
-	C8		MA		RESB		2	
-	CA		SO		RESW		3	
-	D3		ES		BYTE		C'x'	
-	D4		mayar		WORD		12345	
+	4E				ldx		100	
+	51				addr		a,a	
+	54		MM		RESW		1	
+	57		M		RESB		1	
+	58		MA		RESB		2	
+	5A		SO		RESW		3	
+	63		ES		BYTE		C'x'	
+	64		mayar		WORD		12345	
 	*****'extra characters at end of statement'*****
-	D7		Test		BYTE		X'FF'	
+	67		Test		BYTE		X'FF'	
 	WRONG HEXA DECIMAL!!!
-	D8		test2		BYTE		X'FX'	
-	WRONG HEXA DECIMAL!!!
+	68		test2		BYTE		X'FX'	
 	*****'not a hexadecimal string'*****
-	D9				END			
+	WRONG HEXA DECIMAL!!!
+	69				END			
 
   **** END OF PASS 1 ****

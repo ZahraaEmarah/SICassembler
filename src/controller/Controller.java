@@ -338,12 +338,34 @@ public class Controller {
 			opcode = opcode.substring(1);
 
 		if (PC <= 0) {
+			
 			String check = operands[0] ; //checks if the first digit is 0 - 9 else ERROR
 			if(check.charAt(0)>='A') {
 		    ErrorArr[errorindex] = "\t" + "WRONG HEXA DECIMAL!!!";
 			errorindex++;
 			}
-			PC = Integer.parseInt(operands[0], 16);
+			
+			char start = '0';
+			char end = 'F';
+			int errorI = 0;
+			for (int k = 0; k < operands[0].length(); k++) {
+				char test = operands[0].charAt(k);
+				if (test < start || test > end) {
+					errorI = 1;
+				}
+			}
+			
+			if (errorI == 1) {
+				ErrorArr[errorindex] = "\t" + "*****'not a hexadecimal string'*****";
+				errorindex++;
+				state = 1;
+				PC = 0;
+			}
+			else
+			{
+				PC = Integer.parseInt(operands[0], 16);
+			}
+			
 		}
 		int foundop1 = 0;
 		int foundop2 = 0;
@@ -427,10 +449,8 @@ public class Controller {
 				while (length >= 1) {
 					if (length % 2 == 0)
 						PCadd++;
-
 					length--;
 				}
-
 				char start = '0';
 				char end = 'F';
 				int errorI = 0;
@@ -441,15 +461,16 @@ public class Controller {
 					}
 				}
 				
-				if(temp[1].charAt(0)>='A') {
-				    ErrorArr[errorindex] = "\t" + "WRONG HEXA DECIMAL!!!";
-					errorindex++;
-					}
 				if (errorI == 1) {
 					ErrorArr[errorindex] = "\t" + "*****'not a hexadecimal string'*****";
 					errorindex++;
 					state = 1;
 				}
+
+				if(temp[1].charAt(0)>='A') {
+				    ErrorArr[errorindex] = "\t" + "WRONG HEXA DECIMAL!!!";
+					errorindex++;
+					}
 			}
 		}
 

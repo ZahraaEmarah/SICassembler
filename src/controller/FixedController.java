@@ -338,13 +338,34 @@ public class FixedController {
 		opcode = opcode.substring(1);
 
 		if (PC <= 0 && criticalerror == 0) {
+		
 			String check = operands[0] ; //checks if the first digit is 0 - 9 else ERROR
 			if(check.charAt(0)>='A' ) {
 				
 		    ErrorArr[errorindex] = "\t" + "WRONG HEXA DECIMAL!!!";
 			errorindex++;	
 			}
-			PC = Integer.parseInt(operands[0], 16);
+			char start = '0';
+			char end = 'F';
+			int errorI = 0;
+			for (int k = 0; k < operands[0].length(); k++) {
+				char test = operands[0].charAt(k);
+				if (test < start || test > end) {
+					errorI = 1;
+				}
+			}
+			
+			if (errorI == 1) {
+				ErrorArr[errorindex] = "\t" + "*****'not a hexadecimal string'*****";
+				errorindex++;
+				state = 1;
+				PC =0;  //IF THE HEXA DECIMAL IS WRONG WRITTEN THE PC COUNTER IS TURNED TO ZERO
+			}
+			else
+			{
+				PC = Integer.parseInt(operands[0], 16);
+			}
+			
 		}
 		if (opcode.replaceAll(" ", "").equalsIgnoreCase("RESB") && criticalerror == 0) {
 			PCadd = Integer.parseInt(operands[index]);
@@ -471,6 +492,7 @@ public class FixedController {
 	public void writeToFile(String label, String opcode, String operands, String Error[], String cmnt, int indx) {
 
 		String Inst;
+		
 		String PCcount = Integer.toHexString(PC).toUpperCase();
 		Inst = "\t" + PCcount + "\t\t" + label + "\t\t" + opcode + "\t\t" + operands + "\t";
 
