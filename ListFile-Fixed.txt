@@ -1,17 +1,17 @@
   **** SIC/XE Assembler ****
-		    
-.23456789012345678
-	F		PROG    		 START  		0F	
-	F		        		 MUL    		4	
+	F		PROG    		 START 		0F	
+	F		        		 MUL   		4  	
 			*****'unrecognized operation code '*****
-	12		        		 LDA    		0	
-	15		        		 ADDR   		L,X	
-	18		MAR     		 RESW   		1	
-	1B		SOSO    		 RESB   		1	
-	1C		MARIAM  		 WORD   		2345	
-	1F		HEX     		 BYTE   		X'AA'	
+	12		        		LDA    		 	
+			*****'unrecognized operation code '*****
+		    .this is a comment
+	15		        		 ADDR  		L,X               	
+	18		MAR     		 RESW  		1	
+	1B		SOSO    		 RESB  		1	
+	1C		MARIAM  		 WORD  		2345	
+	1F		HEX     		 BYTE  		X'AA'	
 			*****'wrong hexadecimal format'*****
-	20		        		 end			
+	20		        		 END			
 
   **** END OF PASS 1 ****
 

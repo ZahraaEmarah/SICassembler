@@ -14,7 +14,7 @@ public class FixedController {
 	String Label[] = new String[1000];
 	String opCode[] = new String[1000];
 	String operands[] = new String[1000];
-	String ErrorArr[] = new String[5];
+	String ErrorArr[] = new String[1000];
 	String comment[] = new String[1000];
 	int PC;
 	String Labels[] = new String[100];
@@ -94,41 +94,47 @@ public class FixedController {
 		String Labelstr = "";
 		String Opcode = "";
 		String operandsstr = "";
+		String commnt = null;
 
-		if (str.length() > 17 && str.charAt(16) == ' ') {
+		System.out.println(str.length());
+
+		if (str.length() > 17) { /// Instruction might have a label, an opcode, operands and a comment
 			for (int i = 0; i < str.length(); i++) {
+
 				if (i < 8) {
 					Labelstr = Labelstr + str.charAt(i);
 				}
 
-				if (i >= 8 && i < 16) {
+				if (i >= 8 && i < 15) {
 					Opcode = Opcode + str.charAt(i);
 				}
 
-				if (i > 16 && i < 34) {
+				if (i > 16 && i < 35 && i < str.length()) {
 					operandsstr = operandsstr + str.charAt(i);
 				}
-
+				if (i >= 35 && i <= 66) {
+					if (commnt != null)
+						commnt = commnt + str.charAt(i);
+					else {
+						commnt = "" + str.charAt(i);
+					}
+				}
 			}
-		} else if (str.length() < 16) {
+		} else if (str.length() < 16) { /// Instruction doesn't have neither operands nor a comment
 			for (int i = 0; i < str.length(); i++) {
 				if (i < 8) {
 					Labelstr = Labelstr + str.charAt(i);
 				}
 
-				if (i >= 8 && i < 16) {
+				if (i >= 8 && i < 15) {
 					Opcode = Opcode + str.charAt(i);
 				}
-
-				if (i > 16 && i < 34) {
-					operandsstr = operandsstr + str.charAt(i);
-				}
-
 			}
 		}
 		Label[index] = Labelstr;
 		opCode[index] = Opcode;
 		operands[index] = operandsstr;
+		comment[index] = commnt;
 		index++;
 	}
 
@@ -185,10 +191,13 @@ public class FixedController {
 
 			}
 			ValidateOpcode(opcodeArr[i]);
-			operandsArr[i] = ValidateOperands(operandsArr[i], opcodeArr[i], i);
+
+			if (operandsArr[i] != null)
+				operandsArr[i] = ValidateOperands(operandsArr[i], opcodeArr[i], i);
+
 			compare = ValidateLabel(labelarr, index, i);
 			writeToFile(labelarr[i], opcodeArr[i], operandsArr[i], ErrorArr, comment[i], i);
-			ErrorArr = new String[50];
+			ErrorArr = new String[1000];
 			errorindex = 0;
 			PC = PC + PCadd;
 			PCadd = 3;
@@ -234,8 +243,6 @@ public class FixedController {
 
 			for (int i = 0; i < 25; i++) {
 				if (opcode.replaceAll(" ", "").compareToIgnoreCase(opcodeList[i]) == 0) {
-					found = 1;
-				} else if (opcode.replaceAll(" ", "").compareToIgnoreCase(opcodeNumberList[i]) == 0) {
 					found = 1;
 				}
 			}

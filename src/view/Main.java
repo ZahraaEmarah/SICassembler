@@ -93,5 +93,6 @@ public class Main {
 		else {
 			freelabel.setText("INCOMPLETE ASSEMBLY");
 		}
+
 	}
 }

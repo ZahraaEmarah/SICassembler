@@ -1,12 +1,12 @@
   **** SIC/XE Assembler ****
 	0				<<<<<<<		HEAD	
 	*****'unrecognized operation code '*****
-	WRONG HEXA DECIMAL!!!
+	*****'wrong hexadecimal format'*****
 	*****'not a hexadecimal string'*****
 		    
 .23456789012345678
 	0		soso		ldx		100	
-	WRONG HEXA DECIMAL!!!
+	*****'wrong hexadecimal format'*****
 	*****'not a hexadecimal string'*****
 	3		ZAHRAA		addr		a,a	
 	6				add		a	
@@ -28,7 +28,7 @@
 	24		ES		BYTE		C'x'	
 	25		mayar		WORD		1245	
 	28		Test		BYTE		X'FF'	
-	WRONG HEXA DECIMAL!!!
+	*****'wrong hexadecimal format'*****
 	29		test2		BYTE		X'55'	
 	2A				end			
 		    
@@ -60,11 +60,11 @@
 	*****'extra characters at end of statement'*****
 	*****'duplicate label definition '*****
 	58		Test		BYTE		X'FF'	
-	WRONG HEXA DECIMAL!!!
+	*****'wrong hexadecimal format'*****
 	*****'duplicate label definition '*****
 	59		test2		BYTE		X'FX'	
 	*****'not a hexadecimal string'*****
-	WRONG HEXA DECIMAL!!!
+	*****'wrong hexadecimal format'*****
 	*****'duplicate label definition '*****
 	5A				END			
 	5D				>>>>>>>		refs/remotes/origin/MAYAR	
