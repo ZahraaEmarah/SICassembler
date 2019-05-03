@@ -17,6 +17,9 @@ public class Controller {
 	String operands[] = new String[1000];
 	String comment[] = new String[1000];
 	String ErrorArr[] = new String[5];
+	HeaderRecord header = new HeaderRecord();
+	TextRecord text = new TextRecord();
+	EndRecord end = new EndRecord();
 	// For the symbol table
 	String Labels[] = new String[100];
 	String PCS[] = new String[100];
@@ -55,7 +58,6 @@ public class Controller {
 
 			reader = new BufferedReader(new FileReader("srcFile.txt"));
 			String line = reader.readLine();
-
 			while (line != null) {
 
 				if (line.replaceAll(" ", "").startsWith(".")) {
@@ -71,7 +73,6 @@ public class Controller {
 					input = new Scanner(line);
 
 					while (input.hasNext()) {
-
 						String word = input.next();
 						lineArr[count] = word;
 						count = count + 1;
@@ -97,6 +98,7 @@ public class Controller {
 				System.out.println("Opcode Array " + opCode[i]);
 				System.out.println("operands Array " + operands[i]);
 			}
+			header.ProgName = Label[0]; 
 			ValidateInstruction(Label, opCode, operands);
 
 		} catch (FileNotFoundException e) {
@@ -186,6 +188,7 @@ public class Controller {
 			compare = ValidateLabel(labelarr, index, i);
 
 			writeToFile(labelarr[i], opcodeArr[i], operandsArr[i], ErrorArr, comment[i], i);
+			
 			ErrorArr = new String[50];
 			errorindex = 0;
 			PC = PC + PCadd;
@@ -367,7 +370,9 @@ public class Controller {
 			} else {
 				PC = Integer.parseInt(operands[0], 16);
 			}
-
+			header.PCstart = PC;
+			System.out.println(header.PCstart + "START");
+			
 		}
 		int foundop1 = 0;
 		int foundop2 = 0;
@@ -514,7 +519,6 @@ public class Controller {
 		try {
 			BufferedWriter bw = new BufferedWriter(new FileWriter(new File("ListFile.txt"), true));
 			System.out.println(Inst);
-
 			if (indx == 0) {
 				PrintWriter pw = new PrintWriter("ListFile.txt");
 				pw.close();
@@ -529,12 +533,15 @@ public class Controller {
 			}
 
 			if (indx + 1 == index) {
+				header.PCend = PC;
 				bw.newLine();
 				bw.write("  **** END OF PASS 1 ****");
 				// End of pass then write the Symbol Table
 				bw.newLine();
 				if (flagError == 0) {
 					bw.write("****   SYMBOL TABLE   ****");
+					header.WriteToFile(PCcount);
+					System.out.println("GO WRITE");
 					bw.newLine();
 					Inst = "Address" + "\t\t" + "Name";
 					bw.write(Inst);
