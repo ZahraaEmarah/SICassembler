@@ -46,7 +46,7 @@ public class Main {
 	 */
 	private void initialize() {
 
-		 f = new Controller();
+		f = new Controller();
 		f.ReadFile();
 
 		fix = new FixedController();
@@ -93,5 +93,6 @@ public class Main {
 		else {
 			freelabel.setText("INCOMPLETE ASSEMBLY");
 		}
+
 	}
 }
