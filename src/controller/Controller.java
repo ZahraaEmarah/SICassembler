@@ -534,14 +534,18 @@ public class Controller {
 
 			if (indx + 1 == index) {
 				header.PCend = PC;
+				
 				bw.newLine();
 				bw.write("  **** END OF PASS 1 ****");
 				// End of pass then write the Symbol Table
 				bw.newLine();
 				if (flagError == 0) {
 					bw.write("****   SYMBOL TABLE   ****");
-					header.WriteToFile(PCcount);
-					System.out.println("GO WRITE");
+					if(state ==0) {
+						header.WriteToFile(PCcount);
+						end.WriteToFile(Integer.toHexString(header.PCstart).toUpperCase());
+					}
+					
 					bw.newLine();
 					Inst = "Address" + "\t\t" + "Name";
 					bw.write(Inst);

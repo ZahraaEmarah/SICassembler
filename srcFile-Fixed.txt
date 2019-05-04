@@ -1,5 +1,5 @@
 .23456789012345678
-PROG     START   0F
+PROGRAME START   0F
          MUL     4
          LDA     0
          ADDR    L,X

@@ -26,7 +26,7 @@ public class HeaderRecord extends PhaseTwo{
 			String PCcount = Integer.toHexString(PCend).toUpperCase(); //Convert the ending of Object code to hexa STRING
 			int temp = ProgName.length();
 			String l = 'H'+ProgName;
-			while(temp<5) {
+			while(temp<8) {
 				l = l+' ';
 				temp++;
 			}

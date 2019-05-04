@@ -1,5 +1,5 @@
   **** SIC/XE Assembler ****
-	F		PROG    		 START 		0F	
+	F		PROGRAME		 START 		0F	
 	F		        		 MUL   		4	
 			*****'unrecognized operation code '*****
 	12		        		 LDA   		0	
@@ -15,7 +15,7 @@
 
   **** SYMBOL TABLE *****
 	Address		Name
-	F			PROG    
+	F			PROGRAME
 	18			MAR     
 	1B			SOSO    
 	1C			MARIAM  
