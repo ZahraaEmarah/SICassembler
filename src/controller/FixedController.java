@@ -518,7 +518,7 @@ public class FixedController {
 		}
 
 		if (cmnt != null) {
-			Inst = "\t\t    " + cmnt + "\n" + Inst;
+			Inst = "\t\t " + cmnt + "\n" + Inst;
 		}
 
 		try {

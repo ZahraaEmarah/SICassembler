@@ -1,10 +1,10 @@
 .23456789012345678921234567893123456
 PROG     START   0F
-         MUL     4  
-        LDA     0 
-         ADDR    L,X               .this is a comment
+         ADD     4  
+         LDA     #0 
+         rmo     L,X                .this is a comment
 MAR      RESW    1
 SOSO     RESB    1
 MARIAM   WORD    2345
-HEX      BYTE    X'AA'
+HEX      BYTE    X'0AA'
          END

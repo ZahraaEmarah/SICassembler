@@ -1,73 +1,30 @@
   **** SIC/XE Assembler ****
-	0				<<<<<<<		HEAD	
-	*****'unrecognized operation code '*****
-	*****'wrong hexadecimal format'*****
-	*****'not a hexadecimal string'*****
 		    
 .23456789012345678
-	0		soso		ldx		100	
-	*****'wrong hexadecimal format'*****
-	*****'not a hexadecimal string'*****
-	3		ZAHRAA		addr		a,a	
-	6				add		a	
-	9				ldx		100	
-	C				rmo		a,X	
-		    
-.hhey man
-	F				+comp		#5	
-	12				comr		a,x	
-	*****'unrecognized operation code '*****
-	15		MM		RESW		1	
-	18		M		RESB		1	
-		    
-.THIS IS A COMMENT LINE 
-.THIS IS A COMMENT LINE 
-.this is another comment
-	19		MA		RESB		2	
-	1B		SO		RESW		3	
-	24		ES		BYTE		C'x'	
-	25		mayar		WORD		1245	
-	28		Test		BYTE		X'FF'	
-	*****'wrong hexadecimal format'*****
-	29		test2		BYTE		X'55'	
-	2A				end			
-		    
-.23456789012345678
-	2D		PROG		START		3F	
-	30		label		ORG		6	
+	3F		PROG		START		3F	
+	3F		label		ORG		6	
 	*****'this statement can’t have a label '*****
-	33		prog1		LDR		6	
+	42		prog1		LDR		6	
 	*****'unrecognized operation code '*****
-	36				mul		5	
+	45				mul		5	
 	*****'unrecognized operation code '*****
-	39		PROG2		LDA		6	
-	3C		soso		ldr		5	
+	48		PROG2		LDA		6	
+	4B		soso		ldr		5	
 	*****'unrecognized operation code '*****
-	*****'duplicate label definition '*****
-	3F				ldx		100	
-	42				addr		a,a	
-	45		MM		RESW		1	
-	*****'duplicate label definition '*****
-	48		M		RESB		1	
-	*****'duplicate label definition '*****
-	49		MA		RESB		2	
-	*****'duplicate label definition '*****
-	4B		SO		RESW		3	
-	*****'duplicate label definition '*****
-	54		ES		BYTE		C'x'	
-	*****'duplicate label definition '*****
-	55		mayar		WORD		12345	
+	4E				ldx		100	
+	51				addr		a,a	
+	54		MM		RESW		1	
+	57		M		RESB		1	
+	58		MA		RESB		2	
+	5A		SO		RESW		3	
+	63		ES		BYTE		C'x'	
+	64		mayar		WORD		12345	
 	*****'extra characters at end of statement'*****
-	*****'duplicate label definition '*****
-	58		Test		BYTE		X'FF'	
+	67		Test		BYTE		X'FF'	
 	*****'wrong hexadecimal format'*****
-	*****'duplicate label definition '*****
-	59		test2		BYTE		X'FX'	
+	68		test2		BYTE		X'FX'	
 	*****'not a hexadecimal string'*****
 	*****'wrong hexadecimal format'*****
-	*****'duplicate label definition '*****
-	5A				END			
-	5D				>>>>>>>		refs/remotes/origin/MAYAR	
-	*****'unrecognized operation code '*****
+	69				END			
 
   **** END OF PASS 1 ****
