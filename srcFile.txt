@@ -1,18 +1,6 @@
 .23456789012345678
-PROG         START   3F
-label          ORG  6
-prog1          LDR     6
-              mul   5
-PROG2          LDA   6   
-soso          ldr   5
-         ldx   100
-         addr  a,a     
-MM            RESW  1
-M             RESB  1  
-MA            RESB 2
-SO      RESW 3
-ES     BYTE C'x'  
-mayar  WORD 12345  
-Test BYTE X'FF'
-test2 BYTE X'FX'
-                     END
+PROG         START   3F   
+             ADD     5
+             ADDR    S,T
+             SUB     8
+             END

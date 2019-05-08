@@ -1,10 +1,8 @@
   **** SIC/XE Assembler ****
-	F		PROG    		 START 		0F	
-	F		        		 ADD   		4  	
-	12		        		 LDA   		#0 	
-		  .this is a comment
-	15		        		 r mo  		L,X               	
-			*****'missing or misplaced operation mnemonic '*****
+	F		PROGRAME		 START 		0F	
+	F		        		 ADD   		4	
+	12		        		 LDA   		0	
+	15		        		 ADDR  		L,X	
 	18		MAR     		 RESW  		1	
 	1B		SOSO    		 RESB  		1	
 	1C		MARIAM  		 WORD  		2345	
@@ -15,7 +13,7 @@
 
   **** SYMBOL TABLE *****
 	Address		Name
-	F			PROG    
+	F			PROGRAME
 	18			MAR     
 	1B			SOSO    
 	1C			MARIAM  

@@ -2,29 +2,12 @@
 		    
 .23456789012345678
 	3F		PROG		START		3F	
-	3F		label		ORG		6	
-	*****'this statement can’t have a label '*****
-	42		prog1		LDR		6	
-	*****'unrecognized operation code '*****
-	45				mul		5	
-	*****'unrecognized operation code '*****
-	48		PROG2		LDA		6	
-	4B		soso		ldr		5	
-	*****'unrecognized operation code '*****
-	4E				ldx		100	
-	51				addr		a,a	
-	54		MM		RESW		1	
-	57		M		RESB		1	
-	58		MA		RESB		2	
-	5A		SO		RESW		3	
-	63		ES		BYTE		C'x'	
-	64		mayar		WORD		12345	
-	*****'extra characters at end of statement'*****
-	67		Test		BYTE		X'FF'	
-	*****'wrong hexadecimal format'*****
-	68		test2		BYTE		X'FX'	
-	*****'not a hexadecimal string'*****
-	*****'wrong hexadecimal format'*****
-	69				END			
+	3F				ADD		5	
+	42				ADDR		S,T	
+	45				SUB		8	
+	48				END			
 
   **** END OF PASS 1 ****
+****   SYMBOL TABLE   ****
+Address		Name
+	3F		PROG

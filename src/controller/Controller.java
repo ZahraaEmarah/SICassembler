@@ -17,6 +17,9 @@ public class Controller {
 	String operands[] = new String[1000];
 	String comment[] = new String[1000];
 	String ErrorArr[] = new String[5];
+	HeaderRecord header = new HeaderRecord();
+	TextRecord text = new TextRecord();
+	EndRecord end = new EndRecord();
 	// For the symbol table
 	String Labels[] = new String[100];
 	String PCS[] = new String[100];
@@ -55,7 +58,6 @@ public class Controller {
 
 			reader = new BufferedReader(new FileReader("srcFile.txt"));
 			String line = reader.readLine();
-
 			while (line != null) {
 
 				if (line.replaceAll(" ", "").startsWith(".")) {
@@ -71,7 +73,6 @@ public class Controller {
 					input = new Scanner(line);
 
 					while (input.hasNext()) {
-
 						String word = input.next();
 						lineArr[count] = word;
 						count = count + 1;
@@ -91,12 +92,15 @@ public class Controller {
 			}
 
 			reader.close();
+
 			for (int i = 0; i < index; i++) {
 				System.out.println("comments Array " + comment[i]);
 				System.out.println("Label Array " + Label[i]);
 				System.out.println("Opcode Array " + opCode[i]);
-				System.out.println("operands Array " + operands[i]);
+				System.out.println("operandsArray " + operands[i]);
 			}
+
+			header.ProgName = Label[0];
 			ValidateInstruction(Label, opCode, operands);
 
 		} catch (FileNotFoundException e) {
@@ -186,6 +190,7 @@ public class Controller {
 			compare = ValidateLabel(labelarr, index, i);
 
 			writeToFile(labelarr[i], opcodeArr[i], operandsArr[i], ErrorArr, comment[i], i);
+
 			ErrorArr = new String[50];
 			errorindex = 0;
 			PC = PC + PCadd;
@@ -223,7 +228,7 @@ public class Controller {
 					Labels[symbol] = label[index];
 					PCS[symbol] = Integer.toHexString(PC).toUpperCase();
 
-					System.out.println(label[index] + PCS[symbol]);
+					// System.out.println(label[index] + PCS[symbol]);
 					symbol++;
 				}
 				return compare;
@@ -240,8 +245,8 @@ public class Controller {
 					if (Label[i].equalsIgnoreCase(label[j]) && compare1 != 0 && compare2 != 0) {
 						if (test.compareTo(label[i]) == 0)
 							same++;
-						System.out.println("Repeated Elements are :");
-						System.out.println(label[i]);
+						// System.out.println("Repeated Elements are :");
+						// System.out.println(label[i]);
 					}
 				}
 			}
@@ -257,7 +262,7 @@ public class Controller {
 			Labels[symbol] = label[index];
 			PCS[symbol] = Integer.toHexString(PC).toUpperCase();
 			;
-			System.out.println(PC);
+			// System.out.println(PC);
 			symbol++;
 		}
 		noLabel = 0;
@@ -368,19 +373,23 @@ public class Controller {
 				PC = Integer.parseInt(operands[0], 16);
 			}
 
+			header.PCstart = PC;
+			text.PCstart = PC;
+			// System.out.println(header.PCstart + "START");
+
 		}
 		int foundop1 = 0;
 		int foundop2 = 0;
 		String registerList[] = { "A", "B", "S", "T", "X", "L" };
 		if (operand == "^")
-			operand = "";
+			operand = "   ";
 
 		String[] op = operand.split(",");
 		if (op.length == 1) {
 			String operand1 = op[0];
-			System.out.println("ONE");
+			// System.out.println("ONE");
 		} else {
-			System.out.println("TWO");
+			// System.out.println("TWO");
 			String operand2 = op[1];
 			String operand1 = op[0];
 		}
@@ -488,12 +497,12 @@ public class Controller {
 		return operand;
 	}
 
-	public void writeToFile(String label, String opcode, String operands, String Error[], String cmnt, int indx) {
+	public void writeToFile(String label, String opcode, String operand, String Error[], String cmnt, int indx) {
 
 		String Inst;
 		String PCcount = Integer.toHexString(PC).toUpperCase();
 		Inst = "\t" + PCcount.replaceAll(" ", "") + "\t\t" + label.replaceAll(" ", "") + "\t\t"
-				+ opcode.replaceAll(" ", "") + "\t\t" + operands.replaceAll(" ", "") + "\t";
+				+ opcode.replaceAll(" ", "") + "\t\t" + operand.replaceAll(" ", "") + "\t";
 
 		for (int i = 0; i < Error.length; i++) {
 			if (Error.length > 1) {
@@ -513,8 +522,7 @@ public class Controller {
 
 		try {
 			BufferedWriter bw = new BufferedWriter(new FileWriter(new File("ListFile.txt"), true));
-			System.out.println(Inst);
-
+			// System.out.println(Inst);
 			if (indx == 0) {
 				PrintWriter pw = new PrintWriter("ListFile.txt");
 				pw.close();
@@ -529,12 +537,20 @@ public class Controller {
 			}
 
 			if (indx + 1 == index) {
+				header.PCend = PC;
+
 				bw.newLine();
 				bw.write("  **** END OF PASS 1 ****");
 				// End of pass then write the Symbol Table
 				bw.newLine();
 				if (flagError == 0) {
 					bw.write("****   SYMBOL TABLE   ****");
+					if (state == 0) {
+						header.WriteToFile(PCcount);
+						text.WriteText(opCode, operands, index);
+						end.WriteToFile(Integer.toHexString(header.PCstart).toUpperCase());
+					}
+
 					bw.newLine();
 					Inst = "Address" + "\t\t" + "Name";
 					bw.write(Inst);
