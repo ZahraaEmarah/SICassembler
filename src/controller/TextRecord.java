@@ -41,6 +41,7 @@ public class TextRecord extends PhaseTwo {
 
 			for (int j = 0; j < OPTAB.length; j++) // OPCODE
 			{
+				opcodearr[i] = opcodearr[i].replaceAll("+", "");
 				if (opcodearr[i].equalsIgnoreCase(OPTAB[j][0])) {
 					record = record + OPTAB[j][1]; /// first 8 bits
 					record = record + OperandConversion(operandarr[i]);
@@ -63,14 +64,30 @@ public class TextRecord extends PhaseTwo {
 		String[] str = op.split(",");
 		String output = "";
 		if (str.length > 1) {
+
+			str[0].replaceAll("@", "");
+			str[0].replaceAll("#", "");
+			str[1].replaceAll("@", "");
+			str[1].replaceAll("#", "");
+
 			for (int i = 0; i < REGTAB.length; i++) {
 				if (str[0].equalsIgnoreCase(REGTAB[i][0])) {
 					output = output + REGTAB[i][1];
 				}
 			}
-
 			for (int i = 0; i < REGTAB.length; i++) {
 				if (str[1].equalsIgnoreCase(REGTAB[i][0])) {
+					output = output + REGTAB[i][1];
+				}
+			}
+
+		} else if (str.length == 1) {
+
+			str[0].replaceAll("@", "");
+			str[0].replaceAll("#", "");
+
+			for (int i = 0; i < REGTAB.length; i++) {
+				if (str[0].equalsIgnoreCase(REGTAB[i][0])) {
 					output = output + REGTAB[i][1];
 				}
 			}
