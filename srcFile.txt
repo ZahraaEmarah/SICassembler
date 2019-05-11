@@ -1,11 +1,6 @@
 .23456789012345678
 PROG         START   3F   
-MM            RESW  1
-M             RESB  1  
-MA            RESB 2
-SO      RESW 3
-ES     BYTE C'x'  
-mayar  WORD 123  
-Test BYTE X'FF'
-test2 BYTE X'F'
+             LDA     L
+             ADDR    X,L
+Maya         WORD    100
                      END

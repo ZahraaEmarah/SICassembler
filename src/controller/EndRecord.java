@@ -5,11 +5,12 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class EndRecord extends PhaseTwo{
+public class EndRecord extends PhaseTwo {
 	String PCstart;
-	EndRecord(){
+
+	EndRecord() {
 		try {
-			obj= new BufferedWriter(new FileWriter(new File("OBJFILE.txt"), true));
+			obj = new BufferedWriter(new FileWriter(new File("OBJFILE.txt"), true));
 		} catch (IOException e) {
 			System.out.println("FILE NOT FOUND!!!!!!");
 		}
@@ -21,26 +22,25 @@ public class EndRecord extends PhaseTwo{
 		PCstart = line;
 		int length = PCstart.length();
 		String l = new String();
-		l ="E";
-		while(length<5)
-		{
-			l=l+"0";
+		l = "E";
+		while (length < 5) {
+			l = l + "0";
 			length++;
 		}
-		l=l+PCstart;
+		l = l + PCstart;
 		try {
-			if(l!=null) {
-	    	obj.newLine();
-			obj.write(l);
-			obj.close();
+			if (l != null) {
+				obj.newLine();
+				obj.write(l);
+				obj.close();
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
-		
+
 	}
+
+
 
 }

@@ -2,27 +2,13 @@
 		    
 .23456789012345678
 	3F		PROG		START		3F	
-	3F		MM		RESW		1	
-	42		M		RESB		1	
-	43		MA		RESB		2	
-	45		SO		RESW		3	
-	4E		ES		BYTE		C'x'	
-	4F		mayar		WORD		123	
-	52		Test		BYTE		X'FF'	
-	*****'wrong hexadecimal format'*****
-	53		test2		BYTE		X'F'	
-	*****'wrong hexadecimal format'*****
-	53				END			
+	3F				LDA		L	
+	42				ADDR		X,L	
+	45		Maya		WORD		100	
+	48				END			
 
   **** END OF PASS 1 ****
 ****   SYMBOL TABLE   ****
 Address		Name
 	3F		PROG
-	3F		MM
-	42		M
-	43		MA
-	45		SO
-	4E		ES
-	4F		mayar
-	52		Test
-	53		test2
+	45		Maya
