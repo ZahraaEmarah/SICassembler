@@ -3,4 +3,6 @@ PROG         START   3F
              LDA     L
              ADDR    X,L
 Maya         WORD    100
+by           BYTE    C'mayaris'
+te           BYTE    X'FA1000'
                      END

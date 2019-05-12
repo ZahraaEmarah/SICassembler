@@ -56,6 +56,40 @@ public class TextRecord extends PhaseTwo {
 				System.out.println(record);
 				P = P +3;
 			}
+			if(opcodearr[i].equalsIgnoreCase("BYTE"))
+			{
+				Character check = operandarr[i].charAt(0);
+				String[] temp = operandarr[i].split("'");
+				if(check == 'C')
+				{
+					P = P + temp[1].length() ;
+					record = record + Integer.toString(temp[1].length());
+					int length = temp[1].length();
+					int te=0;
+					length--;
+					while(length >=0)
+					{
+						char ch = temp[1].charAt(te);
+						int ascii = (int) ch;
+						length--;
+						te++;
+						record = record +Integer.toHexString(ascii).toUpperCase() ;
+					}
+				}
+				else
+				{
+					int length = temp[1].length();
+					int size =0;
+					while (length >= 1) {
+						if (length % 2 == 0) {
+							P++;
+							size++;
+					}
+						length--;
+					}
+					record = record + Integer.toString(size) + temp[1] ; 
+				}
+			}
 			for (int j = 0; j < OPTAB.length; j++) // OPCODE
 			{
 				
