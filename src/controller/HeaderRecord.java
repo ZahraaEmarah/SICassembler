@@ -53,10 +53,4 @@ public class HeaderRecord extends PhaseTwo {
 
 	}
 
-	@Override
-	public void WriteText(String[] opcodearr, String[] operands, int count) {
-		// TODO Auto-generated method stub
-
-	}
-
 }

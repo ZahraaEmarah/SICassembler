@@ -5,9 +5,3 @@
 	3F				ADD		5	
 	42				ADDR		S,T	
 	45				SUB		8	
-	48				END			
-
-  **** END OF PASS 1 ****
-****   SYMBOL TABLE   ****
-Address		Name
-	3F		PROG

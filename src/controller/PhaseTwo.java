@@ -8,6 +8,4 @@ public abstract class PhaseTwo {
 
 	public abstract void WriteToFile(String line);
 
-	public abstract void WriteText(String opcodearr[], String operands[], int count);
-
 }

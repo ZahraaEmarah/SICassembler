@@ -30,7 +30,6 @@ public class TextRecord extends PhaseTwo {
 
 	}
 
-	@Override
 	public void WriteText(String[] opcodearr, String[] operandarr, int count) {
 		// TODO Auto-generated method stub
 		record = record + Integer.toHexString(PCstart).toUpperCase();
