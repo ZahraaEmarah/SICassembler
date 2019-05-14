@@ -40,7 +40,6 @@ public class TextRecord extends PhaseTwo {
 
 			for (int j = 0; j < OPTAB.length; j++) // OPCODE
 			{
-				opcodearr[i] = opcodearr[i].replaceAll("+", "");
 				if (opcodearr[i].equalsIgnoreCase(OPTAB[j][0])) {
 					record = record + OPTAB[j][1]; /// first 8 bits
 					record = record + OperandConversion(operandarr[i]);
