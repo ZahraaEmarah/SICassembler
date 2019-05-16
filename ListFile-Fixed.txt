@@ -2,7 +2,7 @@
 	F		PROGRAME		 START 		0F	
 	F		        		 ADD   		4	
 	12		        		 LDA   		0	
-	15		        		 ADDR  		L,X	
+	15		        		 ADDR  		L,S	
 	18		MAR     		 RESW  		1	
 	1B		SOSO    		 RESB  		1	
 	1C		MARIAM  		 WORD  		2345	

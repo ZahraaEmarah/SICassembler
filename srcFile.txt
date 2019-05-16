@@ -1,6 +1,12 @@
 .23456789012345678
 PROG         START   3F   
              ADD     5
-             ADDR    S,T
+              ADDR    S,T
              SUB     8
              END
+              LDA     L
+             ADDR    X,L
+Maya          WORD    100
+by           BYTE    C'mayaris'
+te           BYTE    X'FA1000'
+                     END

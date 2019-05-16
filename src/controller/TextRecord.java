@@ -26,35 +26,90 @@ public class TextRecord extends PhaseTwo {
 	}
 
 	public void WriteToFile(String line) {
-		// TODO Auto-generated method stub
 
 	}
 
 	public void WriteText(String[] opcodearr, String[] operandarr, int count) {
 		// TODO Auto-generated method stub
-		record = record + Integer.toHexString(PCstart).toUpperCase();
+
 		String opcode;
 		String x;
 		String operands;
-		for (int i = 0; i < count; i++) {
+		int P = PCstart;
+		for (int i = 1; i < count - 1; i++) { // STARTS FROM (1) BECAUSE FIRST OPERAND IS (START) -- ENDS AT COUNT -1
+												// BECAUSE LAST OPERAND IS (END)
+			String PC = Integer.toHexString(P).toUpperCase();
+			int len = PC.length();
 
+			while (len < 7) { // ZERO PADDING
+				record = record + "0";
+				len++;
+			}
+
+			record = record + Integer.toHexString(P).toUpperCase();
+
+			if (opcodearr[i].equalsIgnoreCase("WORD")) {
+				int temp = Integer.parseInt(operandarr[i]);
+				record = record + "03" + Integer.toHexString(temp).toUpperCase();
+				System.out.println(record);
+				P = P + 3;
+			}
+			if (opcodearr[i].equalsIgnoreCase("BYTE")) {
+				Character check = operandarr[i].charAt(0);
+				String[] temp = operandarr[i].split("'");
+				if (check == 'C') {
+					P = P + temp[1].length();
+					record = record + Integer.toString(temp[1].length());
+					int length = temp[1].length();
+					int te = 0;
+					length--;
+					while (length >= 0) {
+						char ch = temp[1].charAt(te);
+						int ascii = (int) ch;
+						length--;
+						te++;
+						record = record + Integer.toHexString(ascii).toUpperCase();
+					}
+				} else {
+					int length = temp[1].length();
+					int size = 0;
+					while (length >= 1) {
+						if (length % 2 == 0) {
+							P++;
+							size++;
+						}
+						length--;
+					}
+					record = record + Integer.toString(size) + temp[1];
+				}
+			}
 			for (int j = 0; j < OPTAB.length; j++) // OPCODE
 			{
+
 				if (opcodearr[i].equalsIgnoreCase(OPTAB[j][0])) {
-					record = record + OPTAB[j][1]; /// first 8 bits
+					P = P + 3; // CALCULATE THE PC
+					record = record + "03" + OPTAB[j][1]; /// first 8 bits
 					record = record + OperandConversion(operandarr[i]);
 				}
 			}
+			try {
+				obj.newLine();
+				obj.write(record);
+
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			record = "T";
+			len = 0;
 		}
+
 		try {
-			obj.newLine();
-			obj.write(record);
 			obj.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 	}
 
 	public String OperandConversion(String op) {

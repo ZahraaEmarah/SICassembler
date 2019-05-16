@@ -6,8 +6,18 @@
 	42				ADDR		S,T	
 	45				SUB		8	
 	48				END			
+	4B				LDA		L	
+	4E				ADDR		X,L	
+	51		Maya		WORD		100	
+	54		by		BYTE		C'mayaris'	
+	5B		te		BYTE		X'FA1000'	
+	*****'wrong hexadecimal format'*****
+	5E				END			
 
   **** END OF PASS 1 ****
 ****   SYMBOL TABLE   ****
 Address		Name
 	3F		PROG
+	51		Maya
+	54		by
+	5B		te
