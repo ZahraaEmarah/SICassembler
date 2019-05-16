@@ -16,6 +16,9 @@ public class FixedController {
 	String operands[] = new String[1000];
 	String ErrorArr[] = new String[1000];
 	String comment[] = new String[1000];
+	HeaderRecord header = new HeaderRecord("OBJFILEFIXED.txt");
+	TextRecord text = new TextRecord("OBJFILEFIXED.txt");
+	EndRecord end = new EndRecord("OBJFILEFIXED.txt");
 	int PC;
 	String Labels[] = new String[100];
 	String PCS[] = new String[100];
@@ -78,6 +81,7 @@ public class FixedController {
 				System.out.println("operands Array " + operands[i]);
 			}
 
+			header.ProgName = Label[0];
 			ValidateInstruction(Label, opCode, operands);
 
 		} catch (FileNotFoundException e) {
@@ -374,6 +378,8 @@ public class FixedController {
 			} else {
 				PC = Integer.parseInt(operands[0], 16);
 			}
+			header.PCstart = PC;
+			text.PCstart = PC;
 
 		}
 		if (opcode.replaceAll(" ", "").equalsIgnoreCase("RESB") && criticalerror == 0) {
@@ -395,6 +401,7 @@ public class FixedController {
 
 					length--;
 				}
+				
 
 				char start = '0';
 				char end = 'F';
@@ -416,6 +423,8 @@ public class FixedController {
 				}
 			}
 		}
+
+		
 
 		if (opcode.replaceAll(" ", "").equalsIgnoreCase("WORD")) {
 			// PCadd = 3;
@@ -498,12 +507,12 @@ public class FixedController {
 		return operand;
 	}
 
-	public void writeToFile(String label, String opcode, String operands, String Error[], String cmnt, int indx) {
+	public void writeToFile(String label, String opcode, String operand, String Error[], String cmnt, int indx) {
 
 		String Inst;
 
 		String PCcount = Integer.toHexString(PC).toUpperCase();
-		Inst = "\t" + PCcount + "\t\t" + label + "\t\t" + opcode + "\t\t" + operands + "\t";
+		Inst = "\t" + PCcount + "\t\t" + label + "\t\t" + opcode + "\t\t" + operand + "\t";
 
 		for (int i = 0; i < Error.length; i++) {
 			if (Error.length > 1) {
@@ -518,7 +527,7 @@ public class FixedController {
 		}
 
 		if (cmnt != null) {
-			Inst = "\t\t    " + cmnt + "\n" + Inst;
+			Inst = "\t\t " + cmnt + "\n" + Inst;
 		}
 
 		try {
@@ -539,6 +548,9 @@ public class FixedController {
 			}
 
 			if (indx + 1 == index) {
+
+				header.PCend = PC;
+
 				bw.newLine();
 				bw.write("  **** END OF PASS 1 ****");
 				// End of pass then write the Symbol Table
@@ -546,6 +558,7 @@ public class FixedController {
 				if (flagError == 0) {
 					bw.write("\n" + "  **** SYMBOL TABLE *****");
 					bw.newLine();
+					
 					Inst = "\t" + "Address" + "\t\t" + "Name";
 					bw.write(Inst);
 					bw.newLine();
@@ -553,6 +566,11 @@ public class FixedController {
 						Inst = "\t" + PCS[i] + "\t\t\t" + Labels[i];
 						bw.write(Inst);
 						bw.newLine();
+					}
+					if (state == 0) {
+						header.WriteToFile(PCcount);
+						text.WriteText(opCode, operands, index); 
+						end.WriteToFile(Integer.toHexString(header.PCstart).toUpperCase());
 					}
 				}
 			}

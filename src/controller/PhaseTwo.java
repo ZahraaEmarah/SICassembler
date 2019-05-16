@@ -8,6 +8,4 @@ public abstract class PhaseTwo {
 
 	public abstract void WriteToFile(String line);
 
-	
-
 }

@@ -17,9 +17,9 @@ public class TextRecord extends PhaseTwo {
 	int PCstart;
 	String record = "T";
 
-	TextRecord() {
+	TextRecord(String filename) {
 		try {
-			obj = new BufferedWriter(new FileWriter(new File("OBJFILE.txt"), true));
+			obj = new BufferedWriter(new FileWriter(new File(filename), true));
 		} catch (IOException e) {
 			System.out.println("FILE NOT FOUND!!!!!!");
 		}
@@ -37,11 +37,15 @@ public class TextRecord extends PhaseTwo {
 		String x;
 		String operands;
 		int P = PCstart;
+		
 	for (int i = 1; i < count-1; i++) { //STARTS FROM (1) BECAUSE FIRST OPERAND IS (START) -- ENDS AT COUNT -1 BECAUSE LAST OPERAND IS (END)
+		  String[] t = opcodearr[i].split(" ");
+		  if(t.length==2)
+		  opcodearr[i] = t[1];
+		  else
+			  opcodearr[i] = t[0];
 			String PC = Integer.toHexString(P).toUpperCase();
 			int len = PC.length();
-			
-			
 			while(len < 7) { //ZERO PADDING 
 				record = record+ "0";
 				len++;
@@ -49,13 +53,18 @@ public class TextRecord extends PhaseTwo {
 			
 			record = record + Integer.toHexString(P).toUpperCase();
 			
+			if(opcodearr[i].equalsIgnoreCase("RESW")|| opcodearr[i].equalsIgnoreCase("RESB"))
+				i++;
+			
 			if(opcodearr[i].equalsIgnoreCase("WORD"))
-			{	
-				int temp = Integer.parseInt(operandarr[i]);
-				record = record + "03" + Integer.toHexString(temp).toUpperCase();
-				System.out.println(record);
+			{
+		
+				int tem = Integer.parseInt(operandarr[i]);
+				record = record + "03" + Integer.toHexString(tem).toUpperCase();
+				
 				P = P +3;
 			}
+			
 			if(opcodearr[i].equalsIgnoreCase("BYTE"))
 			{
 				Character check = operandarr[i].charAt(0);
@@ -93,8 +102,13 @@ public class TextRecord extends PhaseTwo {
 			for (int j = 0; j < OPTAB.length; j++) // OPCODE
 			{
 				
-
-				if (opcodearr[i].equalsIgnoreCase(OPTAB[j][0])) {
+				if (opcodearr[i].equals(OPTAB[j][0])) {
+					P = P +3 ; //CALCULATE THE PC 
+					record = record + "03"+ OPTAB[j][1]; /// first 8 bits
+					record = record + OperandConversion(operandarr[i]);
+				}
+				
+				else if (opcodearr[i].equalsIgnoreCase(OPTAB[j][0])) {
 					P = P +3 ; //CALCULATE THE PC 
 					record = record + "03"+ OPTAB[j][1]; /// first 8 bits
 					record = record + OperandConversion(operandarr[i]);

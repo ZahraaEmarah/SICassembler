@@ -1,22 +1,18 @@
   **** SIC/XE Assembler ****
 	F		PROGRAME		 START 		0F	
-	F		        		 MUL   		4	
-			*****'unrecognized operation code '*****
-	12		        		 LDA   		0	
-	15		        		 ADDR  		L,X	
-	18		MAR     		 RESW  		1	
-	1B		SOSO    		 RESB  		1	
-	1C		MARIAM  		 WORD  		2345	
-	1F		HEX     		 BYTE  		X'AA'	
-			*****'wrong hexadecimal format'*****
-	20		        		 end			
+	F		        		 ADDR  		L,X	
+	12		MAR     		 RESW  		1	
+	15		SOSO    		 RESB  		1	
+	16		MAYAR   		 WORD  		1234	
+	19		HEX     		 BYTE  		X'0A'	
+	1A		        		 end			
 
   **** END OF PASS 1 ****
 
   **** SYMBOL TABLE *****
 	Address		Name
 	F			PROGRAME
-	18			MAR     
-	1B			SOSO    
-	1C			MARIAM  
-	1F			HEX     
+	12			MAR     
+	15			SOSO    
+	16			MAYAR   
+	19			HEX     

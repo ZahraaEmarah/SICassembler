@@ -1,19 +1,19 @@
   **** SIC/XE Assembler ****
 		    
 .23456789012345678
-	3F		PROG		START		3F	
-	3F				LDA		L	
-	42				ADDR		X,L	
-	45		Maya		WORD		100	
-	48		by		BYTE		C'mayaris'	
-	4F		te		BYTE		X'FA1000'	
-	*****'wrong hexadecimal format'*****
-	52				END			
+	F		PROGRAME		START		0F	
+	F				ADDR		L,X	
+	12		MAR		RESW		1	
+	15		SOSO		RESB		1	
+	16		MAYAR		WORD		1234	
+	19		HEX		BYTE		X'0A'	
+	1A				end			
 
   **** END OF PASS 1 ****
 ****   SYMBOL TABLE   ****
 Address		Name
-	3F		PROG
-	45		Maya
-	48		by
-	4F		te
+	F		PROGRAME
+	12		MAR
+	15		SOSO
+	16		MAYAR
+	19		HEX

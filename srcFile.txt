@@ -1,8 +1,8 @@
 .23456789012345678
-PROG         START   3F   
-             LDA     L
-             ADDR    X,L
-Maya         WORD    100
-by           BYTE    C'mayaris'
-te           BYTE    X'FA1000'
-                     END
+PROGRAME START   0F
+         ADDR    L,X
+MAR      RESW    1
+SOSO     RESB    1
+MAYAR    WORD    1234
+HEX      BYTE    X'0A'
+         end

@@ -8,9 +8,9 @@ import java.io.IOException;
 public class EndRecord extends PhaseTwo {
 	String PCstart;
 
-	EndRecord() {
+	EndRecord(String filename) {
 		try {
-			obj = new BufferedWriter(new FileWriter(new File("OBJFILE.txt"), true));
+			obj = new BufferedWriter(new FileWriter(new File(filename), true));
 		} catch (IOException e) {
 			System.out.println("FILE NOT FOUND!!!!!!");
 		}
@@ -40,7 +40,4 @@ public class EndRecord extends PhaseTwo {
 		}
 
 	}
-
-
-
 }

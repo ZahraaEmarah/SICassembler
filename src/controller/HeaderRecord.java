@@ -11,9 +11,9 @@ public class HeaderRecord extends PhaseTwo {
 	int PCend;
 	String space = new String();
 
-	HeaderRecord() {
+	HeaderRecord(String filename) {
 		try {
-			obj = new BufferedWriter(new FileWriter(new File("OBJFILE.txt"), false));
+			obj = new BufferedWriter(new FileWriter(new File(filename), false));
 		} catch (IOException e) {
 			System.out.println("FILE NOT FOUND!!!!!!");
 		}
@@ -52,7 +52,5 @@ public class HeaderRecord extends PhaseTwo {
 		}
 
 	}
-
-
 
 }
