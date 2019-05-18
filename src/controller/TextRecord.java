@@ -133,6 +133,9 @@ public class TextRecord extends PhaseTwo {
 					output = output + REGTAB[i][1];
 				}
 			}
+			for (int i = 0; i < 10; i++) {
+
+			}
 
 		} else if (str.length == 1) {
 

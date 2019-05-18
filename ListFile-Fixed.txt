@@ -7,7 +7,9 @@
 	1B		SOSO    		 RESB  		1	
 	1C		MARIAM  		 WORD  		2345	
 	1F		HEX     		 BYTE  		X'0AA'	
-	20		        		 END			
+	20		        		 org   		0	
+			'this statement can’t have a label '
+	23		        		 END			
 
   **** END OF PASS 1 ****
 

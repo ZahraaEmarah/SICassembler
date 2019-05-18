@@ -7,4 +7,5 @@ MAR      RESW    1
 SOSO     RESB    1
 MARIAM   WORD    2345
 HEX      BYTE    X'0AA'
+         org     0
          END
