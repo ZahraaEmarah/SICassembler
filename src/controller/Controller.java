@@ -28,6 +28,7 @@ public class Controller {
 	int symbol;
 	int PC;
 	int PCadd;
+	int obj = 0;
 	int flagError;
 	String wordsArr[] = { "", "", "" };
 	String lineArr[] = { "", "", "", "" };
@@ -45,6 +46,7 @@ public class Controller {
 	int constants = 0;
 	int commentflag = 0;
 	public int state = 0;
+	int PCnew = -1;
 
 	public void ReadFile() {
 		symbol = 0;
@@ -198,8 +200,12 @@ public class Controller {
 			errorindex = 0;
 			if (opcodeArr[i].equalsIgnoreCase("EQU"))
 				PCadd = 0;
-			PC = PC + PCadd;
+			if (PCnew == -1)
+				PC = PC + PCadd;
+			else
+				PC = PCnew;
 			PCadd = 3;
+			PCnew = -1;
 			constants = 0;
 		}
 	}
@@ -233,6 +239,7 @@ public class Controller {
 					Labels[symbol] = label[index];
 					PCS[symbol] = Integer.toHexString(PC).toUpperCase();
 					symbol++;
+
 				}
 				return compare;
 			}
@@ -384,17 +391,24 @@ public class Controller {
 		}
 		if (opcode.equalsIgnoreCase("ORG")) {
 			int l = 0;
+			int newADD = -1;
+
 			while (l < symbol) {
+
 				if (operand.equalsIgnoreCase(Labels[l])) {
-					header.PCnewstart = Integer.parseInt(PCS[l]) - 1;
-					break;
+					newADD = Integer.parseInt(PCS[l], 16);
+					System.out.println(newADD + "MAYARRRR");
+					l = symbol;
 				}
 				l++;
 			}
-			if (l == symbol)
-				header.PCnewstart = Integer.parseInt(operand) - 1;
-			if (header.PCnewstart < 0)
-				header.PCnewstart++;
+			if (newADD == -1) {
+				newADD = Integer.parseInt(operand, 16);
+				System.out.println(newADD + "MAYARRRR");
+			}
+
+			PCnew = newADD;
+			System.out.println(PCadd + "MAYARRRR");
 		}
 
 		if (opcode.equalsIgnoreCase("EQU")) {
@@ -545,8 +559,10 @@ public class Controller {
 
 		String Inst;
 		String PCcount = Integer.toHexString(PC).toUpperCase();
-		Inst = "\t" + PCcount.replaceAll(" ", "") + "\t\t" + label.replaceAll(" ", "") + "\t\t"
-				+ opcode.replaceAll(" ", "") + "\t\t" + operand.replaceAll(" ", "") + "\t";
+		text.objPC[obj] = PC;
+		obj++;
+		Inst = "\t" + PCcount.replaceAll(" ", "") + "\t" + label.replaceAll(" ", "") + "\t" + opcode.replaceAll(" ", "")
+				+ "\t" + operand.replaceAll(" ", "") + "\t";
 
 		for (int i = 0; i < Error.length; i++) {
 			if (Error.length > 1) {
@@ -561,7 +577,7 @@ public class Controller {
 		}
 
 		if (cmnt != null) {
-			Inst = "\t\t    " + cmnt + "\n" + Inst;
+			Inst = "\t    " + cmnt + "\n" + Inst;
 		}
 
 		try {
@@ -591,11 +607,11 @@ public class Controller {
 					bw.write("****   SYMBOL TABLE   ****");
 
 					bw.newLine();
-					Inst = "Address" + "\t\t" + "Name";
+					Inst = "Address" + "\t" + "Name";
 					bw.write(Inst);
 					bw.newLine();
 					for (int i = 0; i < symbol; i++) {
-						Inst = "\t" + PCS[i] + "\t\t" + Labels[i];
+						Inst = "\t" + PCS[i] + "\t" + Labels[i];
 						bw.write(Inst);
 						bw.newLine();
 					}

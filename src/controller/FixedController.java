@@ -26,6 +26,9 @@ public class FixedController {
 	String PCS[] = new String[100];
 	int symbol;
 	int PCadd;
+	int PCnew = -1;
+	int objPC[] = new int[100];
+	int obj = 0;
 	int flagError;
 	String directivesList[] = { "start", "end", "byte", "word", "resw", "resb", "equ", "org", "base" };
 	String opcodeList[] = { "RMO", "LDA", "LDB", "LDX", "LDS", "LDL", "LDT", "STA", "STB", "STX", "STT", "STL", "STS",
@@ -205,8 +208,12 @@ public class FixedController {
 			errorindex = 0;
 			if (opcodeArr[i].equalsIgnoreCase("EQU"))
 				PCadd = 0;
-			PC = PC + PCadd;
+			if (PCnew == -1)
+				PC = PC + PCadd;
+			else
+				PC = PCnew;
 			PCadd = 3;
+			PCnew = -1;
 			constants = 0;
 		}
 	}
@@ -387,17 +394,25 @@ public class FixedController {
 
 		if (opcode.equalsIgnoreCase("ORG")) {
 			int l = 0;
+			int newADD = -1;
+
 			while (l < symbol) {
+
 				if (operand.equalsIgnoreCase(Labels[l])) {
-					header.PCnewstart = Integer.parseInt(PCS[l]) - 1;
-					break;
+					newADD = Integer.parseInt(PCS[l], 16);
+					System.out.println(newADD + "MAYARRRR");
+					l = symbol;
 				}
+
 				l++;
 			}
-			if (l == symbol)
-				header.PCnewstart = Integer.parseInt(operand) - 1;
-			if (header.PCnewstart < 0)
-				header.PCnewstart++;
+			if (newADD == -1) {
+				newADD = Integer.parseInt(operand, 16);
+				System.out.println(newADD + "MAYARRRR");
+			}
+
+			PCnew = newADD;
+			System.out.println(PCadd + "MAYARRRR");
 		}
 		if (opcode.equalsIgnoreCase("EQU")) {
 			int l = 0;
@@ -540,22 +555,24 @@ public class FixedController {
 		String Inst;
 
 		String PCcount = Integer.toHexString(PC).toUpperCase();
-		Inst = "\t" + PCcount + "\t\t" + label + "\t\t" + opcode + "\t\t" + operand + "\t";
+		text.objPC[obj] = PC;
+		obj++;
+		Inst = "\t" + PCcount + "\t" + label + "\t" + opcode + "\t" + operand + "\t";
 
 		for (int i = 0; i < Error.length; i++) {
 			if (Error.length > 1) {
 				if (Error[i] != null) {
-					Inst = Inst + "\n" + "\t\t" + Error[i];
+					Inst = Inst + "\n" + "\t" + Error[i];
 				}
 			} else {
 				if (Error[i] != null) {
-					Inst = Inst + "\n" + "\t\t" + Error[i];
+					Inst = Inst + "\n" + "\t" + Error[i];
 				}
 			}
 		}
 
 		if (cmnt != null) {
-			Inst = "\t\t " + cmnt + "\n" + Inst;
+			Inst = "\t " + cmnt + "\n" + Inst;
 		}
 
 		try {
@@ -588,11 +605,11 @@ public class FixedController {
 				if (flagError == 0) {
 					bw.write("\n" + "  **** SYMBOL TABLE *****");
 					bw.newLine();
-					Inst = "\t" + "Address" + "\t\t" + "Name";
+					Inst = "\t" + "Address" + "\t" + "Name";
 					bw.write(Inst);
 					bw.newLine();
 					for (int i = 0; i < symbol; i++) {
-						Inst = "\t" + PCS[i] + "\t\t\t" + Labels[i];
+						Inst = "\t" + PCS[i] + "\t\t" + Labels[i];
 						bw.write(Inst);
 						bw.newLine();
 					}

@@ -16,6 +16,7 @@ public class TextRecord extends PhaseTwo {
 	String REGTAB[][] = { { "A", "0" }, { "X", "1" }, { "L", "2" }, { "B", "3" }, { "S", "4" }, { "T", "5" } };
 	int PCstart;
 	String record = "T";
+	int objPC[] = new int[100];
 
 	TextRecord(String filename) {
 		try {
@@ -46,7 +47,8 @@ if (opcodearr[i].equalsIgnoreCase("RESW") || opcodearr[i].equalsIgnoreCase("RESB
 				opcodearr[i] = t[1];
 			else
 				opcodearr[i] = t[0];
-			String PC = Integer.toHexString(P).toUpperCase();
+			String PC = Integer.toHexString(objPC[i]).toUpperCase();
+			
 			int len = PC.length();
 
 			while (len < 7) { // ZERO PADDING
@@ -54,20 +56,19 @@ if (opcodearr[i].equalsIgnoreCase("RESW") || opcodearr[i].equalsIgnoreCase("RESB
 				len++;
 			}
 
-			record = record + Integer.toHexString(P).toUpperCase();
+			record = record + Integer.toHexString(objPC[i]).toUpperCase();
 			for (int j = 0; j < OPTAB.length; j++) // OPCODE
 			{
 if (opcodearr[i].equalsIgnoreCase("RESW") || opcodearr[i].equalsIgnoreCase("RESB")||opcodearr[i].equalsIgnoreCase("BASE")||opcodearr[i].equalsIgnoreCase("EQU")||opcodearr[i].equalsIgnoreCase("ORG"))
 			i++;
 
 				if (opcodearr[i].equals(OPTAB[j][0])) {
-					P = P + 3; // CALCULATE THE PC
-					record = record + "03" + OPTAB[j][1]; /// first 8 bits
+										record = record + "03" + OPTAB[j][1]; /// first 8 bits
 					record = record + OperandConversion(operandarr[i], L, PPC, symbol);
 				}
 
 				else if (opcodearr[i].equalsIgnoreCase(OPTAB[j][0])) {
-					P = P + 3; // CALCULATE THE PC
+				 // CALCULATE THE PC
 					record = record + "03" + OPTAB[j][1]; /// first 8 bits
 					record = record + OperandConversion(operandarr[i], L, PPC, symbol);
 				}
@@ -80,7 +81,7 @@ if (opcodearr[i].equalsIgnoreCase("RESW") || opcodearr[i].equalsIgnoreCase("RESB
 				int tem = Integer.parseInt(operandarr[i]);
 				record = record + "03" + Integer.toHexString(tem).toUpperCase();
 
-				P = P + 3;
+			
 
 			}
 
@@ -88,7 +89,7 @@ if (opcodearr[i].equalsIgnoreCase("RESW") || opcodearr[i].equalsIgnoreCase("RESB
 				Character check = operandarr[i].charAt(0);
 				String[] temp = operandarr[i].split("'");
 				if (check == 'C') {
-					P = P + temp[1].length();
+				
 					record = record + Integer.toString(temp[1].length());
 					int length = temp[1].length();
 					int te = 0;
@@ -105,7 +106,7 @@ if (opcodearr[i].equalsIgnoreCase("RESW") || opcodearr[i].equalsIgnoreCase("RESB
 					int size = 0;
 					while (length >= 1) {
 						if (length % 2 == 0) {
-							P++;
+							
 							size++;
 						}
 						length--;

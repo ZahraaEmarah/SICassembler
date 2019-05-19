@@ -1,7 +1,7 @@
   **** SIC/XE Assembler ****
-	9		PROG		START		9	
-	9				ADDR		T,S	
-	C				END			
+	0		PROG		START		0	
+	0				ADD		6	
+	3				END			
 
   **** END OF PASS 1 ****
 ****   SYMBOL TABLE   ****

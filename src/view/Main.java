@@ -166,6 +166,9 @@ public class Main {
 		JButton btnAssemble = new JButton("Assemble");
 		btnAssemble.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				textArea_1.setText("");
+				textArea_2.setText("");
+
 				if (rdbtnFixedform.isSelected()) {
 					fix = new FixedController();
 					fix.TakeFromGUI(textArea);

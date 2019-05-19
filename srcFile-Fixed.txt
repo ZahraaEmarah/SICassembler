@@ -1,5 +1,13 @@
 .23456789012345678
+<<<<<<< HEAD
 PROG     START   0
          ADD     5
          ADDR    S,T
          END
+=======
+PROG     START   0
+MAR      RESW    1
+MAYAR    WORD    1234
+HEX      BYTE    X'0A'
+         end
+>>>>>>> refs/remotes/origin/MAYAR
