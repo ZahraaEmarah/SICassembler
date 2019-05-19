@@ -38,6 +38,5 @@ public class EndRecord extends PhaseTwo {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 	}
 }

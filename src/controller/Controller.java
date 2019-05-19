@@ -173,7 +173,8 @@ public class Controller {
 
 			errorindex = 0;
 
-			if (opCode[i].equalsIgnoreCase("org") || opCode[i].equalsIgnoreCase("base")) {
+			if ((opCode[i].equalsIgnoreCase("org") || opCode[i].equalsIgnoreCase("base"))
+					&& labelarr[i].equalsIgnoreCase(space)) {
 				ErrorArr[errorindex] = "\t" + "*****'this statement can’t have a label '*****";
 				errorindex++;
 				compare = 1;
@@ -186,13 +187,15 @@ public class Controller {
 			}
 
 			ValidateOpcode(opcodeArr[i]);
-			operandsArr[i] = ValidateOperands(operandsArr[i], opcodeArr[i], i);
 			compare = ValidateLabel(labelarr, index, i);
+			operandsArr[i] = ValidateOperands(operandsArr[i], opcodeArr[i], i);
 
 			writeToFile(labelarr[i], opcodeArr[i], operandsArr[i], ErrorArr, comment[i], i);
 
 			ErrorArr = new String[50];
 			errorindex = 0;
+			if (opcodeArr[i].equalsIgnoreCase("EQU"))
+				PCadd = 0;
 			PC = PC + PCadd;
 			PCadd = 3;
 			constants = 0;
@@ -227,8 +230,6 @@ public class Controller {
 
 					Labels[symbol] = label[index];
 					PCS[symbol] = Integer.toHexString(PC).toUpperCase();
-
-					
 					symbol++;
 				}
 				return compare;
@@ -261,10 +262,12 @@ public class Controller {
 
 			Labels[symbol] = label[index];
 			PCS[symbol] = Integer.toHexString(PC).toUpperCase();
-			
+
 			symbol++;
 		}
+
 		noLabel = 0;
+
 		return compare;
 	}
 
@@ -372,11 +375,40 @@ public class Controller {
 				PC = Integer.parseInt(operands[0], 16);
 			}
 
-			header.PCstart = PC;
+			header.PCstart = header.PCnewstart = PC;
 			text.PCstart = PC;
 			// System.out.println(header.PCstart + "START");
 
 		}
+		if (opcode.equalsIgnoreCase("ORG")) {
+			int l = 0;
+			while (l < symbol) {
+				if (operand.equalsIgnoreCase(Labels[l])) {
+					header.PCnewstart = Integer.parseInt(PCS[l]) - 1;
+					break;
+				}
+				l++;
+			}
+			if (l == symbol)
+				header.PCnewstart = Integer.parseInt(operand) - 1;
+			if (header.PCnewstart < 0)
+				header.PCnewstart++;
+		}
+
+		if (opcode.equalsIgnoreCase("EQU")) {
+			int l = 0;
+			while (l < symbol) {
+				if (operand.equalsIgnoreCase(Labels[l])) {
+					PCS[index] = PCS[l];
+					break;
+				}
+				l++;
+			}
+			if (l == symbol)
+				PCS[index] = operand;
+
+		}
+
 		int foundop1 = 0;
 		int foundop2 = 0;
 		String registerList[] = { "A", "B", "S", "T", "X", "L" };
@@ -391,6 +423,7 @@ public class Controller {
 			// System.out.println("TWO");
 			String operand2 = op[1];
 			String operand1 = op[0];
+
 		}
 
 		if (opcode.equalsIgnoreCase("addr") || opcode.equalsIgnoreCase("subr") || opcode.equalsIgnoreCase("comr")
@@ -493,6 +526,16 @@ public class Controller {
 			} else
 				PCadd = 3;
 		}
+		if (opcode.equalsIgnoreCase("ORG")) {
+			if (operands[index].length() >= 5) {
+				ErrorArr[errorindex] = "\t" + "*****'extra characters at end of statement'*****";
+				errorindex++;
+				state = 1;
+				flagError = 1;
+			} else
+				PCadd = 3;
+		}
+
 		return operand;
 	}
 
@@ -544,7 +587,6 @@ public class Controller {
 				bw.newLine();
 				if (flagError == 0) {
 					bw.write("****   SYMBOL TABLE   ****");
-				
 
 					bw.newLine();
 					Inst = "Address" + "\t\t" + "Name";
@@ -557,7 +599,7 @@ public class Controller {
 					}
 					if (state == 0) {
 						header.WriteToFile(PCcount);
-						text.WriteText(opCode, operands, index);
+						text.WriteText(opCode, operands, index, Labels, PCS, symbol);
 						end.WriteToFile(Integer.toHexString(header.PCstart).toUpperCase());
 					}
 				}

@@ -1,8 +1,12 @@
 package view;
 
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -10,6 +14,7 @@ import javax.swing.SwingConstants;
 
 import controller.Controller;
 import controller.FixedController;
+import memory.AdjacencyMatrix;
 
 public class Main {
 
@@ -56,34 +61,53 @@ public class Main {
 		
 
 		frame = new JFrame();
-		frame.setBounds(100, 100, 341, 248);
+		frame.setBounds(100, 100, 977, 617);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
 		JPanel panel = new JPanel();
-		panel.setBounds(0, 0, 325, 209);
+		panel.setBackground(new Color(0, 128, 128));
+		panel.setBounds(0, 0, 961, 578);
 		frame.getContentPane().add(panel);
 		panel.setLayout(null);
 
 		JLabel fixedlabel = new JLabel("");
+		fixedlabel.setForeground(new Color(255, 255, 224));
 		fixedlabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		fixedlabel.setHorizontalAlignment(SwingConstants.CENTER);
 		fixedlabel.setBounds(64, 45, 195, 46);
 		panel.add(fixedlabel);
 
 		JLabel lblFixedForm = new JLabel("Fixed Form :");
+		lblFixedForm.setForeground(new Color(255, 255, 224));
 		lblFixedForm.setBounds(10, 11, 112, 29);
 		panel.add(lblFixedForm);
 
 		JLabel lblFreeForm = new JLabel("Free Form :");
+		lblFreeForm.setForeground(new Color(255, 255, 224));
 		lblFreeForm.setBounds(10, 102, 112, 29);
 		panel.add(lblFreeForm);
 
 		JLabel freelabel = new JLabel("");
+		freelabel.setForeground(new Color(255, 255, 224));
 		freelabel.setHorizontalAlignment(SwingConstants.CENTER);
 		freelabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		freelabel.setBounds(64, 139, 195, 46);
 		panel.add(freelabel);
+
+		AdjacencyMatrix m = new AdjacencyMatrix();
+
+		JButton btnNewButton = new JButton("Dump memory contents");
+		btnNewButton.setBackground(new Color(192, 192, 192));
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				m.print();
+				m.makeLocation(5, 5, 9);
+				m.print();
+			}
+		});
+		btnNewButton.setBounds(10, 532, 305, 35);
+		panel.add(btnNewButton);
 
 		if (fix.state == 0)
 			fixedlabel.setText("SUCCESSFUL ASSEMBLY");

@@ -180,8 +180,8 @@ public class FixedController {
 
 			errorindex = 0;
 
-			if (opCode[i].replaceAll(" ", "").equalsIgnoreCase("org")
-					|| opCode[i].replaceAll(" ", "").equalsIgnoreCase("base")) {
+			if ((opCode[i].replaceAll(" ", "").equalsIgnoreCase("org")
+					|| opCode[i].replaceAll(" ", "").equalsIgnoreCase("base"))&&labelarr[i].equalsIgnoreCase(space)) {
 				ErrorArr[errorindex] = "\t" + "'this statement can’t have a label '";
 				errorindex++;
 				state = 1;
@@ -195,14 +195,13 @@ public class FixedController {
 
 			}
 			ValidateOpcode(opcodeArr[i]);
-
+			compare = ValidateLabel(labelarr, index, i);
 			if (operandsArr[i] != null)
 				operandsArr[i] = ValidateOperands(operandsArr[i], opcodeArr[i], i);
-
-			compare = ValidateLabel(labelarr, index, i);
 			writeToFile(labelarr[i], opcodeArr[i], operandsArr[i], ErrorArr, comment[i], i);
 			ErrorArr = new String[1000];
 			errorindex = 0;
+			if(opcodeArr[i].equalsIgnoreCase("EQU")) PCadd=0;
 			PC = PC + PCadd;
 			PCadd = 3;
 			constants = 0;
@@ -378,10 +377,39 @@ public class FixedController {
 			} else {
 				PC = Integer.parseInt(operands[0], 16);
 			}
-			header.PCstart = PC;
+			header.PCstart= header.PCnewstart = PC;
 			text.PCstart = PC;
 
 		}
+		
+		if(opcode.equalsIgnoreCase("ORG")){
+			int l=0;
+			while (l<symbol) {
+			if (operand.equalsIgnoreCase(Labels[l])) {
+				header.PCnewstart = Integer.parseInt(PCS[l])-1;
+				break;
+			}
+			l++;
+			}
+			if (l==symbol)
+			header.PCnewstart = Integer.parseInt(operand)-1;
+			if(header.PCnewstart<0)
+				header.PCnewstart++;
+		}
+		if(opcode.equalsIgnoreCase("EQU")) {
+			int l=0;
+			while(l<symbol) {
+			if(operand.equalsIgnoreCase(Labels[l])){
+				PCS[index]=PCS[l];
+				break;
+			}
+			l++;
+			}
+			if (l==symbol)
+				PCS[index]=operand;
+			
+		}
+		
 		if (opcode.replaceAll(" ", "").equalsIgnoreCase("RESB") && criticalerror == 0) {
 			PCadd = Integer.parseInt(operands[index]);
 		}
@@ -401,7 +429,6 @@ public class FixedController {
 
 					length--;
 				}
-				
 
 				char start = '0';
 				char end = 'F';
@@ -423,8 +450,6 @@ public class FixedController {
 				}
 			}
 		}
-
-		
 
 		if (opcode.replaceAll(" ", "").equalsIgnoreCase("WORD")) {
 			// PCadd = 3;
@@ -553,12 +578,13 @@ public class FixedController {
 
 				bw.newLine();
 				bw.write("  **** END OF PASS 1 ****");
+				printLabels();
+
 				// End of pass then write the Symbol Table
 				bw.newLine();
 				if (flagError == 0) {
 					bw.write("\n" + "  **** SYMBOL TABLE *****");
 					bw.newLine();
-					
 					Inst = "\t" + "Address" + "\t\t" + "Name";
 					bw.write(Inst);
 					bw.newLine();
@@ -569,7 +595,7 @@ public class FixedController {
 					}
 					if (state == 0) {
 						header.WriteToFile(PCcount);
-						text.WriteText(opCode, operands, index); 
+						text.WriteText(opCode, operands, index, Labels, PCS, symbol);
 						end.WriteToFile(Integer.toHexString(header.PCstart).toUpperCase());
 					}
 				}
@@ -580,4 +606,13 @@ public class FixedController {
 		}
 	}
 
+	public void printLabels() {
+		for (int i = 0; i < symbol; i++) {
+			System.out.println("LLLLLLAAAAAAABBBBBBBEEEEEELLLLl " + Labels[i] + " " + PCS[i]);
+		}
+	}
+
+	public String[] getPCS() {
+		return PCS;
+	}
 }
