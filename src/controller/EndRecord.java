@@ -27,6 +27,7 @@ public class EndRecord extends PhaseTwo {
 			l = l + "0";
 			length++;
 		}
+		
 		l = l + PCstart;
 		try {
 			if (l != null) {

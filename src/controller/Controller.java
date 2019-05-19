@@ -26,6 +26,7 @@ public class Controller {
 	int symbol;
 	int PC;
 	int PCadd;
+	int obj =0;
 	int flagError;
 	String wordsArr[] = { "", "", "" };
 	String lineArr[] = { "", "", "", "" };
@@ -43,6 +44,7 @@ public class Controller {
 	int constants = 0;
 	int commentflag = 0;
 	public int state = 0;
+	int PCnew = -1;
 
 	public void ReadFile() {
 		symbol = 0;
@@ -196,8 +198,12 @@ public class Controller {
 			errorindex = 0;
 			if (opcodeArr[i].equalsIgnoreCase("EQU"))
 				PCadd = 0;
+			if(PCnew == -1)
 			PC = PC + PCadd;
+			else
+				PC = PCnew;
 			PCadd = 3;
+			PCnew = -1;
 			constants = 0;
 		}
 	}
@@ -231,6 +237,7 @@ public class Controller {
 					Labels[symbol] = label[index];
 					PCS[symbol] = Integer.toHexString(PC).toUpperCase();
 					symbol++;
+					
 				}
 				return compare;
 			}
@@ -380,19 +387,27 @@ public class Controller {
 			// System.out.println(header.PCstart + "START");
 
 		}
-		if (opcode.equalsIgnoreCase("ORG")) {
-			int l = 0;
-			while (l < symbol) {
-				if (operand.equalsIgnoreCase(Labels[l])) {
-					header.PCnewstart = Integer.parseInt(PCS[l]) - 1;
-					break;
-				}
-				l++;
+		if(opcode.equalsIgnoreCase("ORG")){
+			int l=0;
+			int newADD=-1;
+			
+			while (l<symbol) {
+				
+			if (operand.equalsIgnoreCase(Labels[l])) {
+			   newADD = Integer.parseInt(PCS[l],16);
+			   System.out.println(newADD + "MAYARRRR");
+				l=symbol;
 			}
-			if (l == symbol)
-				header.PCnewstart = Integer.parseInt(operand) - 1;
-			if (header.PCnewstart < 0)
-				header.PCnewstart++;
+			l++;
+			}
+			if(newADD == -1 )
+			{
+				newADD = Integer.parseInt(operand,16);
+				System.out.println(newADD + "MAYARRRR");
+			}
+			
+				PCnew = newADD;
+			System.out.println( PCadd + "MAYARRRR");
 		}
 
 		if (opcode.equalsIgnoreCase("EQU")) {
@@ -543,6 +558,8 @@ public class Controller {
 
 		String Inst;
 		String PCcount = Integer.toHexString(PC).toUpperCase();
+		text.objPC[obj] = PC;
+		obj++;
 		Inst = "\t" + PCcount.replaceAll(" ", "") + "\t\t" + label.replaceAll(" ", "") + "\t\t"
 				+ opcode.replaceAll(" ", "") + "\t\t" + operand.replaceAll(" ", "") + "\t";
 
