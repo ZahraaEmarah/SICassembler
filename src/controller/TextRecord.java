@@ -17,9 +17,9 @@ public class TextRecord extends PhaseTwo {
 	int PCstart;
 	String record = "T";
 
-	TextRecord() {
+	TextRecord(String filename) {
 		try {
-			obj = new BufferedWriter(new FileWriter(new File("OBJFILE.txt"), true));
+			obj = new BufferedWriter(new FileWriter(new File(filename), true));
 		} catch (IOException e) {
 			System.out.println("FILE NOT FOUND!!!!!!");
 		}
@@ -29,15 +29,21 @@ public class TextRecord extends PhaseTwo {
 
 	}
 
-	public void WriteText(String[] opcodearr, String[] operandarr, int count) {
+	public void WriteText(String[] opcodearr, String[] operandarr, int count, String[] L, String[] PPC, int symbol) {
 		// TODO Auto-generated method stub
 
 		String opcode;
 		String x;
 		String operands;
 		int P = PCstart;
+
 		for (int i = 1; i < count - 1; i++) { // STARTS FROM (1) BECAUSE FIRST OPERAND IS (START) -- ENDS AT COUNT -1
 												// BECAUSE LAST OPERAND IS (END)
+			String[] t = opcodearr[i].split(" ");
+			if (t.length == 2)
+				opcodearr[i] = t[1];
+			else
+				opcodearr[i] = t[0];
 			String PC = Integer.toHexString(P).toUpperCase();
 			int len = PC.length();
 
@@ -48,12 +54,18 @@ public class TextRecord extends PhaseTwo {
 
 			record = record + Integer.toHexString(P).toUpperCase();
 
+			if (opcodearr[i].equalsIgnoreCase("RESW") || opcodearr[i].equalsIgnoreCase("RESB"))
+				i++;
+
 			if (opcodearr[i].equalsIgnoreCase("WORD")) {
-				int temp = Integer.parseInt(operandarr[i]);
-				record = record + "03" + Integer.toHexString(temp).toUpperCase();
-				System.out.println(record);
+
+				int tem = Integer.parseInt(operandarr[i]);
+				record = record + "03" + Integer.toHexString(tem).toUpperCase();
+
 				P = P + 3;
+
 			}
+
 			if (opcodearr[i].equalsIgnoreCase("BYTE")) {
 				Character check = operandarr[i].charAt(0);
 				String[] temp = operandarr[i].split("'");
@@ -86,10 +98,16 @@ public class TextRecord extends PhaseTwo {
 			for (int j = 0; j < OPTAB.length; j++) // OPCODE
 			{
 
-				if (opcodearr[i].equalsIgnoreCase(OPTAB[j][0])) {
+				if (opcodearr[i].equals(OPTAB[j][0])) {
 					P = P + 3; // CALCULATE THE PC
 					record = record + "03" + OPTAB[j][1]; /// first 8 bits
-					record = record + OperandConversion(operandarr[i]);
+					record = record + OperandConversion(operandarr[i], L, PPC, symbol);
+				}
+
+				else if (opcodearr[i].equalsIgnoreCase(OPTAB[j][0])) {
+					P = P + 3; // CALCULATE THE PC
+					record = record + "03" + OPTAB[j][1]; /// first 8 bits
+					record = record + OperandConversion(operandarr[i], L, PPC, symbol);
 				}
 			}
 			try {
@@ -112,11 +130,27 @@ public class TextRecord extends PhaseTwo {
 		}
 	}
 
-	public String OperandConversion(String op) {
+	public String OperandConversion(String op, String[] L, String[] PC, int symbol) {
 
 		String[] str = op.split(",");
 		String output = "";
-		if (str.length > 1) {
+		String PCC;
+		int adrsflag = 0;
+
+		if (op.contains("+") || op.contains("-")) {
+			output = output + ExpressionEvaluation(op, L, PC, symbol);
+		}
+
+		for (int i = 0; i < symbol; i++) {
+			if (op.replaceAll(" ", "").equals(L[i].replaceAll(" ", ""))) {
+				PCC = PC[i];
+				System.out.println(PCC);
+				adrsflag = 1;
+				output = output + PCC;
+			}
+		}
+
+		if (str.length > 1 && adrsflag == 0) {
 
 			str[0].replaceAll("@", "");
 			str[0].replaceAll("#", "");
@@ -133,11 +167,8 @@ public class TextRecord extends PhaseTwo {
 					output = output + REGTAB[i][1];
 				}
 			}
-			for (int i = 0; i < 10; i++) {
 
-			}
-
-		} else if (str.length == 1) {
+		} else if (str.length == 1 && adrsflag == 0) {
 
 			str[0].replaceAll("@", "");
 			str[0].replaceAll("#", "");
@@ -151,6 +182,33 @@ public class TextRecord extends PhaseTwo {
 		}
 
 		return output;
+	}
+
+	public String ExpressionEvaluation(String args, String[] L, String P[], int symbol) {
+		String[] lbl = null;
+		String[] tmp = null;
+		String PCC = "0";
+		System.out.println("EVALUATION EVALUATION");
+		lbl = args.split("\\+");
+
+		for (int i = 0; i < lbl.length; i++) {
+			System.out.println("lbl " + lbl[i]);
+			if (lbl[i].contains("-")) {
+				System.out.println("OH SHIT");
+				tmp = lbl[i].split("-");
+				////////////////////////////////////////////
+			} else {
+				for (int j = 0; j < symbol; j++) {
+					if (lbl[i].replaceAll(" ", "").equals(L[j].replaceAll(" ", ""))) {
+						int h = Integer.parseInt(PCC, 16) + Integer.parseInt(P[j], 16);
+						PCC = Integer.toHexString(h);
+						System.out.println(PCC);
+					}
+				}
+			}
+		}
+
+		return PCC;
 	}
 
 }

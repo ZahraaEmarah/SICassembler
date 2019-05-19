@@ -50,12 +50,15 @@ public class Main {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		
 
 		f = new Controller();
 		f.ReadFile();
-
+		
 		fix = new FixedController();
 		fix.ReadFixedFile();
+
+		
 
 		frame = new JFrame();
 		frame.setBounds(100, 100, 977, 617);

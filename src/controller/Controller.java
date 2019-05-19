@@ -17,9 +17,9 @@ public class Controller {
 	String operands[] = new String[1000];
 	String comment[] = new String[1000];
 	String ErrorArr[] = new String[5];
-	HeaderRecord header = new HeaderRecord();
-	TextRecord text = new TextRecord();
-	EndRecord end = new EndRecord();
+	HeaderRecord header = new HeaderRecord("OBJFILE.txt");
+	TextRecord text = new TextRecord("OBJFILE.txt");
+	EndRecord end = new EndRecord("OBJFILE.txt");
 	// For the symbol table
 	String Labels[] = new String[100];
 	String PCS[] = new String[100];
@@ -228,7 +228,6 @@ public class Controller {
 					Labels[symbol] = label[index];
 					PCS[symbol] = Integer.toHexString(PC).toUpperCase();
 
-					// System.out.println(label[index] + PCS[symbol]);
 					symbol++;
 				}
 				return compare;
@@ -261,8 +260,7 @@ public class Controller {
 
 			Labels[symbol] = label[index];
 			PCS[symbol] = Integer.toHexString(PC).toUpperCase();
-			;
-			// System.out.println(PC);
+
 			symbol++;
 		}
 		noLabel = 0;
@@ -545,11 +543,6 @@ public class Controller {
 				bw.newLine();
 				if (flagError == 0) {
 					bw.write("****   SYMBOL TABLE   ****");
-					if (state == 0) {
-						header.WriteToFile(PCcount);
-						text.WriteText(opCode, operands, index);
-						end.WriteToFile(Integer.toHexString(header.PCstart).toUpperCase());
-					}
 
 					bw.newLine();
 					Inst = "Address" + "\t\t" + "Name";
@@ -559,6 +552,11 @@ public class Controller {
 						Inst = "\t" + PCS[i] + "\t\t" + Labels[i];
 						bw.write(Inst);
 						bw.newLine();
+					}
+					if (state == 0) {
+						header.WriteToFile(PCcount);
+						text.WriteText(opCode, operands, index, Labels, PCS, symbol);
+						end.WriteToFile(Integer.toHexString(header.PCstart).toUpperCase());
 					}
 				}
 			}

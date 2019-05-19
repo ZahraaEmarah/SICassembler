@@ -7,5 +7,4 @@ public abstract class PhaseTwo {
 	BufferedWriter obj;
 
 	public abstract void WriteToFile(String line);
-
 }

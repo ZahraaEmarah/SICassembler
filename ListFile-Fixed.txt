@@ -1,22 +1,19 @@
   **** SIC/XE Assembler ****
 	F		PROGRAME		 START 		0F	
-	F		        		 ADD   		4	
-	12		        		 LDA   		0	
-	15		        		 ADDR  		L,S	
-	18		MAR     		 RESW  		1	
-	1B		SOSO    		 RESB  		1	
-	1C		MARIAM  		 WORD  		2345	
-	1F		HEX     		 BYTE  		X'0AA'	
-	20		        		 org   		0	
-			'this statement can’t have a label '
-	23		        		 END			
+	F		        		 ADDR  		L,X	
+	12		        		 LDA   		MAYAR+HEX	
+	15		MAR     		 RESW  		1	
+	18		SOSO    		 RESB  		1	
+	19		MAYAR   		 WORD  		1234	
+	1C		HEX     		 BYTE  		X'0A'	
+	1D		        		 end			
 
   **** END OF PASS 1 ****
 
   **** SYMBOL TABLE *****
 	Address		Name
 	F			PROGRAME
-	18			MAR     
-	1B			SOSO    
-	1C			MARIAM  
-	1F			HEX     
+	15			MAR     
+	18			SOSO    
+	19			MAYAR   
+	1C			HEX     

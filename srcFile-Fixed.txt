@@ -1,11 +1,9 @@
 .23456789012345678
 PROGRAME START   0F
-         ADD     4
-         LDA     0
-         ADDR    L,S
+         ADDR    L,X
+         LDA     MAYAR+HEX
 MAR      RESW    1
 SOSO     RESB    1
-MARIAM   WORD    2345
-HEX      BYTE    X'0AA'
-         org     0
-         END
+MAYAR    WORD    1234
+HEX      BYTE    X'0A'
+         end
