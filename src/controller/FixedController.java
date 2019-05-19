@@ -180,8 +180,8 @@ public class FixedController {
 
 			errorindex = 0;
 
-			if (opCode[i].replaceAll(" ", "").equalsIgnoreCase("org")
-					|| opCode[i].replaceAll(" ", "").equalsIgnoreCase("base")) {
+			if ((opCode[i].replaceAll(" ", "").equalsIgnoreCase("org")
+					|| opCode[i].replaceAll(" ", "").equalsIgnoreCase("base"))&&labelarr[i].equalsIgnoreCase(space)) {
 				ErrorArr[errorindex] = "\t" + "'this statement can’t have a label '";
 				errorindex++;
 				state = 1;
@@ -195,14 +195,13 @@ public class FixedController {
 
 			}
 			ValidateOpcode(opcodeArr[i]);
-
+			compare = ValidateLabel(labelarr, index, i);
 			if (operandsArr[i] != null)
 				operandsArr[i] = ValidateOperands(operandsArr[i], opcodeArr[i], i);
-
-			compare = ValidateLabel(labelarr, index, i);
 			writeToFile(labelarr[i], opcodeArr[i], operandsArr[i], ErrorArr, comment[i], i);
 			ErrorArr = new String[1000];
 			errorindex = 0;
+			if(opcodeArr[i].equalsIgnoreCase("EQU")) PCadd=0;
 			PC = PC + PCadd;
 			PCadd = 3;
 			constants = 0;
@@ -378,10 +377,39 @@ public class FixedController {
 			} else {
 				PC = Integer.parseInt(operands[0], 16);
 			}
-			header.PCstart = PC;
+			header.PCstart= header.PCnewstart = PC;
 			text.PCstart = PC;
 
 		}
+		
+		if(opcode.equalsIgnoreCase("ORG")){
+			int l=0;
+			while (l<symbol) {
+			if (operand.equalsIgnoreCase(Labels[l])) {
+				header.PCnewstart = Integer.parseInt(PCS[l])-1;
+				break;
+			}
+			l++;
+			}
+			if (l==symbol)
+			header.PCnewstart = Integer.parseInt(operand)-1;
+			if(header.PCnewstart<0)
+				header.PCnewstart++;
+		}
+		if(opcode.equalsIgnoreCase("EQU")) {
+			int l=0;
+			while(l<symbol) {
+			if(operand.equalsIgnoreCase(Labels[l])){
+				PCS[index]=PCS[l];
+				break;
+			}
+			l++;
+			}
+			if (l==symbol)
+				PCS[index]=operand;
+			
+		}
+		
 		if (opcode.replaceAll(" ", "").equalsIgnoreCase("RESB") && criticalerror == 0) {
 			PCadd = Integer.parseInt(operands[index]);
 		}
