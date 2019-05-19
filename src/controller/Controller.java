@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
+import javax.swing.JTextArea;
+
 public class Controller {
 
 	String Label[] = new String[1000];
@@ -608,6 +610,43 @@ public class Controller {
 			bw.close();
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+
+	public void TakeFromGUI(JTextArea textArea) {
+		try {
+			BufferedWriter bf = new BufferedWriter(new FileWriter(new File("srcFile.txt"), false));
+			bf.write(textArea.getText());
+			bf.flush();
+			bf.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void DisplayinGUI(JTextArea text) {
+		try {
+			BufferedReader in = new BufferedReader(new FileReader("ListFile.txt"));
+			String line = in.readLine();
+			while (line != null) {
+				text.append(line + "\n");
+				line = in.readLine();
+			}
+		} catch (Exception c) {
+			c.printStackTrace();
+		}
+	}
+
+	public void DisplayOBJinGUI(JTextArea text) {
+		try {
+			BufferedReader in = new BufferedReader(new FileReader("OBJFILE.txt"));
+			String line = in.readLine();
+			while (line != null) {
+				text.append(line + "\n");
+				line = in.readLine();
+			}
+		} catch (Exception c) {
+			c.printStackTrace();
 		}
 	}
 

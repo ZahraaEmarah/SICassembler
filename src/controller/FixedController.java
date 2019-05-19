@@ -9,6 +9,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.swing.JTextArea;
+
 public class FixedController {
 
 	String Label[] = new String[1000];
@@ -181,7 +183,7 @@ public class FixedController {
 			errorindex = 0;
 
 			if ((opCode[i].replaceAll(" ", "").equalsIgnoreCase("org")
-					|| opCode[i].replaceAll(" ", "").equalsIgnoreCase("base"))&&labelarr[i].equalsIgnoreCase(space)) {
+					|| opCode[i].replaceAll(" ", "").equalsIgnoreCase("base")) && labelarr[i].equalsIgnoreCase(space)) {
 				ErrorArr[errorindex] = "\t" + "'this statement can’t have a label '";
 				errorindex++;
 				state = 1;
@@ -201,7 +203,8 @@ public class FixedController {
 			writeToFile(labelarr[i], opcodeArr[i], operandsArr[i], ErrorArr, comment[i], i);
 			ErrorArr = new String[1000];
 			errorindex = 0;
-			if(opcodeArr[i].equalsIgnoreCase("EQU")) PCadd=0;
+			if (opcodeArr[i].equalsIgnoreCase("EQU"))
+				PCadd = 0;
 			PC = PC + PCadd;
 			PCadd = 3;
 			constants = 0;
@@ -377,39 +380,39 @@ public class FixedController {
 			} else {
 				PC = Integer.parseInt(operands[0], 16);
 			}
-			header.PCstart= header.PCnewstart = PC;
+			header.PCstart = header.PCnewstart = PC;
 			text.PCstart = PC;
 
 		}
-		
-		if(opcode.equalsIgnoreCase("ORG")){
-			int l=0;
-			while (l<symbol) {
-			if (operand.equalsIgnoreCase(Labels[l])) {
-				header.PCnewstart = Integer.parseInt(PCS[l])-1;
-				break;
+
+		if (opcode.equalsIgnoreCase("ORG")) {
+			int l = 0;
+			while (l < symbol) {
+				if (operand.equalsIgnoreCase(Labels[l])) {
+					header.PCnewstart = Integer.parseInt(PCS[l]) - 1;
+					break;
+				}
+				l++;
 			}
-			l++;
-			}
-			if (l==symbol)
-			header.PCnewstart = Integer.parseInt(operand)-1;
-			if(header.PCnewstart<0)
+			if (l == symbol)
+				header.PCnewstart = Integer.parseInt(operand) - 1;
+			if (header.PCnewstart < 0)
 				header.PCnewstart++;
 		}
-		if(opcode.equalsIgnoreCase("EQU")) {
-			int l=0;
-			while(l<symbol) {
-			if(operand.equalsIgnoreCase(Labels[l])){
-				PCS[index]=PCS[l];
-				break;
+		if (opcode.equalsIgnoreCase("EQU")) {
+			int l = 0;
+			while (l < symbol) {
+				if (operand.equalsIgnoreCase(Labels[l])) {
+					PCS[index] = PCS[l];
+					break;
+				}
+				l++;
 			}
-			l++;
-			}
-			if (l==symbol)
-				PCS[index]=operand;
-			
+			if (l == symbol)
+				PCS[index] = operand;
+
 		}
-		
+
 		if (opcode.replaceAll(" ", "").equalsIgnoreCase("RESB") && criticalerror == 0) {
 			PCadd = Integer.parseInt(operands[index]);
 		}
@@ -614,5 +617,42 @@ public class FixedController {
 
 	public String[] getPCS() {
 		return PCS;
+	}
+
+	public void TakeFromGUI(JTextArea textArea) {
+		try {
+			BufferedWriter bf = new BufferedWriter(new FileWriter(new File("srcFile-Fixed.txt"), false));
+			bf.write(textArea.getText());
+			bf.flush();
+			bf.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void DisplayinGUI(JTextArea text) {
+		try {
+			BufferedReader in = new BufferedReader(new FileReader("ListFile-Fixed.txt"));
+			String line = in.readLine();
+			while (line != null) {
+				text.append(line + "\n");
+				line = in.readLine();
+			}
+		} catch (Exception c) {
+			c.printStackTrace();
+		}
+	}
+
+	public void DisplayOBJinGUI(JTextArea text) {
+		try {
+			BufferedReader in = new BufferedReader(new FileReader("OBJFILEFIXED.txt"));
+			String line = in.readLine();
+			while (line != null) {
+				text.append(line + "\n");
+				line = in.readLine();
+			}
+		} catch (Exception c) {
+			c.printStackTrace();
+		}
 	}
 }

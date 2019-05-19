@@ -1,8 +1,5 @@
 .23456789012345678
 PROG     START   0
-MAR      RESW    1
-SOSO     RESB    1
-TEST     EQU     Prog
-MAYAR    WORD    1234
-HEX      BYTE    X'0A'
-         end
+         ADD     5
+         ADDR    S,T
+         END

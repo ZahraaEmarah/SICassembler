@@ -39,6 +39,8 @@ public class TextRecord extends PhaseTwo {
 
 		for (int i = 1; i < count - 1; i++) { // STARTS FROM (1) BECAUSE FIRST OPERAND IS (START) -- ENDS AT COUNT -1
 												// BECAUSE LAST OPERAND IS (END)
+if (opcodearr[i].equalsIgnoreCase("RESW") || opcodearr[i].equalsIgnoreCase("RESB")||opcodearr[i].equalsIgnoreCase("BASE")||opcodearr[i].equalsIgnoreCase("EQU")||opcodearr[i].equalsIgnoreCase("ORG"))
+				i++;
 			String[] t = opcodearr[i].split(" ");
 			if (t.length == 2)
 				opcodearr[i] = t[1];
@@ -53,9 +55,25 @@ public class TextRecord extends PhaseTwo {
 			}
 
 			record = record + Integer.toHexString(P).toUpperCase();
+			for (int j = 0; j < OPTAB.length; j++) // OPCODE
+			{
+if (opcodearr[i].equalsIgnoreCase("RESW") || opcodearr[i].equalsIgnoreCase("RESB")||opcodearr[i].equalsIgnoreCase("BASE")||opcodearr[i].equalsIgnoreCase("EQU")||opcodearr[i].equalsIgnoreCase("ORG"))
+			i++;
 
-			if (opcodearr[i].equalsIgnoreCase("RESW") || opcodearr[i].equalsIgnoreCase("RESB"))
-				i++;
+				if (opcodearr[i].equals(OPTAB[j][0])) {
+					P = P + 3; // CALCULATE THE PC
+					record = record + "03" + OPTAB[j][1]; /// first 8 bits
+					record = record + OperandConversion(operandarr[i], L, PPC, symbol);
+				}
+
+				else if (opcodearr[i].equalsIgnoreCase(OPTAB[j][0])) {
+					P = P + 3; // CALCULATE THE PC
+					record = record + "03" + OPTAB[j][1]; /// first 8 bits
+					record = record + OperandConversion(operandarr[i], L, PPC, symbol);
+				}
+			}
+
+			
 
 			if (opcodearr[i].equalsIgnoreCase("WORD")) {
 
@@ -95,21 +113,7 @@ public class TextRecord extends PhaseTwo {
 					record = record + Integer.toString(size) + temp[1];
 				}
 			}
-			for (int j = 0; j < OPTAB.length; j++) // OPCODE
-			{
-
-				if (opcodearr[i].equals(OPTAB[j][0])) {
-					P = P + 3; // CALCULATE THE PC
-					record = record + "03" + OPTAB[j][1]; /// first 8 bits
-					record = record + OperandConversion(operandarr[i], L, PPC, symbol);
-				}
-
-				else if (opcodearr[i].equalsIgnoreCase(OPTAB[j][0])) {
-					P = P + 3; // CALCULATE THE PC
-					record = record + "03" + OPTAB[j][1]; /// first 8 bits
-					record = record + OperandConversion(operandarr[i], L, PPC, symbol);
-				}
-			}
+		
 			try {
 				obj.newLine();
 				obj.write(record);
@@ -190,25 +194,94 @@ public class TextRecord extends PhaseTwo {
 		String PCC = "0";
 		System.out.println("EVALUATION EVALUATION");
 		lbl = args.split("\\+");
-
+		int minus = 0;
 		for (int i = 0; i < lbl.length; i++) {
 			System.out.println("lbl " + lbl[i]);
+			
 			if (lbl[i].contains("-")) {
 				System.out.println("OH SHIT");
 				tmp = lbl[i].split("-");
+				i=lbl.length;
+				minus =1;
+				break;
 				////////////////////////////////////////////
 			} else {
 				for (int j = 0; j < symbol; j++) {
-					if (lbl[i].replaceAll(" ", "").equals(L[j].replaceAll(" ", ""))) {
+					if (isNumeric(lbl[i].replaceAll(" ", ""))==true)
+					{
+						int h = Integer.parseInt(PCC,16) +Integer.parseInt(lbl[i],16);
+						PCC = Integer.toHexString(h).toUpperCase();
+						System.out.println("mayarrrr"+PCC);
+						break;
+					}
+					else if (lbl[i].replaceAll(" ", "").equals(L[j].replaceAll(" ", ""))) {
 						int h = Integer.parseInt(PCC, 16) + Integer.parseInt(P[j], 16);
-						PCC = Integer.toHexString(h);
+						PCC = Integer.toHexString(h).toUpperCase();
 						System.out.println(PCC);
 					}
 				}
 			}
 		}
+		if(minus == 0) {
 
 		return PCC;
+		}
+		else
+		{
+			System.out.println("IM HERE");
+			//tmp 
+			int k = 0;
+			int tempR =0;
+			System.out.println(PCC);
+			if(PCC.equals("0")==false)
+			{
+				tempR=1;
+				System.out.println("HIIIIIIIIIII");
+				
+			}
+			while(k<2) {
+				System.out.println(PCC);
+				int h;
+				for (int j = 0; j < symbol; j++) {
+					if (isNumeric(tmp[k].replaceAll(" ", ""))==true)
+					{
+						if(tempR == 1) {
+						 h = Integer.parseInt(PCC,16) +Integer.parseInt(tmp[k],16);
+						 tempR=0;
+						}
+						else
+							h= Integer.parseInt(PCC,16) - Integer.parseInt(tmp[k],16);
+						PCC = Integer.toHexString(h).toUpperCase();
+						System.out.println("mayarrrr"+PCC);
+						break;
+					}
+					else if (tmp[k].replaceAll(" ", "").equals(L[j].replaceAll(" ", ""))) {
+						if(tempR == 1) {
+						 h = Integer.parseInt(PCC, 16) + Integer.parseInt(P[j], 16);
+						 tempR=0;
+						}
+						else
+							if(PCC.equals("0"))
+							h =  Integer.parseInt(P[j], 16) - Integer.parseInt(PCC, 16) ;
+							else
+								h = Integer.parseInt(PCC, 16) - Integer.parseInt(P[j], 16) ;
+							
+						PCC = Integer.toHexString(h).toUpperCase();
+					//	System.out.println(PCC);
+					}
+				}
+				k++;
+			}
+			return PCC;
+		}
+	}
+	public static boolean isNumeric(String strNum) {
+	    try {
+	        double d = Double.parseDouble(strNum);
+	    } catch (NumberFormatException | NullPointerException nfe) {
+	        return false;
+	    }
+	    return true;
 	}
 
 }
