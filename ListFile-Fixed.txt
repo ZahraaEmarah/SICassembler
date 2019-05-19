@@ -1,18 +1,19 @@
   **** SIC/XE Assembler ****
-	0		PROGRAME		 START 		0	
+	0		PROG    		 START 		0	
 	0		MAR     		 RESW  		1	
 	3		SOSO    		 RESB  		1	
-	4		MAYAR   		 WORD  		1234	
-	7		HEX     		 BYTE  		X'0A'	
-	8		        		 ORG   		10	
+	4		TEST    		 EQU   		Prog	
+	7		MAYAR   		 WORD  		1234	
+	A		HEX     		 BYTE  		X'0A'	
 	B		        		 end			
 
   **** END OF PASS 1 ****
 
   **** SYMBOL TABLE *****
 	Address		Name
-	0			PROGRAME
+	0			PROG    
 	0			MAR     
 	3			SOSO    
-	4			MAYAR   
-	7			HEX     
+	4			TEST    
+	7			MAYAR   
+	A			HEX     
