@@ -2,18 +2,20 @@
 		    
 .23456789012345678
 	F		PROGRAME		START		0F	
-	F				ADDR		L,X	
-	12		MAR		RESW		1	
-	15		SOSO		RESB		1	
-	16		MAYAR		WORD		1234	
-	19		HEX		BYTE		X'0A'	
-	1A				end			
+	F				ORG		100	
+	*****'this statement can’t have a label '*****
+	12				ADDR		L,X	
+	15		MAR		RESW		1	
+	18		SOSO		RESB		1	
+	19		MAYAR		WORD		1234	
+	1C		HEX		BYTE		X'0A'	
+	1D				end			
 
   **** END OF PASS 1 ****
 ****   SYMBOL TABLE   ****
 Address		Name
 	F		PROGRAME
-	12		MAR
-	15		SOSO
-	16		MAYAR
-	19		HEX
+	15		MAR
+	18		SOSO
+	19		MAYAR
+	1C		HEX

@@ -1,5 +1,6 @@
 .23456789012345678
 PROGRAME START   0F
+         ORG     100
          ADDR    L,X
 MAR      RESW    1
 SOSO     RESB    1
