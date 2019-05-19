@@ -1,14 +1,4 @@
   **** SIC/XE Assembler ****
-<<<<<<< HEAD
-	F		PROGRAME		 START 		0F	
-	F		        		 ADDR  		L,X	
-	12		        		 LDA   		MAYAR+HEX	
-	15		MAR     		 RESW  		1	
-	18		SOSO    		 RESB  		1	
-	19		MAYAR   		 WORD  		1234	
-	1C		HEX     		 BYTE  		X'0A'	
-	1D		        		 end			
-=======
 	0		PROG    		 START 		0	
 	0		MAR     		 RESW  		1	
 	3		SOSO    		 RESB  		1	
@@ -16,23 +6,14 @@
 	7		MAYAR   		 WORD  		1234	
 	A		HEX     		 BYTE  		X'0A'	
 	B		        		 end			
->>>>>>> refs/remotes/origin/MAYAR
 
   **** END OF PASS 1 ****
 
   **** SYMBOL TABLE *****
 	Address		Name
-<<<<<<< HEAD
-	F			PROGRAME
-	15			MAR     
-	18			SOSO    
-	19			MAYAR   
-	1C			HEX     
-=======
 	0			PROG    
 	0			MAR     
 	3			SOSO    
 	4			TEST    
 	7			MAYAR   
 	A			HEX     
->>>>>>> refs/remotes/origin/MAYAR

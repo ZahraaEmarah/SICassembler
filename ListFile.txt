@@ -2,7 +2,7 @@
 		    
 .23456789012345678
 	0		PROG		START		0	
-	0		MAR		RESW		1	
+	0		]MAR		RESW		1	
 	3		SOSO		RESB		1	
 	4		TEST		EQU		Prog	
 	4		MAYAR		WORD		1234	
@@ -13,7 +13,7 @@
 ****   SYMBOL TABLE   ****
 Address		Name
 	0		PROG
-	0		MAR
+	0		]MAR
 	3		SOSO
 	0		TEST
 	4		MAYAR
