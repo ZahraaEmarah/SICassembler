@@ -1,18 +1,18 @@
   **** SIC/XE Assembler ****
-	F		PROGRAME		 START 		0F	
-	F		        		 ADDR  		L,X	
-	12		MAR     		 RESW  		1	
-	15		SOSO    		 RESB  		1	
-	16		MAYAR   		 WORD  		1234	
-	19		HEX     		 BYTE  		X'0A'	
-	1A		        		 end			
+	0		PROGRAME		 START 		0	
+	0		MAR     		 RESW  		1	
+	3		SOSO    		 RESB  		1	
+	4		MAYAR   		 WORD  		1234	
+	7		HEX     		 BYTE  		X'0A'	
+	8		        		 ORG   		10	
+	B		        		 end			
 
   **** END OF PASS 1 ****
 
   **** SYMBOL TABLE *****
 	Address		Name
-	F			PROGRAME
-	12			MAR     
-	15			SOSO    
-	16			MAYAR   
-	19			HEX     
+	0			PROGRAME
+	0			MAR     
+	3			SOSO    
+	4			MAYAR   
+	7			HEX     

@@ -7,6 +7,7 @@ import java.io.IOException;
 
 public class HeaderRecord extends PhaseTwo {
 	int PCstart; // You have to change it to HEXA
+	int PCnewstart;
 	String ProgName;
 	int PCend;
 	String space = new String();
@@ -23,7 +24,7 @@ public class HeaderRecord extends PhaseTwo {
 	public void WriteToFile(String line) {
 		try {
 			PCend = PCend - PCstart - 1;
-			String PCS = Integer.toHexString(PCstart).toUpperCase();
+			String PCS = Integer.toHexString(PCnewstart).toUpperCase();
 			String PCcount = Integer.toHexString(PCend).toUpperCase(); // Convert the ending of Object code to hexa
 																		// STRING
 			int temp = ProgName.length();

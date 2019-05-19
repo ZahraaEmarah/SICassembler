@@ -180,8 +180,8 @@ public class FixedController {
 
 			errorindex = 0;
 
-			if (opCode[i].replaceAll(" ", "").equalsIgnoreCase("org")
-					|| opCode[i].replaceAll(" ", "").equalsIgnoreCase("base")) {
+			if ((opCode[i].replaceAll(" ", "").equalsIgnoreCase("org")
+					|| opCode[i].replaceAll(" ", "").equalsIgnoreCase("base"))&&labelarr[i].equalsIgnoreCase(space)) {
 				ErrorArr[errorindex] = "\t" + "'this statement can’t have a label '";
 				errorindex++;
 				state = 1;
@@ -378,10 +378,15 @@ public class FixedController {
 			} else {
 				PC = Integer.parseInt(operands[0], 16);
 			}
-			header.PCstart = PC;
+			header.PCstart= header.PCnewstart = PC;
 			text.PCstart = PC;
 
 		}
+		
+		if(opcode.equalsIgnoreCase("ORG")){
+			header.PCnewstart = Integer.parseInt(operand)-1;
+		}
+		
 		if (opcode.replaceAll(" ", "").equalsIgnoreCase("RESB") && criticalerror == 0) {
 			PCadd = Integer.parseInt(operands[index]);
 		}
