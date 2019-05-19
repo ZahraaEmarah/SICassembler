@@ -1,18 +1,8 @@
 .23456789012345678
-<<<<<<< HEAD
-PROGRAME START   0F
-         ADDR    L,X
-         LDA     MAYAR+HEX
-=======
 PROG     START   0
->>>>>>> refs/remotes/origin/MAYAR
 MAR      RESW    1
-<<<<<<< HEAD
-SOSO     RESB    1
-=======
 SOSO     RESB    1
 TEST     EQU     Prog
->>>>>>> refs/remotes/origin/MAYAR
 MAYAR    WORD    1234
 HEX      BYTE    X'0A'
          end

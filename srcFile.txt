@@ -1,12 +1,6 @@
-<<<<<<< HEAD
-.23456789012345678
-PROGRAME START   0F
-         ADDR    L,X
-=======
 .23456789012345678
 PROG     START   0
->>>>>>> refs/remotes/origin/MAYAR
-MAR      RESW    1
+]MAR      RESW    1
 SOSO     RESB    1
 TEST     EQU     Prog
 MAYAR    WORD    1234
