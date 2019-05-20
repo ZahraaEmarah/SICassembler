@@ -2,22 +2,14 @@
 		    
 .23456789012345678
 	10		PROG		START		10	
-	10				LDA		MAR-2	
-	13		MA		ADD		L	
-	16				ORG		MA	
-	13				ADD		SOSO+6	
-	16		MAR		RESW		1	
-	19		SOSO		RESB		1	
-	1A		MAYAR		WORD		1234	
-	1D		HEX		BYTE		X'0A'	
-	1E				end			
+	10		ALPHA		BYTE		X'7'	
+	10		BETA		WORD		5	
+	13				LDA		ALPHA+BETA+5	
+	16				end			
 
   **** END OF PASS 1 ****
 ****   SYMBOL TABLE   ****
 Address		Name
 	0		PROG
-	13		MA
-	16		MAR
-	19		SOSO
-	1A		MAYAR
-	1D		HEX
+	10		ALPHA
+	10		BETA

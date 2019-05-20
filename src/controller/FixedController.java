@@ -25,7 +25,7 @@ public class FixedController {
 	int symbol;
 	int PCadd;
 	int PCnew = -1;
-	int objPC[] = new int[100];
+	//int objPC[] = new int[100];
 	int obj=0;
 	int flagError;
 	String directivesList[] = { "start", "end", "byte", "word", "resw", "resb", "equ", "org", "base" };

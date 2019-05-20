@@ -1,11 +1,6 @@
 .23456789012345678
 PROG     START   10
-         LDA     MAR-2
-MA       ADD     L
-         ORG     MA
-         ADD     SOSO+6
-MAR      RESW    1
-SOSO     RESB    1
-MAYAR    WORD    1234
-HEX      BYTE    X'0A'
+ALPHA    BYTE    X'7'
+BETA     WORD    5
+         LDA     ALPHA+BETA+5
          end
